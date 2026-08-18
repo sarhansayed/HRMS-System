@@ -2440,20 +2440,214 @@ let cycle = getCycleForMonth(m);
 document.getElementById("kOT").textContent = db.overtime.filter(x=>x.date>=cycle.from && x.date<=cycle.to).reduce((s,x)=>s+Number(x.hours||0),0).toFixed(1);
 checkDashboardAlerts();
 }
-function renderAll(){
-dashboard();
-renderEmployees();
-renderAttendance();
-renderLeaves();
-renderAbsence();
-renderOT();
-renderBonuses();
-renderDeductions();
-renderLoans();
-calculatePayroll();
-renderAudit();
-loadSettings();
+function dashboard(){
+  let d=today(), m=month();
+  let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
+  document.getElementById("kEmployees").textContent = activeEmps.length;
+  let presentCount = db.attendance.filter(x=>x.date===d&&x.status==="حاضر").length;
+  document.getElementById("kPresent").textContent = presentCount;
+  document.getElementById("kAbsent").textContent = Math.max(0, activeEmps.length - presentCount);
+  let cycle = getCycleForMonth(m);
+  document.getElementById("kOT").textContent = db.overtime.filter(x=>x.date>=cycle.from && x.date<=cycle.to).reduce((s,x)=>s+Number(x.hours||0),0).toFixed(1);
+  checkDashboardAlerts();
 }
+
+function renderAll(){
+  dashboard();
+  renderEmployees();
+  renderAttendance();
+  renderLeaves();
+  renderAbsence();
+  renderOT();
+  renderBonuses();
+  renderDeductions();
+  renderLoans();
+  calculatePayroll();
+  renderAudit();
+  if(typeof renderUsers === 'function') renderUsers();
+  loadSettings();
+}
+
+// ==========================================
+// قسم إدارة المستخدمين والصلاحيات (المدير العام فقط)
+// ==========================================
+const ROLE_NAMES = {
+  "Administrator": "مدير عام — تحكم كامل",
+  "HR": "مسؤول موارد بشرية",
+  "DataEntry": "مدخل بيانات",
+  "Viewer": "مشاهد فقط"
+};
+
+function openAddUserModal() {
+  if (!isAdmin()) {
+    alert("⛔ خطأ أمني: هذه الصلاحية للمدير العام فقط!");
+    return;
+  }
+  document.getElementById("userForm").reset();
+  document.getElementById("userId").value = "";
+  document.getElementById("userPass").required = true;
+  document.getElementById("userPass").placeholder = "أدخل كلمة المرور للمستخدم";
+  document.getElementById("userModalTitle").textContent = "إضافة مستخدم جديد";
+  document.getElementById("userModal").classList.remove("hidden");
+}
+
+function closeUserModal() {
+  document.getElementById("userModal").classList.add("hidden");
+}
+
+function saveUser(e) {
+  if (e) e.preventDefault();
+  
+  if (!isAdmin()) {
+    alert("⛔ تم رفض العملية: غير مصرح لغير المدير العام بإضافة أو تعديل المستخدمين!");
+    return;
+  }
+
+  let id = document.getElementById("userId").value;
+  let name = document.getElementById("userName").value.trim();
+  let email = document.getElementById("userEmail").value.trim().toLowerCase();
+  let pass = document.getElementById("userPass").value;
+  let role = document.getElementById("userRole").value;
+
+  if (!name || !email) {
+    return alert("يرجى إدخال اسم المستخدم والبريد الإلكتروني");
+  }
+
+  const ADMIN_EMAIL = "sarhanyasmen2@gmail.com";
+  if (email === ADMIN_EMAIL && id !== "admin-master-uid") {
+    return alert("⛔ هذا البريد خاص بحساب المدير العام الرئيسي فقط!");
+  }
+
+  db.users = db.users || [];
+
+  let exists = db.users.some(u => u.email.toLowerCase() === email && u.id !== id);
+  if (exists) {
+    return alert("❌ هذا البريد الإلكتروني مسجل بالفعل لمستخدم آخر!");
+  }
+
+  if (id) {
+    let u = db.users.find(x => x.id === id);
+    if (u) {
+      u.name = name;
+      u.email = email;
+      u.role = role;
+      u.roleText = ROLE_NAMES[role] || role;
+      if (pass && pass.trim() !== "") {
+        u.password = pass.trim();
+      }
+      logSecurityAudit("تعديل مستخدم", `تم تعديل بيانات أو كلمة مرور الحساب: ${email}`);
+    }
+  } else {
+    if (!pass || pass.length < 6) {
+      return alert("يرجى إدخال كلمة مرور لا تقل عن 6 خانات للمستخدم الجديد");
+    }
+
+    db.users.push({
+      id: "usr-" + Date.now(),
+      name: name,
+      email: email,
+      password: pass.trim(),
+      role: role,
+      roleText: ROLE_NAMES[role] || role,
+      createdAt: new Date().toLocaleDateString("ar-EG")
+    });
+
+    logSecurityAudit("إضافة مستخدم", `تم إنشاء حساب جديد: ${email} بصلاحية ${role}`);
+  }
+
+  saveDB();
+  renderUsers();
+  closeUserModal();
+  alert("✅ تم حفظ التعديلات بنجاح بواسطة المدير العام");
+}
+
+function editUser(id) {
+  if (!isAdmin()) {
+    alert("⛔ غير مصرح لك بتعديل بيانات أو كلمات مرور المستخدمين!");
+    return;
+  }
+
+  let u = (db.users || []).find(x => x.id === id);
+  if (!u) return;
+
+  document.getElementById("userId").value = u.id;
+  document.getElementById("userName").value = u.name;
+  document.getElementById("userEmail").value = u.email;
+  document.getElementById("userRole").value = u.role;
+  document.getElementById("userPass").value = "";
+  document.getElementById("userPass").required = false;
+  document.getElementById("userPass").placeholder = "اتركه فارغاً إذا لم ترغب في تغيير الرقم السري";
+  document.getElementById("userModalTitle").textContent = "تعديل حساب / تغيير رقم سري: " + u.name;
+  document.getElementById("userModal").classList.remove("hidden");
+}
+
+function deleteUser(id) {
+  if (!isAdmin()) {
+    alert("⛔ حذف الحسابات خاص بالمدير العام فقط!");
+    return;
+  }
+
+  let u = (db.users || []).find(x => x.id === id);
+  if (!u) return;
+
+  if (!confirm(`هل أنت متأكد من رغبتك في حذف حساب "${u.name}" نهائياً من النظام؟`)) {
+    return;
+  }
+
+  db.users = (db.users || []).filter(item => item.id !== id);
+  logSecurityAudit("حذف مستخدم", `قام المدير العام بحذف الحساب: ${u.email}`);
+  saveDB();
+  renderUsers();
+  alert("🗑️ تم حذف الحساب بنجاح");
+}
+
+function renderUsers() {
+  let tbody = document.getElementById("usersTableBody");
+  if (!tbody) return;
+  
+  if (!isAdmin()) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">⛔ غير مصرح لك بعرض هذه البيانات</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = "";
+  db.users = db.users || [];
+
+  if (db.users.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">لا يوجد مستخدمين إضافيين مضافين حالياً</td></tr>`;
+    return;
+  }
+
+  db.users.forEach(u => {
+    let tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${u.name}</strong></td>
+      <td>${u.email}</td>
+      <td><span class="badge">${u.roleText || u.role}</span></td>
+      <td>${u.createdAt || "—"}</td>
+      <td>
+        <button class="btn btn-sm btn-warning" onclick="editUser('${u.id}')">تعديل / تغيير الرقم السري</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">حذف</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function logSecurityAudit(action, details) {
+  if (window.db) {
+    db.audit = db.audit || [];
+    db.audit.unshift({
+      date: new Date().toLocaleString("ar-EG"),
+      user: session ? session.name : "المدير العام",
+      action: action,
+      empCode: "ADMIN",
+      details: details
+    });
+    db.audit = db.audit.slice(0, 1000);
+  }
+}
+
 document.getElementById("attDate").value=today();
 document.getElementById("payMonth").value=month();
 window.__hrmsCloudError="";
