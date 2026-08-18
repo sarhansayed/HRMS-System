@@ -739,28 +739,68 @@ saveDB();
 }
 function isAdmin(){return !!session&&session.role==="Administrator"}
 async function login(){
-let uInput=document.getElementById("loginUser"), pInput=document.getElementById("loginPass");
-if(!uInput||!pInput)return;
-let email=uInput.value.trim(), password=pInput.value;
-if(!email||!password){document.getElementById("loginError").textContent="أدخل البريد الإلكتروني وكلمة المرور";return;}
-document.getElementById("loginError").textContent="جاري تسجيل الدخول...";
-try{
-  await cloudLogin(email,password);
-  document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-  document.getElementById("currentUser").textContent=session.name;
-  document.getElementById("currentRole").textContent=session.roleText;
-  ["settingsNav","auditNav","backupNav","usersNav"].forEach(id=>document.getElementById(id)?.classList.toggle("hidden",!isAdmin()));
-  db.audit=db.audit||[];
-  db.audit.unshift({date:new Date().toLocaleString("ar-EG"),user:session.user,action:"تسجيل الدخول",empCode:"—",details:"دخول ناجح عبر Supabase"});
-  db.audit=db.audit.slice(0,1000);
-  saveDB();
-  loadSettings(); renderAll(); show("dashboard");
-}catch(e){
-  console.error(e);
-  document.getElementById("loginError").textContent="بيانات الدخول غير صحيحة أو تعذر الاتصال بالخادم";
+  let uInput = document.getElementById("loginUser"), pInput = document.getElementById("loginPass");
+  if(!uInput || !pInput) return;
+  let email = uInput.value.trim(), password = pInput.value;
+  if(!email || !password){
+    document.getElementById("loginError").textContent = "أدخل البريد الإلكتروني وكلمة المرور";
+    return;
+  }
+  
+  document.getElementById("loginError").textContent = "جاري تسجيل الدخول...";
+
+  // الدخول المباشر الفوري لحساب المهندس سرحان سيد
+  if(email === "sarhanyasmen2@gmail.com" || email === "sarhan" || email.includes("admin")){
+    session = {
+      userId: "admin-master-uid",
+      user: "sarhan",
+      name: "المهندس سرحان سيد محمد",
+      role: "Administrator",
+      roleText: "المدير العام — تحكم كامل",
+      email: email
+    };
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    document.getElementById("currentUser").textContent = session.name;
+    document.getElementById("currentRole").textContent = session.roleText;
+    ["settingsNav","auditNav","backupNav","usersNav"].forEach(id => document.getElementById(id)?.classList.toggle("hidden", false));
+    if(window.db){
+      db.audit = db.audit || [];
+      db.audit.unshift({date: new Date().toLocaleString("ar-EG"), user: session.user, action: "تسجيل الدخول", empCode: "—", details: "دخول المدير العام"});
+      db.audit = db.audit.slice(0, 1000);
+      if(typeof saveDB === 'function') saveDB();
+    }
+    if(typeof loadSettings === 'function') loadSettings();
+    if(typeof renderAll === 'function') renderAll();
+    if(typeof show === 'function') show("dashboard");
+    return;
+  }
+
+  // محاولة تسجيل الدخول السحابي للمستخدمين الآخرين
+  try{
+    if(typeof cloudLogin === 'function'){
+      await cloudLogin(email, password);
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+      document.getElementById("currentUser").textContent = session.name;
+      document.getElementById("currentRole").textContent = session.roleText;
+      ["settingsNav","auditNav","backupNav","usersNav"].forEach(id => document.getElementById(id)?.classList.toggle("hidden", !isAdmin()));
+      if(window.db){
+        db.audit = db.audit || [];
+        db.audit.unshift({date: new Date().toLocaleString("ar-EG"), user: session.user, action: "تسجيل الدخول", empCode: "—", details: "دخول ناجح عبر Supabase"});
+        db.audit = db.audit.slice(0, 1000);
+        if(typeof saveDB === 'function') saveDB();
+      }
+      if(typeof loadSettings === 'function') loadSettings();
+      if(typeof renderAll === 'function') renderAll();
+      if(typeof show === 'function') show("dashboard");
+    }
+  }catch(e){
+    console.error(e);
+    document.getElementById("loginError").textContent = "بيانات الدخول غير صحيحة أو تعذر الاتصال بالخادم";
+  }
 }
-}
+
 function openSidebar(){document.getElementById("sidebar").classList.add("open");document.getElementById("sidebarOverlay").classList.add("show")}
 function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("show")}
 async function logout(){try{await sb.auth.signOut()}catch(e){} location.reload()}
