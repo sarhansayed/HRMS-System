@@ -736,86 +736,122 @@ details: details || "—"
 });
 db.audit = db.audit.slice(0, 1000);
 saveDB();
-}
-function isAdmin(){return !!session&&session.role==="Administrator"}
+}function isAdmin(){return !!session&&session.role==="Administrator"}
+
 async function login(){
   let uInput = document.getElementById("loginUser"), pInput = document.getElementById("loginPass");
+  let err = document.getElementById("loginError");
   if(!uInput || !pInput) return;
-  let email = uInput.value.trim(), password = pInput.value;
+  
+  let email = uInput.value.trim().toLowerCase();
+  let password = pInput.value;
+  
   if(!email || !password){
-    document.getElementById("loginError").textContent = "أدخل البريد الإلكتروني وكلمة المرور";
+    err.textContent = "يرجى كتابة البريد الإلكتروني وكلمة المرور";
     return;
   }
   
-  document.getElementById("loginError").textContent = "جاري تسجيل الدخول...";
+  err.textContent = "جاري التحقق من بيانات الدخول...";
 
-  // الدخول المباشر الفوري لحساب المهندس سرحان سيد
-  if(email === "sarhanyasmen2@gmail.com" || email === "sarhan" || email.includes("admin")){
-    session = {
-      userId: "admin-master-uid",
-      user: "sarhan",
-      name: "المهندس سرحان سيد محمد",
-      role: "Administrator",
-      roleText: "المدير العام — تحكم كامل",
-      email: email
-    };
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-    document.getElementById("currentUser").textContent = session.name;
-    document.getElementById("currentRole").textContent = session.roleText;
-    ["settingsNav","auditNav","backupNav","usersNav"].forEach(id => document.getElementById(id)?.classList.toggle("hidden", false));
-    if(window.db){
-      db.audit = db.audit || [];
-      db.audit.unshift({date: new Date().toLocaleString("ar-EG"), user: session.user, action: "تسجيل الدخول", empCode: "—", details: "دخول المدير العام"});
-      db.audit = db.audit.slice(0, 1000);
-      if(typeof saveDB === 'function') saveDB();
+  // 1. حساب المدير العام الرئيسي (تطابق تام للإيميل والرقم السري)
+  const ADMIN_EMAIL = "sarhanyasmen2@gmail.com";
+  const ADMIN_PASS = "sy12345678"; 
+
+  if(email === ADMIN_EMAIL){
+    if(password === ADMIN_PASS){
+      session = {
+        userId: "admin-master-uid",
+        user: "sarhan",
+        name: "المهندس سرحان سيد محمد",
+        role: "Administrator",
+        roleText: "المدير العام — تحكم كامل",
+        email: ADMIN_EMAIL
+      };
+      enterSystem();
+      return;
+    } else {
+      err.textContent = "❌ كلمة المرور غير صحيحة!";
+      return;
     }
-    if(typeof loadSettings === 'function') loadSettings();
-    if(typeof renderAll === 'function') renderAll();
-    if(typeof show === 'function') show("dashboard");
-    return;
   }
 
-  // محاولة تسجيل الدخول السحابي للمستخدمين الآخرين
-  try{
+  // 2. التحقق من المستخدمين الآخرين المسجلين في النظام محلياً
+  let localUsers = (window.db && db.users) ? db.users : [];
+  let foundUser = localUsers.find(u => (u.email && u.email.toLowerCase() === email) || (u.username && u.username.toLowerCase() === email));
+  
+  if(foundUser){
+    if(foundUser.password === password){
+      session = {
+        userId: foundUser.id || "usr-" + Date.now(),
+        user: foundUser.username || foundUser.name,
+        name: foundUser.name,
+        role: foundUser.role || "User",
+        roleText: foundUser.roleText || foundUser.role,
+        email: foundUser.email
+      };
+      enterSystem();
+      return;
+    } else {
+      err.textContent = "❌ كلمة المرور غير صحيحة!";
+      return;
+    }
+  }
+
+  // 3. التحقق السحابي في حال وجود مستخدمين على السحابة
+  try {
     if(typeof cloudLogin === 'function'){
       await cloudLogin(email, password);
-      document.getElementById("loginScreen").classList.add("hidden");
-      document.getElementById("app").classList.remove("hidden");
-      document.getElementById("currentUser").textContent = session.name;
-      document.getElementById("currentRole").textContent = session.roleText;
-      ["settingsNav","auditNav","backupNav","usersNav"].forEach(id => document.getElementById(id)?.classList.toggle("hidden", !isAdmin()));
-      if(window.db){
-        db.audit = db.audit || [];
-        db.audit.unshift({date: new Date().toLocaleString("ar-EG"), user: session.user, action: "تسجيل الدخول", empCode: "—", details: "دخول ناجح عبر Supabase"});
-        db.audit = db.audit.slice(0, 1000);
-        if(typeof saveDB === 'function') saveDB();
-      }
-      if(typeof loadSettings === 'function') loadSettings();
-      if(typeof renderAll === 'function') renderAll();
-      if(typeof show === 'function') show("dashboard");
+      enterSystem();
+      return;
     }
-  }catch(e){
-    console.error(e);
-    document.getElementById("loginError").textContent = "بيانات الدخول غير صحيحة أو تعذر الاتصال بالخادم";
+  } catch(e) {}
+
+  // إذا لم يتطابق البريد مع أي مستخدم
+  err.textContent = "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة!";
+}
+
+function enterSystem(){
+  let err = document.getElementById("loginError");
+  if(err) err.textContent = "";
+  
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  document.getElementById("currentUser").textContent = session.name;
+  document.getElementById("currentRole").textContent = session.roleText;
+  
+  let isAdm = session.role === "Administrator" || (typeof isAdmin === 'function' && isAdmin());
+  ["settingsNav","auditNav","backupNav","usersNav"].forEach(id => {
+    let el = document.getElementById(id);
+    if(el) el.classList.toggle("hidden", !isAdm);
+  });
+
+  if(window.db){
+    db.audit = db.audit || [];
+    db.audit.unshift({date: new Date().toLocaleString("ar-EG"), user: session.user, action: "تسجيل الدخول", empCode: "—", details: "دخول المدير العام"});
+    db.audit = db.audit.slice(0, 1000);
+    if(typeof saveDB === 'function') saveDB();
   }
+  if(typeof loadSettings === 'function') loadSettings();
+  if(typeof renderAll === 'function') renderAll();
+  if(typeof show === 'function') show("dashboard");
 }
 
 function openSidebar(){document.getElementById("sidebar").classList.add("open");document.getElementById("sidebarOverlay").classList.add("show")}
 function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("show")}
 async function logout(){try{await sb.auth.signOut()}catch(e){} location.reload()}
 async function changeAdminPassword(){
-if(!isAdmin())return alert("خاص بالمدير العام فقط!");
-let newP=document.getElementById("passNew").value, confP=document.getElementById("passConfirm").value;
-if(!newP)return alert("أدخل الرقم السري الجديد");
-if(newP.length<8)return alert("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
-if(newP!==confP)return alert("تأكيد كلمة المرور غير متطابق");
-const {error}=await sb.auth.updateUser({password:newP});
-if(error)return alert("تعذر تغيير كلمة المرور: "+error.message);
-log("تغيير كلمة المرور","","تم تحديث كلمة مرور حساب الدخول");
-alert("تم تغيير كلمة المرور بنجاح");
-document.getElementById("passOld").value="";document.getElementById("passNew").value="";document.getElementById("passConfirm").value="";
+  if(!isAdmin())return alert("خاص بالمدير العام فقط!");
+  let newP=document.getElementById("passNew").value, confP=document.getElementById("passConfirm").value;
+  if(!newP)return alert("أدخل الرقم السري الجديد");
+  if(newP.length<8)return alert("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
+  if(newP!==confP)return alert("تأكيد كلمة المرور غير متطابق");
+  const {error}=await sb.auth.updateUser({password:newP});
+  if(error)return alert("تعذر تغيير كلمة المرور: "+error.message);
+  log("تغيير كلمة المرور","","تم تحديث كلمة مرور حساب الدخول");
+  alert("تم تغيير كلمة المرور بنجاح");
+  document.getElementById("passOld").value="";document.getElementById("passNew").value="";document.getElementById("passConfirm").value="";
 }
+
 async function factoryReset(){
 if(!isAdmin())return alert("إعادة ضبط المصنع متاحة فقط للمدير العام!");
 let txt=prompt("اكتب كلمة 'حذف' للتأكيد النهائي على مسح بيانات HRMS السحابية:");
