@@ -1790,8 +1790,39 @@ if(idx!==null){
 await loadCloudDB();log("تعديل مستخدمين",username,"تحديث حساب المستخدم");saveDB();closeModal();renderUsers();
 }
 function renderUsers(){
-document.getElementById("usersTable").innerHTML = db.users.map((x,i)=>`<tr><td>${esc(x.user)}</td><td>${esc(x.name)}</td><td>${x.role==="Administrator"?"المدير العام":"مسؤول HR"}</td><td>${x.status}</td><td><button class="btn secondary" onclick="userModal(${i})">✏️ تعديل</button></td></tr>`).join("");
+  const target = document.getElementById("usersTableBody") || document.getElementById("usersTable");
+  if (!target) return;
+
+  if (!db.users || !db.users.length) {
+    target.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:15px; color:#888;">لا يوجد مستخدمين مسجلين حالياً</td></tr>`;
+    return;
+  }
+
+  const roleLabels = {
+    "Administrator": "المدير العام",
+    "HR": "مسؤول HR",
+    "DataEntry": "مدخل بيانات",
+    "Viewer": "مشاهد فقط"
+  };
+
+  target.innerHTML = db.users.map(u => {
+    let emailDisplay = u.email || u.user || u.username || "-";
+    let nameDisplay = u.name || u.full_name || "-";
+    let roleDisplay = roleLabels[u.role] || u.roleText || u.role || "-";
+    let dateDisplay = u.createdAt || (u.created_at ? u.created_at.split('T')[0] : "-");
+
+    return `<tr>
+      <td>${esc(nameDisplay)}</td>
+      <td><b style="color:var(--primary, #0284c7);">${esc(emailDisplay)}</b></td>
+      <td><span class="badge">${roleDisplay}</span></td>
+      <td>${dateDisplay}</td>
+      <td>
+        <button class="btn secondary" onclick="editUser('${u.id}')">✏️ تعديل</button>
+      </td>
+    </tr>`;
+  }).join("");
 }
+
 function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
 let isLocked = !customRange && (db.payrollMeta[monthKeyStr]?.status === "معتمد ومغلق");
 let snap = db.payrollMeta[monthKeyStr]?.snapshot?.[e.code];
