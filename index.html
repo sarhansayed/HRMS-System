@@ -584,6 +584,70 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-audit" class="hidden"><div class="card"><h2>🛡️ سجل العمليات والأمان الشامل</h2><div class="table-wrap"><table><thead><tr><th>التاريخ والوقت</th><th>المستخدم</th><th>نوع العملية</th><th>كود الموظف</th><th>تفاصيل الإجراء</th></tr></thead><tbody id="auditTable"></tbody></table></div></div></section>
 <section id="page-backup" class="hidden"><div class="card"><h2>💾 النسخ الاحتياطي والاستعادة المحمية</h2><div class="toolbar"><button class="btn success" onclick="backup()">⬇ تنزيل نسخة احتياطية (JSON)</button><button class="btn primary" onclick="document.getElementById('restoreFile').click()">⬆ استعادة نسخة</button><input id="restoreFile" type="file" accept=".json" class="hidden" onchange="restore(this)"></div></div></section>
+  <!-- شاشة إدارة المستخدمين والصلاحيات (للمدير العام فقط) -->
+<section id="page-users" class="hidden">
+  <div class="card">
+    <div class="toolbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <h2>👥 إدارة المستخدمين والصلاحيات</h2>
+      <button class="btn primary" onclick="openAddUserModal()">+ إضافة مستخدم جديد</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>الاسم</th>
+            <th>البريد الإلكتروني (اسم الدخول)</th>
+            <th>الصلاحية</th>
+            <th>تاريخ الإنشاء</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- نافذة منبثقة لإضافة وتعديل المستخدمين -->
+<div id="userModal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="userModalTitle" style="margin:0">إضافة مستخدم جديد</h3>
+      <button class="btn secondary" onclick="closeUserModal()">✕</button>
+    </div>
+    <div style="padding:15px;">
+      <form id="userForm" onsubmit="saveUser(event)">
+        <input type="hidden" id="userId">
+        <div class="field" style="margin-bottom:12px;">
+          <label>اسم الموظف / المستخدم:</label>
+          <input type="text" id="userName" required placeholder="مثال: أحمد محمود">
+        </div>
+        <div class="field" style="margin-bottom:12px;">
+          <label>البريد الإلكتروني (اسم الدخول):</label>
+          <input type="email" id="userEmail" required placeholder="name@company.com">
+        </div>
+        <div class="field" style="margin-bottom:12px;">
+          <label>الرقم السري (كلمة المرور):</label>
+          <input type="password" id="userPass" placeholder="أدخل كلمة المرور">
+        </div>
+        <div class="field" style="margin-bottom:15px;">
+          <label>مستوى الصلاحية:</label>
+          <select id="userRole" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+            <option value="HR">مسؤول موارد بشرية (HR)</option>
+            <option value="DataEntry">مدخل بيانات (Data Entry)</option>
+            <option value="Viewer">مشاهد فقط (Viewer)</option>
+            <option value="Administrator">مدير نظام (Admin)</option>
+          </select>
+        </div>
+        <div class="toolbar" style="display:flex; gap:10px; justify-content:flex-end;">
+          <button type="submit" class="btn success">حفظ البيانات</button>
+          <button type="button" class="btn secondary" onclick="closeUserModal()">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 </div>
 </main>
 </div>
