@@ -164,7 +164,7 @@ async function syncAllDataFromCloud() {
   }
 }
 
-// 3. المزامنة اللحظية مع إعادة التحميل التلقائي
+  // 3. المزامنة اللحظية الذكية بدون إعادة تحميل الصفحة
 _supabase
   .channel('public:app_data')
   .on('postgres_changes', { event: '*', schema: 'public', table: 'app_data' }, payload => {
@@ -173,10 +173,19 @@ _supabase
       const valStr = typeof payload.new.data === 'object' ? JSON.stringify(payload.new.data) : payload.new.data;
       originalSetItem(payload.new.key, valStr);
       isRemoteUpdate = false;
-      window.location.reload();
+
+      // تحديث بيانات البرنامج الحالية في الذاكرة دون خروج
+      if (typeof loadDB === "function") {
+        db = loadDB();
+        // إعادة رسم الصفحة الحالية المفتوحة تلقائياً
+        const activeNav = document.querySelector('.nav button.active');
+        const currentPage = activeNav ? activeNav.getAttribute('data-page') : 'dashboard';
+        if (typeof show === "function") show(currentPage);
+      }
     }
   })
   .subscribe();
+
 
 syncAllDataFromCloud();
 </script>
