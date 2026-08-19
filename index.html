@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HRMS Enterprise V7.2 Online — النظام المحاسبي المعتمد</title>
@@ -123,6 +124,67 @@ tr:hover td{background:#f8fafc}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+// --- إعداد الاتصال بقاعدة بيانات Supabase ---
+const SUPABASE_PROJECT_URL = "https://urvycpeulzuvvtiipsud.supabase.co";
+const SUPABASE_KEY = "sb_publishable_uEl_wbercD8QOzE6OisAKA_kKqpl0oK";
+const _supabase = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_KEY);
+
+// 1. مراقبة أي حركة حفظ في النظام ورفعها للسحابة فوراً
+const originalSetItem = localStorage.setItem.bind(localStorage);
+localStorage.setItem = function(key, value) {
+  originalSetItem(key, value);
+  if (navigator.onLine) {
+    let parsedData;
+    try { parsedData = JSON.parse(value); } catch(e) { parsedData = value; }
+    _supabase
+      .from('app_data')
+      .upsert({ key: key, data: parsedData, updated_at: new Date() })
+      .then(({ error }) => { if (error) console.error("Supabase Save Error:", error); });
+  }
+};
+
+// 2. جلب وتحديث جميع الحركات من السحابة تلقائياً
+async function syncAllDataFromCloud() {
+  if (!navigator.onLine) return;
+  try {
+    const { data, error } = await _supabase.from('app_data').select('*');
+    if (!error && data && data.length > 0) {
+      data.forEach(row => {
+        const valStr = typeof row.data === 'object' ? JSON.stringify(row.data) : row.data;
+        originalSetItem(row.key, valStr);
+      });
+      console.log("تم تحديث كافة حركات وبيانات النظام من السحابة.");
+      if (typeof initApp === 'function') initApp();
+      else if (typeof loadData === 'function') loadData();
+      else if (typeof renderAll === 'function') renderAll();
+      else if (typeof renderEmployees === 'function') renderEmployees();
+    }
+  } catch (err) {
+    console.error("Cloud Sync Error:", err);
+  }
+}
+
+// 3. المزامنة اللحظية المباشرة
+_supabase
+  .channel('public:app_data')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'app_data' }, payload => {
+    if (payload.new && payload.new.key) {
+      const valStr = typeof payload.new.data === 'object' ? JSON.stringify(payload.new.data) : payload.new.data;
+      originalSetItem(payload.new.key, valStr);
+      if (typeof initApp === 'function') initApp();
+      else if (typeof loadData === 'function') loadData();
+      else if (typeof renderAll === 'function') renderAll();
+      else if (typeof renderEmployees === 'function') renderEmployees();
+    }
+  })
+  .subscribe();
+
+// تشغيل المزامنة عند فتح التطبيق وعودة الإنترنت
+window.addEventListener('DOMContentLoaded', syncAllDataFromCloud);
+window.addEventListener('online', syncAllDataFromCloud);
+</script>
+
 </head>
 <body>
 <div id="loginScreen" class="login">
