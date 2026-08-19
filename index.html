@@ -875,21 +875,21 @@ async function login(){
   let err = document.getElementById("loginError");
   if(!uInput || !pInput) return;
   
-  let email = uInput.value.trim().toLowerCase();
+  let val = uInput.value.trim().toLowerCase();
   let password = pInput.value;
   
-  if(!email || !password){
-    err.textContent = "يرجى كتابة البريد الإلكتروني وكلمة المرور";
+  if(!val || !password){
+    err.textContent = "يرجى كتابة اسم المستخدم/البريد وكلمة المرور";
     return;
   }
   
   err.textContent = "جاري التحقق من بيانات الدخول...";
 
-  // 1. حساب المدير العام الرئيسي (تطابق تام للإيميل والرقم السري)
+  // 1. حساب المدير العام الرئيسي (بالبريد الإلكتروني المعتمد وكلمة المرور الجديدة)
   const ADMIN_EMAIL = "sarhanyasmen2@gmail.com";
-  const ADMIN_PASS = "sy12345678"; 
+  const ADMIN_PASS = "RQuol852"; 
 
-  if(email === ADMIN_EMAIL){
+  if(val === ADMIN_EMAIL){
     if(password === ADMIN_PASS){
       session = {
         userId: "admin-master-uid",
@@ -907,18 +907,28 @@ async function login(){
     }
   }
 
-  // 2. التحقق من المستخدمين الآخرين المسجلين في النظام محلياً
+  // 2. التحقق من باقي المستخدمين (مسئول إداري، مسئول مالي، مراقب)
   let localUsers = (window.db && db.users) ? db.users : [];
-  let foundUser = localUsers.find(u => (u.email && u.email.toLowerCase() === email) || (u.username && u.username.toLowerCase() === email));
+  let foundUser = localUsers.find(u => 
+    (u.user && u.user.toLowerCase() === val) || 
+    (u.username && u.username.toLowerCase() === val) || 
+    (u.email && u.email.toLowerCase() === val)
+  );
   
   if(foundUser){
-    if(foundUser.password === password){
+    if(foundUser.password === password || foundUser.pass === password){
+      let roleTxt = "مستخدم";
+      if(foundUser.role === "admin_affairs") roleTxt = "مسئول الشئون الإدارية";
+      else if(foundUser.role === "finance_affairs") roleTxt = "مسئول الشئون المالية";
+      else if(foundUser.role === "observer") roleTxt = "المراقب — تصفح وطباعة فقط";
+      else roleTxt = foundUser.roleText || foundUser.role;
+
       session = {
         userId: foundUser.id || "usr-" + Date.now(),
-        user: foundUser.username || foundUser.name,
+        user: foundUser.user || foundUser.username || foundUser.name,
         name: foundUser.name,
         role: foundUser.role || "User",
-        roleText: foundUser.roleText || foundUser.role,
+        roleText: roleTxt,
         email: foundUser.email
       };
       enterSystem();
@@ -929,17 +939,16 @@ async function login(){
     }
   }
 
-  // 3. التحقق السحابي في حال وجود مستخدمين على السحابة
+  // 3. التحقق السحابي الاحتياطي
   try {
     if(typeof cloudLogin === 'function'){
-      await cloudLogin(email, password);
+      await cloudLogin(val, password);
       enterSystem();
       return;
     }
   } catch(e) {}
 
-  // إذا لم يتطابق البريد مع أي مستخدم
-  err.textContent = "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة!";
+  err.textContent = "❌ بيانات الدخول أو كلمة المرور غير صحيحة!";
 }
 
 function enterSystem(){
@@ -951,15 +960,28 @@ function enterSystem(){
   document.getElementById("currentUser").textContent = session.name;
   document.getElementById("currentRole").textContent = session.roleText;
   
-  let isAdm = session.role === "Administrator" || (typeof isAdmin === 'function' && isAdmin());
-  ["settingsNav","auditNav","backupNav","usersNav"].forEach(id => {
+  // صلاحيات المدير العام فقط (المستخدمين، الإعدادات، ضبط المصنع، سجل الرقابة)
+  let isAdm = session.role === "Administrator";
+  ["settingsNav", "auditNav", "backupNav", "usersNav"].forEach(id => {
     let el = document.getElementById(id);
     if(el) el.classList.toggle("hidden", !isAdm);
   });
 
+  // قيود المراقب: إخفاء أزرار التعديل والحفظ والإضافة، مع إتاحة الطباعة والتصدير
+  let isObserver = session.role === "observer" || session.role === "المراقب";
+  document.querySelectorAll('.btn-add, .btn-edit, .btn-delete, .btn-save, form button[type="submit"]').forEach(btn => {
+    btn.style.display = isObserver ? 'none' : '';
+  });
+
   if(window.db){
     db.audit = db.audit || [];
-    db.audit.unshift({date: new Date().toLocaleString("ar-EG"), user: session.user, action: "تسجيل الدخول", empCode: "—", details: "دخول المدير العام"});
+    db.audit.unshift({
+      date: new Date().toLocaleString("ar-EG"), 
+      user: session.user, 
+      action: "تسجيل الدخول", 
+      empCode: "—", 
+      details: `دخول النظام بصلاحية: ${session.roleText}`
+    });
     db.audit = db.audit.slice(0, 1000);
     if(typeof saveDB === 'function') saveDB();
   }
@@ -968,32 +990,6 @@ function enterSystem(){
   if(typeof show === 'function') show("dashboard");
 }
 
-function openSidebar(){document.getElementById("sidebar").classList.add("open");document.getElementById("sidebarOverlay").classList.add("show")}
-function closeSidebar(){document.getElementById("sidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("show")}
-async function logout(){try{await sb.auth.signOut()}catch(e){} location.reload()}
-async function changeAdminPassword(){
-  if(!isAdmin())return alert("خاص بالمدير العام فقط!");
-  let newP=document.getElementById("passNew").value, confP=document.getElementById("passConfirm").value;
-  if(!newP)return alert("أدخل الرقم السري الجديد");
-  if(newP.length<8)return alert("كلمة المرور يجب أن تكون 8 أحرف على الأقل");
-  if(newP!==confP)return alert("تأكيد كلمة المرور غير متطابق");
-  const {error}=await sb.auth.updateUser({password:newP});
-  if(error)return alert("تعذر تغيير كلمة المرور: "+error.message);
-  log("تغيير كلمة المرور","","تم تحديث كلمة مرور حساب الدخول");
-  alert("تم تغيير كلمة المرور بنجاح");
-  document.getElementById("passOld").value="";document.getElementById("passNew").value="";document.getElementById("passConfirm").value="";
-}
-
-async function factoryReset(){
-if(!isAdmin())return alert("إعادة ضبط المصنع متاحة فقط للمدير العام!");
-let txt=prompt("اكتب كلمة 'حذف' للتأكيد النهائي على مسح بيانات HRMS السحابية:");
-if(txt!=="حذف")return alert("تم إلغاء العملية");
-try{
-  await sb.from("app_state").upsert({id:1,data:defaultDB(),updated_at:new Date().toISOString(),updated_by:session.userId});
-  db=defaultDB();localStorage.setItem(KEY,JSON.stringify(db));
-  alert("تمت إعادة ضبط بيانات HRMS السحابية");location.reload();
-}catch(e){alert("تعذر تنفيذ إعادة الضبط: "+e.message)}
-}
 function getCycleForMonth(monthKeyStr){
 let parts = monthKeyStr.split("-").map(Number);
 let yr = parts[0], m = parts[1];
