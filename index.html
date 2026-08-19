@@ -719,12 +719,12 @@ syncAllDataFromCloud();
 <div id="modalBody"></div>
 </div>
 </div>
-<script>
+  <script>
 const KEY="HRMS_ENTERPRISE_SYSTEM_DB_V7_2_ONLINE";
 // HRMS Online V7.2 — Supabase Live Connection Credentials
 const SUPABASE_URL="https://urvycpeulzuvvtiipsud.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_uEl_wbercD8QOzE6OisAKA_kKqpl0oK";
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const SUPABASE_PUBLISHABLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVydnljcGV1bHp1dnZ0aWlwc3VkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzkyNjEsImV4cCI6MjEwMjU1NTI2MX0.Pn_PTyoIO1szHZagzB_kpMIhS0cU6VODF1iT4FMXjhs";
+const sb = _supabase;
 let cloudReady=false;
 let cloudSyncBusy=false;
 let cloudSyncQueued=false;
