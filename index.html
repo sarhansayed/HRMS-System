@@ -237,8 +237,9 @@ syncAllDataFromCloud();
 </div>
 </div>
 <div>
-<button class="btn danger full" onclick="logout()">تسجيل الخروج</button>
+<button class="btn danger full" onclick="localStorage.clear(); sessionStorage.clear(); window.location.reload();">تسجيل الخروج</button>
 </div>
+
 </aside>
 <main>
 <header class="top">
