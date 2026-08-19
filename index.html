@@ -126,7 +126,31 @@ tr:hover td{background:#f8fafc}
 </style>
 <script>
 
+<script>
+
+// --- دوال التحكم في القائمة الجانبية وتسجيل الخروج ---
+function openSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const ov = document.querySelector('.sidebar-overlay');
+  if (sb) sb.classList.add('open');
+  if (ov) ov.classList.add('show');
+}
+
+function closeSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const ov = document.querySelector('.sidebar-overlay');
+  if (sb) sb.classList.remove('open');
+  if (ov) ov.classList.remove('show');
+}
+
+function logout() {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.reload();
+}
+
 // --- إعداد الاتصال بقاعدة بيانات Supabase ---
+
 const SUPABASE_PROJECT_URL = "https://urvycpeulzuvvtiipsud.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVydnljcGV1bHp1dnZ0aWlwc3VkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzkyNjEsImV4cCI6MjEwMjU1NTI2MX0.Pn_PTyoIO1szHZagzB_kpMIhS0cU6VODF1iT4FMXjhs";
 const _supabase = supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_KEY);
