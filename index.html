@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <link rel="icon" href="data:,">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HRMS Enterprise V7.2 Online — النظام المحاسبي المعتمد</title>
+<title>HRMS Enterprise V7.2 Online — النظام المحاسبي السحابي المعتمد</title>
 <style>
 :root{
 --primary:#2563eb;--primary-hover:#1d4ed8;--primary-light:#eff6ff;
@@ -125,7 +125,7 @@ tr:hover td{background:#f8fafc}
 <div class="login-box">
 <div class="brand">
 <h1>👥 HRMS Enterprise V7.2 Luxury</h1>
-<div class="muted">النظام المحاسبي والصناعي المتكامل لإدارة الموارد البشرية والرواتب الذكية</div>
+<div class="muted">النظام المحاسبي والصناعي السحابي المتكامل لإدارة الموارد البشرية والرواتب الذكية</div>
 </div>
 <div style="margin-top:25px">
 <div class="field"><label>اسم المستخدم / البريد الإلكتروني</label><input id="loginUser" autocomplete="username" placeholder="اسم الدخول أو البريد" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()"></div>
@@ -206,11 +206,11 @@ tr:hover td{background:#f8fafc}
 </div>
 </div>
 <div class="card">
-<h3>المعادلات والقواعد المحاسبية المعتمدة (الاستحقاق الفعلي والتشغيلي V7.2)</h3>
-<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها.</p>
-<p>• الراتب الأساسي التعاقدي = الراتب الثابت المسجل في بيانات العامل.</p>
-<p>• الأجر اليومي المحاسبي = الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا.</p>
-<p>• الدورة المحاسبية: من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي.</p>
+<h3>المعادلات والقواعد المحاسبية المعتمدة (الأساس المحاسبي الثابت 30 يوماً V7.2)</h3>
+<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية (28، 30، أو 31 يوماً)[span_0](start_span)[span_0](end_span).</p>
+<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها[span_1](start_span)[span_1](end_span).</p>
+<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا[span_2](start_span)[span_2](end_span).</p>
+<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي[span_3](start_span)[span_3](end_span).</p>
 </div>
 </div>
 </section>
@@ -220,7 +220,6 @@ tr:hover td{background:#f8fafc}
 <button class="btn primary btn-add" onclick="employeeModal()">＋ إضافة عامل فردي</button>
 <button class="btn warning btn-add" onclick="bulkImportModal()">👥 إضافة واستيراد جماعي</button>
 <button class="btn success btn-print" onclick="printEmployeeList()">🖨️ طباعة كشف بيانات العاملين</button>
-<button class="btn secondary btn-export" onclick="exportTableToCSV('empTable', 'جدول_بيانات_العاملين.csv')">📊 تصدير Excel</button>
 </div>
 <div class="form-grid">
 <div class="field span2"><label>بحث</label><input id="empSearch" oninput="renderEmployees()" placeholder="اسم / كود / قسم / تليفون"></div>
@@ -255,8 +254,8 @@ tr:hover td{background:#f8fafc}
 <div class="toolbar">
 <button class="btn success btn-add" onclick="bulkAttendance()">👥 تحضير جميع العاملين اليوم</button>
 <button class="btn primary btn-add" onclick="attendanceModal()">＋ تسجيل فردي أو فترة تواريخ</button>
-<button class="btn secondary btn-export" onclick="downloadAttendanceTemplate()">⬇ تحميل نموذج استيراد الحضور</button>
 <button class="btn warning btn-add" onclick="biometricModal()">⏱️ استيراد ملف حضور / بصمة</button>
+<button class="btn secondary btn-print" onclick="printDailyAttendance()">🖨️ طباعة كشف حضور اليوم</button>
 </div>
 <div class="form-grid">
 <div class="field"><label>عرض يوم</label><input id="attDate" type="date" onchange="renderAttendance()"></div>
@@ -272,10 +271,11 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-leaves" class="hidden">
 <div class="card">
-<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد.</div>
+<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد[span_4](start_span)[span_4](end_span).</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="leaveModal()">＋ تسجيل إجازة مدفوعة فردية</button>
 <button class="btn warning btn-add" onclick="bulkLeaveModal()">🏖️ إضافة إجازة جماعية لجميع العاملين (أعياد / عطلات)</button>
+<button class="btn success btn-print" onclick="printLeavesReport()">🖨️ طباعة سجل الإجازات المدفوعة</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -284,8 +284,11 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-absence" class="hidden">
 <div class="card">
-<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة.</div>
+<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة[span_5](start_span)[span_5](end_span).</div>
+<div class="toolbar">
 <button class="btn primary btn-add" onclick="absenceModal()">＋ تسجيل غياب / إجازة غير مدفوعة</button>
+<button class="btn success btn-print" onclick="printAbsenceReport()">🖨️ طباعة سجل الغياب والانقطاع</button>
+</div>
 </div>
 <div class="card table-wrap">
 <table><thead><tr><th>التاريخ</th><th>العامل</th><th>الأيام</th><th>السبب</th><th>الخصم المستحق</th><th>الإجراءات</th></tr></thead><tbody id="absenceTable"></tbody></table>
@@ -294,7 +297,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-monthly-matrix" class="hidden">
 <div class="card">
 <h3>📅 جدول حالة الموظف اليومية التفصيلي خلال الدورة المحاسبية للمرتبات</h3>
-<div class="notice">💡 الحالات: (<b>ح</b>: حضور | <b>غ</b>: غياب غير مدفوع | <b>ج</b>: إجازة مدفوعة | <b>م</b>: مأمورية | <b>جمعة</b>: إجازة جمعة مدفوعة مشروطة | <b>ر</b>: راحة).</div>
+<div class="notice">💡 الحالات: (<b>ح</b>: حضور | <b>غ</b>: غياب غير مدفوع | <b>ج</b>: إجازة مدفوعة | <b>م</b>: مأمورية | <b>جمعة</b>: إجازة جمعة مدفوعة مشروطة | <b>ر</b>: راحة)[span_6](start_span)[span_6](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>شهر الدورة المحاسبية</label><input id="matrixMonth" type="month" onchange="renderMonthlyMatrix()"></div>
 <div class="field span2"><label>تصفية / بحث عن موظف</label><input id="matrixSearch" oninput="renderMonthlyMatrix()" placeholder="اسم أو كود الموظف"></div>
@@ -302,7 +305,6 @@ tr:hover td{background:#f8fafc}
 <div class="toolbar" style="margin-top:10px">
 <button class="btn primary" onclick="renderMonthlyMatrix()">🔄 تحديث الجدول</button>
 <button class="btn success btn-print" onclick="printMonthlyMatrix()">🖨️ طباعة جدول حالة الشهر بالحصر المالي</button>
-<button class="btn secondary btn-export" onclick="exportTableToCSV('matrixTable', 'جدول_حالة_الموظفين_اليومية.csv')">📊 تصدير Excel</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -317,6 +319,7 @@ tr:hover td{background:#f8fafc}
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="otModal()">＋ تسجيل إضافي فردي</button>
 <button class="btn success btn-add" onclick="bulkOTModal()">👥 إضافة عمل إضافي جماعي للمصنع</button>
+<button class="btn warning btn-print" onclick="printOvertimeReport()">🖨️ طباعة بيان العمل الإضافي</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -328,6 +331,7 @@ tr:hover td{background:#f8fafc}
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="bonusModal()">＋ إضافة مكافأة فردية</button>
 <button class="btn success btn-add" onclick="bulkBonusModal()">👥 إضافة مكافأة جماعية لجميع العاملين</button>
+<button class="btn warning btn-print" onclick="printBonusesReport()">🖨️ طباعة بيان المكافآت التشجيعية</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -335,13 +339,23 @@ tr:hover td{background:#f8fafc}
 </div>
 </section>
 <section id="page-deductions" class="hidden">
-<div class="card"><button class="btn primary btn-add" onclick="deductionModal()">＋ إضافة جزاء / استقطاع</button></div>
+<div class="card">
+<div class="toolbar">
+<button class="btn primary btn-add" onclick="deductionModal()">＋ إضافة جزاء / استقطاع</button>
+<button class="btn warning btn-print" onclick="printDeductionsReport()">🖨️ طباعة سجل الجزاءات والاستقطاعات</button>
+</div>
+</div>
 <div class="card table-wrap">
 <table><thead><tr><th>التاريخ</th><th>العامل</th><th>الوحدة</th><th>الكمية</th><th>السبب</th><th>الإجراءات</th></tr></thead><tbody id="dedTable"></tbody></table>
 </div>
 </section>
 <section id="page-loans" class="hidden">
-<div class="card"><button class="btn primary btn-add" onclick="loanModal()">＋ تسجيل سلفة جديدة</button></div>
+<div class="card">
+<div class="toolbar">
+<button class="btn primary btn-add" onclick="loanModal()">＋ تسجيل سلفة جديدة</button>
+<button class="btn success btn-print" onclick="printLoansSummaryReport()">🖨️ طباعة كشف موقف السلف والأقساط</button>
+</div>
+</div>
 <div class="card table-wrap">
 <table><thead><tr><th>تاريخ السلفة</th><th>العامل</th><th>إجمالي السلفة</th><th>القسط الشهري</th><th>المسدد</th><th>المتبقي</th><th>الإجراءات</th></tr></thead><tbody id="loanTable"></tbody></table>
 </div>
@@ -361,18 +375,17 @@ tr:hover td{background:#f8fafc}
 <div class="field"><label>حالة كشف المرتبات الاعتمادية</label><select id="payStatus" onchange="changePayrollStatus()"><option value="مسودة">مسودة (قابل للتعديل)</option><option value="مراجعة HR">مراجعة HR</option><option value="اعتماد مدير HR">اعتماد مدير HR</option><option value="معتمد ومغلق">معتمد ومغلق 🔒 (المدير العام)</option></select></div>
 </div>
 <div id="cycleInfoNotice" class="notice">
-📅 <b>الدورة المحاسبية الحالية للكشف:</b> <span id="lblCycleFrom">—</span> ⬅️ <span id="lblCycleTo">—</span> | <b>عدد الأيام:</b> <span id="lblCycleDays">0</span> يوماً.
+📅 <b>الدورة المحاسبية الحالية للكشف:</b> <span id="lblCycleFrom">—</span> ⬅️ <span id="lblCycleTo">—</span> | <b>عدد الأيام الفعلية:</b> <span id="lblCycleDays">0</span> يوماً (<b>الأساس المحاسبي المعتمد: 30 يوماً</b>).
 </div>
 <div id="payrollLockNotice" class="danger-note hidden">
-🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق.
+🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق[span_7](start_span)[span_7](end_span).
 <br style="margin-bottom:8px">
 <button class="btn warning admin-only" style="margin-top:8px" onclick="unlockPayrollModal()">🔓 طلب فتح كشف المرتبات المغلق استثنائيًا</button>
 </div>
 <div class="toolbar">
 <button id="btnCalcPayroll" class="btn primary" onclick="calculatePayroll()">🔄 احتساب كشف المرتبات</button>
 <button class="btn success btn-print" onclick="printPayroll()">🖨️ طباعة كشف المرتبات المجمع</button>
-<button class="btn secondary btn-export" onclick="exportTableToCSV('payTable', 'كشف_مرتبات_الشهر.csv')">📊 تصدير لـ Excel</button>
-<button class="btn warning btn-export" onclick="exportBankSheet()">🏦 تصدير كشف البنك (Bank Sheet)</button>
+<button class="btn warning btn-print" onclick="printBankSheetOfficial()">🏦 طباعة كشف مسير تحويلات البنك</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -406,7 +419,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-midmonth" class="hidden">
 <div class="card">
 <h3>📋 تقارير أجور واستحقاقات العاملين أثناء الشهر (المستقيلين / المنقطعين / الفترات الجزئية)</h3>
-<div class="notice">💡 احتساب دقيق بحسب الأيام الفعلية المحضورة مع تطبيق استحقاق الجمعة المشروط والعلاوات الدورية.</div>
+<div class="notice">💡 احتساب دقيق بحسب الأيام الفعلية المحضورة مع تطبيق استحقاق الجمعة المشروط والعلاوات الدورية على أساس 30 يوماً[span_8](start_span)[span_8](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="midEmpSelect"></select></div>
 <div class="field"><label>تاريخ التقرير المحاسبي</label><input id="midReportDate" type="date"></div>
@@ -431,7 +444,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-summary" class="hidden">
 <div class="card">
 <h3>📊 التقرير المجمع الشامل للأنشطة والأنصبة الفتراتية</h3>
-<div class="notice">💡 حصر دقيق ومفصل لكافة متغيرات العاملين مبني على الحضور الفعلي والأيام المستحقة.</div>
+<div class="notice">💡 حصر دقيق ومفصل لكافة متغيرات العاملين مبني على الحضور الفعلي والأيام المستحقة[span_9](start_span)[span_9](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="sumFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="sumTo" type="date"></div>
@@ -440,7 +453,6 @@ tr:hover td{background:#f8fafc}
 <div class="toolbar" style="margin-top:10px">
 <button class="btn primary" onclick="generateSummaryReport()">🔄 استخراج التقرير الجدولى المفصل</button>
 <button class="btn success btn-print" onclick="printSummaryReport()">🖨️ طباعة التقرير الشامل</button>
-<button class="btn secondary btn-export" onclick="exportTableToCSV('summaryTableBody', 'التقرير_المجمع_الشامل.csv')">📊 تصدير لـ Excel</button>
 </div>
 </div>
 <div id="summaryResult" class="card hidden">
@@ -473,14 +485,14 @@ tr:hover td{background:#f8fafc}
 <section id="page-costcenters" class="hidden">
 <div class="card">
 <h3>🏭 تقرير مراكز التكلفة وتوزيع الأجور حسب خطوط الإنتاج والورديات</h3>
-<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة.</div>
+<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة[span_10](start_span)[span_10](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="costFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="costTo" type="date"></div>
 </div>
 <div class="toolbar">
 <button class="btn primary" onclick="renderCostCenters()">🔄 احتساب مراكز التكلفة للفترة</button>
-<button class="btn secondary btn-export" onclick="exportTableToCSV('costTable', 'مراكز_التكلفة.csv')">📊 تصدير Excel</button>
+<button class="btn success btn-print" onclick="printCostCentersReport()">🖨️ طباعة تقرير مراكز التكلفة</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -507,7 +519,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-forms" class="hidden">
 <div class="card">
 <h3>🖨️ طباعة النماذج والاستمارات الإدارية المعتمدة</h3>
-<div class="notice">💡 استخراج وطباعة استمارات رسمية مباشرة موثقة بختم وكود النظام.</div>
+<div class="notice">💡 استخراج وطباعة استمارات رسمية مباشرة موثقة بختم وكود النظام[span_11](start_span)[span_11](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="formEmpSelect"></select></div>
 <div class="field"><label>نوع النموذج الإداري</label>
@@ -583,7 +595,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>🏭 إعادة ضبط المصنع للنظام</h3>
-<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف".</div>
+<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_12](start_span)"[span_12](end_span).</div>
 <button class="btn danger" onclick="factoryReset()">⚠️ إجراء ضبط المصنع</button>
 </div>
 </section>
@@ -886,7 +898,7 @@ function applyUserPermissions() {
   document.querySelectorAll('.btn-delete, .admin-only').forEach(btn => {
     btn.style.display = isSuper ? '' : 'none';
   });
-  document.querySelectorAll('.btn-print, .btn-export').forEach(btn => {
+  document.querySelectorAll('.btn-print').forEach(btn => {
     btn.style.display = (isSuper || isAuditor) ? '' : (isViewer ? 'none' : '');
   });
 }
@@ -1065,25 +1077,49 @@ function hourlyRate(e){
   if(e?.allowanceSubjectToOT) subjectSalary += Number(e?.allowances||0) + Number(e?.periodicAllowance||0);
   return (subjectSalary / 30) / totalHours;
 }
-function exportTableToCSV(tableId, filename) {
-  let table = document.getElementById(tableId);
-  if(!table) return alert("لا توجد بيانات للتصدير");
-  let rows = table.querySelectorAll("tr");
-  let csv = [];
-  for (let i = 0; i < rows.length; i++) {
-    let row = [], cols = rows[i].querySelectorAll("td, th");
-    for (let j = 0; j < cols.length; j++) {
-      let text = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, " ").replace(/"/g, '""');
-      row.push('"' + text + '"');
-    }
-    if(row.length > 0) csv.push(row.join(","));
-  }
-  let csvString = "\uFEFF" + csv.join("\n");
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([csvString], { type: "text/csv;charset=utf-8;" }));
-  a.download = filename;
-  a.click();
+
+// دالة الطباعة العامة الموحدة للتقارير
+function printReportDocument(title, subTitle, contentTableHtml, summaryBoxHtml="") {
+  let html = `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8">
+  <title>${title}</title>
+  <style>
+    body{font-family:'Segoe UI',Arial,sans-serif;padding:25px;margin:auto;background:#fff;color:#0f172a;line-height:1.4}
+    .report-card{border:2px solid #0f172a;padding:24px;border-radius:14px}
+    .header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:16px}
+    .header h2{margin:0;font-size:20px;color:#1e3a8a}
+    table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+    th,td{border:1px solid #cbd5e1;padding:7px 9px;text-align:right}
+    th{background:#f1f5f9;font-weight:bold;color:#334155}
+    .summary-box{background:#f8fafc;padding:12px;border-radius:8px;border:1px solid #e2e8f0;margin-top:15px;font-size:13px}
+    .signatures{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center;margin-top:35px;font-size:12px}
+    .sign-line{border-top:1px dashed #64748b;margin-top:40px;padding-top:5px}
+    @media print{.report-card{border:1px solid #000}}
+  </style>
+  </head><body>
+  <div class="report-card">
+    <div class="header">
+      <div>
+        <h2>${title}</h2>
+        <small style="color:#64748b">HRMS Enterprise V7.2 Luxury Industrial</small>
+      </div>
+      <div style="text-align:left">
+        <b>${subTitle}</b><br>
+        <small>تاريخ الطباعة: ${today()}</small>
+      </div>
+    </div>
+    ${contentTableHtml}
+    ${summaryBoxHtml}
+    <div class="signatures">
+      <div><b>إعداد / مدخل البيانات</b><div class="sign-line">الموارد البشرية</div></div>
+      <div><b>المراجعة والتدقيق</b><div class="sign-line">الشئون المالية</div></div>
+      <div><b>الاعتماد الإداري</b><div class="sign-line">المدير العام</div></div>
+    </div>
+  </div>
+  <script>window.print()<\/script>
+  </body></html>`;
+  let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
+
 function employeeModal(code=""){
   let e=db.employees.find(x=>String(x.code)===String(code))||{name:"",dept:"الإنتاج",job:"",shift:"1",phone:"",address:"",hire:today(),familyMembers:1,salary:0,periodicAllowance:0,allowances:0,allowanceSubjectToOT:true,status:"على رأس العمل",bankAccount:""};
   openModal(code?"تعديل بيانات عامل":"إضافة عامل جديد",`<div class="form-grid">
@@ -1182,12 +1218,8 @@ function renderEmployees(){
 }
 function printEmployeeList(){
   let rows = db.employees.map(e=>`<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td>${esc(e.job)}</td><td>${esc(e.dept)}</td><td>${getEmpShiftTimes(e).name}</td><td>${e.familyMembers||1}</td><td>${money(e.salary)}</td><td>${money(e.periodicAllowance||0)}</td><td>${money(daily(e))}</td><td>${esc(e.phone||"—")}</td><td>${e.status}</td></tr>`).join("");
-  let html = `<html dir=rtl><head><meta charset=utf-8><title>كشف بيانات العاملين</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-top:15px;font-size:12px}th,td{border:1px solid #aaa;padding:8px;text-align:right}th{background:#f1f5f9}h2{text-align:center}</style></head><body>
-  <h2>👥 كشف أكواد وبيانات العاملين والرواتب الأساسية والعلاوات بالمنشأة</h2>
-  <table><thead><tr><th>الكود</th><th>الاسم</th><th>الوظيفة</th><th>القسم</th><th>الوردية</th><th>أفراد الأسرة</th><th>الأساسي التعاقدي</th><th>العلاوة الدورية</th><th>قيمة اليوم</th><th>رقم التليفون</th><th>الحالة</th></tr></thead><tbody>${rows}</tbody></table>
-  <p style="text-align:center;margin-top:20px;font-size:10px;color:#777">الإعداد والتطوير الهندسي: م/ سرحان سيد محمد</p>
-  <script>window.print()<\/script></body></html>`;
-  let w = window.open("", "_blank"); w.document.write(html); w.document.close();
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>الاسم</th><th>الوظيفة</th><th>القسم</th><th>الوردية</th><th>أفراد الأسرة</th><th>الأساسي التعاقدي</th><th>العلاوة الدورية</th><th>قيمة اليوم</th><th>رقم التليفون</th><th>الحالة</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("👥 كشف بيانات العاملين والرواتب الأساسية", "حصر كامل للعاملين بالمنشأة", tableHtml);
 }
 function disableEmployee(code){
   let e = db.employees.find(x=>String(x.code)===String(code));
@@ -1199,22 +1231,10 @@ function disableEmployee(code){
     saveDB();renderEmployees();dashboard();
   }
 }
-function downloadAttendanceTemplate(){
-  let rows = [["كود_الموظف","اسم_الموظف","التاريخ","وقت_الحضور","وقت_الانصراف","الحالة"]];
-  let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
-  if(activeEmps.length){ activeEmps.forEach(e=>{ rows.push([e.code, e.name, "", "", "", "حاضر"]); }); }
-  else { rows.push(["1","اسم الموظف (مثال)","2026-08-16","08:00","16:00","حاضر"]); }
-  let csvContent = "\uFEFF" + rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([csvContent], {type:"text/csv;charset=utf-8;"}));
-  a.download = `نموذج_استيراد_الحضور_${today()}.csv`;
-  a.click();
-}
 function biometricModal(){
-  openModal("⏱️ استيراد الحضور (نموذج جاهز أو ملف بصمة)", `
-  <div class="notice">📄 <b>الطريقة الأسهل:</b> حمّل نموذج Excel/CSV جاهز، املأه ثم ارفعه هنا مباشرة.</div>
-  <button class="btn primary full" onclick="downloadAttendanceTemplate()" style="margin-bottom:14px">⬇ تحميل نموذج استيراد الحضور (Excel/CSV)</button>
-  <div class="field"><label>رفع النموذج بعد تعبئته، أو ملف البصمة:</label><input type="file" id="bioFile" accept=".txt,.dat,.csv" onchange="readBioFile(this)"></div>
+  openModal("⏱️ استيراد الحضور عبر ملف بصمة / نص", `
+  <div class="notice">📄 يمكنك رفع ملف البصمة النصي المباشر أو لصق حركات الحضور بالصيغة: <b>الكود التاريخ الوقت</b></div>
+  <div class="field"><label>رفع ملف البصمة (.txt / .dat / .csv):</label><input type="file" id="bioFile" accept=".txt,.dat,.csv" onchange="readBioFile(this)"></div>
   <div class="field"><label>أو لصق البيانات مباشرة:</label><textarea id="bioText" rows="7" placeholder="1 2026-08-15 07:55:00\n1 2026-08-15 16:05:00"></textarea></div>
   <button class="btn success full btn-save" onclick="processBiometricData()">⚡ مطابقة وتحضير البيانات آلياً</button>
   `);
@@ -1366,6 +1386,17 @@ function renderAttendance(){
   }).join("");
   applyUserPermissions();
 }
+function printDailyAttendance(){
+  let d = document.getElementById("attDate").value || today();
+  let rows = db.employees.map(e=>{
+    let x = db.attendance.find(a=>String(a.employee)===String(e.code)&&a.date===d);
+    let sInfo = getEmpShiftTimes(e);
+    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td>${esc(e.dept)}</td><td>${sInfo.name}</td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?late(x,e):0} دقيقة</td><td>${x?workHours(x).toFixed(2):0}</td><td><b>${x?.status||"غائب"}</b></td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>القسم</th><th>الوردية</th><th>الحضور</th><th>الانصراف</th><th>التأخير</th><th>ساعات العمل</th><th>الحالة</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("🕐 كشف الحضور والانصراف اليومي", `تاريخ اليوم: ${d}`, tableHtml);
+}
+
 function leaveModal(idx=null){
   let x = idx!==null ? db.leaves[idx] : {employee:"", type:"سنوية", from:today(), to:today(), days:1};
   openModal(idx!==null?"تعديل إجازة مدفوعة":"تسجيل إجازة مدفوعة الأجر (يدوي)",`<div class="form-grid">
@@ -1449,6 +1480,15 @@ function renderLeaves(){
   }).join("")||`<tr><td colspan="8">لا توجد إجازات مدفوعة مسجلة</td></tr>`;
   applyUserPermissions();
 }
+function printLeavesReport(){
+  let rows = db.leaves.map(x=>{
+    let e = db.employees.find(y=>String(y.code)===String(x.employee));
+    return `<tr><td>${e?.code||"—"}</td><td>${esc(e?.name||"—")}</td><td>${x.type}</td><td>${x.from}</td><td>${x.to}</td><td><b>${x.days} يوم</b></td><td>مدفوع الأجر</td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>نوع الإجازة</th><th>من</th><th>إلى</th><th>عدد الأيام</th><th>الوضع المحاسبي</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("🏖️ كشف وسجل الإجازات المدفوعة الرسمية", "حصر كامل للحركات المسجلة", tableHtml);
+}
+
 function absenceModal(idx=null){
   let x = idx!==null ? db.absence[idx] : {employee:"", date:today(), days:1, reason:""};
   openModal(idx!==null?"تعديل غياب":"تسجيل غياب / إجازة غير مدفوعة",`<div class="form-grid">
@@ -1500,6 +1540,15 @@ function renderAbsence(){
   document.getElementById("absenceTable").innerHTML=db.absence.map((x,i)=>{let e=db.employees.find(y=>String(y.code)===String(x.employee));return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.days}</td><td>${esc(x.reason)}</td><td>${money(x.days*daily(e))}</td><td><button class="btn secondary btn-edit" onclick="absenceModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteAbsence(${i})">🗑️ حذف</button></td></tr>`;}).join("")||`<tr><td colspan="6">لا توجد بيانات غياب</td></tr>`;
   applyUserPermissions();
 }
+function printAbsenceReport(){
+  let rows = db.absence.map(x=>{
+    let e = db.employees.find(y=>String(y.code)===String(x.employee));
+    return `<tr><td>${x.date}</td><td>${e?.code||"—"}</td><td>${esc(e?.name||"—")}</td><td>${x.days} يوم</td><td>${money(x.days*daily(e))} ج.م</td><td>${esc(x.reason||"—")}</td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>التاريخ</th><th>الكود</th><th>العامل</th><th>أيام الغياب</th><th>الخصم المالي المستحق</th><th>السبب والملاحظات</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("❌ كشف وسجل الغياب والخصومات", "حصر تفصيلي للغياب غير المدفوع", tableHtml);
+}
+
 function renderMonthlyMatrix(){
   let mInp = document.getElementById("matrixMonth");
   if(!mInp.value) mInp.value = month();
@@ -1558,14 +1607,9 @@ function printMonthlyMatrix(){
   let mVal = document.getElementById("matrixMonth").value || month();
   let cycle = getCycleForMonth(mVal);
   let content = document.getElementById("matrixTable").outerHTML;
-  let html = `<html dir=rtl><head><meta charset=utf-8><title>جدول حالة الموظفين اليومية والدورة المحاسبية - ${mVal}</title>
-  <style>body{font-family:Arial;padding:15px;font-size:10px}table{width:100%;border-collapse:collapse;text-align:center}th,td{border:1px solid #999;padding:4px}th{background:#eee}.st-att{background:#dcfce7;font-weight:bold}.st-abs{background:#fee2e2;font-weight:bold}.st-lea{background:#e0f2fe;font-weight:bold}.st-fri{background:#f1f5f9;font-weight:bold}</style>
-  </head><body>
-  <h2 style="text-align:center">📅 كشف جدول حالة الموظفين اليومية للدورة المحاسبية (${cycle.from} ⬅️ ${cycle.to})</h2>
-  ${content}
-  <script>window.print()<\/script></body></html>`;
-  let w = window.open("", "_blank"); w.document.write(html); w.document.close();
+  printReportDocument(`📅 جدول حالة الموظفين اليومية والدورة المحاسبية (${mVal})`, `الفترة: ${cycle.from} ⬅️ ${cycle.to}`, content);
 }
+
 function otModal(idx=null){
   let x = idx!==null ? db.overtime[idx] : {employee:"", date:today(), hours:1, unit:"hour", factor:1.5, reason:""};
   openModal(idx!==null?"تعديل إضافي":"تسجيل إضافي فردي",`<div class="form-grid">
@@ -1618,6 +1662,16 @@ function renderOT(){
   }).join("")||`<tr><td colspan="7">لا توجد بيانات إضافي</td></tr>`;
   applyUserPermissions();
 }
+function printOvertimeReport(){
+  let rows = db.overtime.map(x=>{
+    let e = db.employees.find(y=>String(y.code)===String(x.employee));
+    let val = (x.unit||"hour")==="day" ? (x.hours * daily(e) * (x.factor||1)) : (x.hours * hourlyRate(e) * (x.factor||1.5));
+    return `<tr><td>${x.date}</td><td>${e?.code||"—"}</td><td>${esc(e?.name||"—")}</td><td>${x.hours} ${(x.unit==="day"?"أيام":"ساعات")}</td><td>${x.factor||1.5}</td><td><b>${money(val)} ج.م</b></td><td>${esc(x.reason||"—")}</td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>التاريخ</th><th>الكود</th><th>العامل</th><th>الكمية</th><th>المعامل</th><th>القيمة بالجنيه</th><th>السبب والبيان</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("⏰ بيان وسجل العمل الإضافي المستحق", "حصر ساعات وأيام العمل الإضافي", tableHtml);
+}
+
 function bonusModal(idx=null){
   let x = idx!==null ? db.bonuses[idx] : {employee:"", date:today(), mode:"day", amount:1, reason:""};
   openModal(idx!==null?"تعديل مكافأة":"إضافة مكافأة فردية",`<div class="form-grid">
@@ -1668,6 +1722,16 @@ function renderBonuses(){
   }).join("")||`<tr><td colspan="7">لا توجد مكافآت مسجلة</td></tr>`;
   applyUserPermissions();
 }
+function printBonusesReport(){
+  let rows = db.bonuses.map(x=>{
+    let e = db.employees.find(y=>String(y.code)===String(x.employee));
+    let val = x.mode==="cash" ? x.amount : (x.amount * daily(e));
+    return `<tr><td>${x.date}</td><td>${e?.code||"—"}</td><td>${esc(e?.name||"—")}</td><td>${x.mode==="cash"?"مبلغ نقدي":"عدد أيام"}</td><td>${x.amount} ${(x.mode==="cash"?"جنيه":"يوم")}</td><td><b>${money(val)} ج.م</b></td><td>${esc(x.reason||"—")}</td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>التاريخ</th><th>الكود</th><th>العامل</th><th>طريقة المكافأة</th><th>الكمية</th><th>القيمة الإجمالية</th><th>السبب والملاحظات</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("🎁 بيان وسجل المكافآت التشجيعية", "حصر المكافآت والحوافز المالية الممنوحة", tableHtml);
+}
+
 function deductionModal(idx=null){
   let x = idx!==null ? db.deductions[idx] : {employee:"", date:today(), unit:"day", qty:1, reason:""};
   openModal(idx!==null?"تعديل جزاء":"تسجيل جزاء / استقطاع",`<div class="form-grid">
@@ -1702,6 +1766,16 @@ function renderDeductions(){
   }).join("")||`<tr><td colspan="6">لا توجد جزاءات مسجلة</td></tr>`;
   applyUserPermissions();
 }
+function printDeductionsReport(){
+  let rows = db.deductions.map(x=>{
+    let e = db.employees.find(y=>String(y.code)===String(x.employee));
+    let uLabel = x.unit==="hour"?"ساعة":(x.unit==="cash"?"جنيه":"يوم");
+    return `<tr><td>${x.date}</td><td>${e?.code||"—"}</td><td>${esc(e?.name||"—")}</td><td>${uLabel}</td><td>${x.qty}</td><td>${esc(x.reason||"—")}</td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>التاريخ</th><th>الكود</th><th>العامل</th><th>نوع الوحدة</th><th>الكمية / المبلغ</th><th>سبب الجزاء</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("⚠️ كشف وسجل الجزاءات والاستقطاعات الإدارية", "حصر كامل للجزاءات الإدارية الموقعة", tableHtml);
+}
+
 function loanModal(idx=null){
   let x = idx!==null ? db.loans[idx] : {employee:"", date:today(), amount:1000, installment:200, paidAmount:0};
   openModal(idx!==null?"تعديل سلفة":"تسجيل سلفة جديدة",`<div class="form-grid">
@@ -1741,8 +1815,25 @@ function loanStatementModal(loanId){
   </div>
   <h4>سجل الأقساط المسددة:</h4>
   <table style="margin-top:10px"><thead><tr><th>تاريخ السداد</th><th>بيان الحركة</th><th>المبلغ المسدد</th></tr></thead><tbody>${historyRows}</tbody></table>
-  ${rem > 0 ? `<div style="margin-top:15px"><button class="btn warning btn-save" onclick="payLoanCash('${loan.id}')">💵 تسجيل سداد قسط نقدي</button></div>` : ''}
+  <div style="display:flex;gap:10px;margin-top:15px">
+  ${rem > 0 ? `<button class="btn warning btn-save" onclick="payLoanCash('${loan.id}')">💵 تسجيل سداد قسط نقدي</button>` : ''}
+  <button class="btn success btn-print" onclick="printLoanStatementDoc('${loan.id}')">🖨️ طباعة كشف حساب السلفة</button>
+  </div>
   `);
+}
+function printLoanStatementDoc(loanId){
+  let loan = db.loans.find(l=>l.id===loanId);
+  if(!loan) return;
+  let e = db.employees.find(x=>String(x.code)===String(loan.employee));
+  let history = db.loanLedger.filter(x=>x.loanId===loanId);
+  let rem = Math.max(0, loan.amount - loan.paidAmount);
+  let historyRows = history.map(h=>`<tr><td>${h.date}</td><td>${h.monthKey||'سداد نقدي'}</td><td><b>${money(h.amount)} ج.م</b></td></tr>`).join("") || `<tr><td colspan="3">لا توجد أقساط مسددة بالسجل بعد</td></tr>`;
+  let tableHtml = `<table><thead><tr><th>تاريخ السداد</th><th>بيان الحركة والشهر</th><th>المبلغ المسدد</th></tr></thead><tbody>${historyRows}</tbody></table>`;
+  let sumBox = `<div class="summary-box">
+    <b>الموظف:</b> ${esc(e?.name)} (${loan.employee}) | <b>تاريخ القرض:</b> ${loan.date}<br>
+    <b>إجمالي مبلغ السلفة:</b> ${money(loan.amount)} ج.م | <b>المسدد:</b> ${money(loan.paidAmount)} ج.م | <b>المتبقي:</b> <b style="color:#dc2626">${money(rem)} ج.م</b>
+  </div>`;
+  printReportDocument("💵 كشف حساب ومتابعة سداد سلفة", `بيان حركة العامل: ${esc(e?.name)}`, tableHtml, sumBox);
 }
 function payLoanCash(loanId){
   let loan = db.loans.find(l=>l.id===loanId);
@@ -1765,6 +1856,16 @@ function renderLoans(){
   }).join("")||`<tr><td colspan="7">لا توجد سلف مسجلة</td></tr>`;
   applyUserPermissions();
 }
+function printLoansSummaryReport(){
+  let rows = db.loans.map(x=>{
+    let e = db.employees.find(y=>String(y.code)===String(x.employee));
+    let rem = Math.max(0, x.amount - x.paidAmount);
+    return `<tr><td>${x.date}</td><td>${e?.code||"—"}</td><td>${esc(e?.name||"—")}</td><td>${money(x.amount)} ج.م</td><td>${money(x.installment)} ج.م</td><td>${money(x.paidAmount)} ج.م</td><td><b>${money(rem)} ج.م</b></td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>تاريخ السلفة</th><th>الكود</th><th>العامل</th><th>إجمالي السلفة</th><th>القسط الشهري</th><th>المسدد</th><th>المتبقي</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("💵 كشف الموقف العام للسلف والأقساط", "حصر تفصيلي لأرصدة وأقساط السلف", tableHtml);
+}
+
 function openAddUserModal() {
   if (!isAdmin()) return alert("⛔ هذه الصلاحية للمدير العام فقط!");
   document.getElementById("userForm").reset();
@@ -1891,22 +1992,30 @@ function renderUsers() {
     </tr>
   `).join("");
 }
+
+// -------------------------------------------------------------
+// خوارزمية احتساب كشف المرتبات المعتمدة بالأساس الثابت 30 يوماً
+// -------------------------------------------------------------
 function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let isLocked = !customRange && (db.payrollMeta[monthKeyStr]?.status === "معتمد ومغلق");
   let snap = db.payrollMeta[monthKeyStr]?.snapshot?.[e.code];
   if(isLocked && snap && !targetCutoffDate && !customRange){
     return {...snap, contractSalary: Number(e.salary||0), periodicAllowance: Number(e.periodicAllowance||0), cycle: getCycleForMonth(monthKeyStr)};
   }
+
+  const STANDARD_DAYS = 30; // تثبيت الأساس الشهري على 30 يوماً دائماً
   let contractSalary = Number(e.salary||0);
   let periodicAllowance = Number(e.periodicAllowance||0);
   let allow = Number(e.allowances||0);
-  let dayValue = contractSalary / 30;
+  let dayValue = contractSalary / STANDARD_DAYS;
   let hrRate = hourlyRate(e);
+  
   let cycle = customRange ? {from: customRange.from, to: customRange.to, monthKey: "CUSTOM", totalDays: dateDays(customRange.from, customRange.to)} : getCycleForMonth(monthKeyStr);
   let endDateLimit = targetCutoffDate || cycle.to;
   let dStart = parseLocalDate(cycle.from);
   let dEnd = parseLocalDate(endDateLimit);
-  let presentDays = 0, paidLeaveDays = 0, fridayPaidDays = 0, absDays = 0, totalCalendarDays = 0;
+  
+  let presentDays = 0, paidLeaveDays = 0, fridayPaidDays = 0, absDays = 0;
   let a = db.attendance.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=endDateLimit);
   let explicitAbs = db.absence.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=endDateLimit);
   let ot = db.overtime.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=endDateLimit);
@@ -1915,18 +2024,27 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let lvs = db.leaves.filter(x=>String(x.employee)===String(e.code) && x.from<=endDateLimit && x.to>=cycle.from);
   let fridaySetting = db.settings.friday || "conditional";
   
+  // تحديد هل الموظف مستمر طوال الدورة أم فترات جزئية / تعيين جديد
+  let isFullCycle = true;
+  if(e.hire && e.hire > cycle.from) isFullCycle = false;
+  if(e.status === "منتهى الخدمة" && e.endServiceDate && e.endServiceDate < cycle.to) isFullCycle = false;
+  if(targetCutoffDate) isFullCycle = false;
+
   for(let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate()+1)){
     let curDateStr = formatLocalDate(cur);
     if(e.hire && curDateStr < e.hire) continue;
     if(e.status === "منتهى الخدمة" && e.endServiceDate && curDateStr > e.endServiceDate) continue;
-    totalCalendarDays++;
+    
     let isAtt = a.some(x=>x.date===curDateStr && (x.status==="حاضر" || x.status==="مأمورية"));
     let isLea = lvs.some(x=>x.from<=curDateStr && x.to>=curDateStr);
     let isExplicitAbs = explicitAbs.some(x=>x.date===curDateStr);
     let isFriday = cur.getDay() === 5;
-    if(isAtt){ presentDays++; }
-    else if(isLea){ paidLeaveDays++; }
-    else if(isFriday){
+    
+    if(isAtt){ 
+      presentDays++; 
+    } else if(isLea){ 
+      paidLeaveDays++; 
+    } else if(isFriday){
       if(isExplicitAbs || fridaySetting === "unpaid") {
         absDays++;
       } else if(fridaySetting === "paid") {
@@ -1937,33 +2055,62 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
         let hasWorked = a.some(x => x.date >= weekStartStr && x.date <= curDateStr && (x.status==="حاضر" || x.status==="مأمورية")) || lvs.some(x => x.from <= curDateStr && x.to >= weekStartStr);
         if(hasWorked) fridayPaidDays++; else absDays++;
       }
-    } else { absDays++; }
+    } else { 
+      absDays++; 
+    }
   }
   
-  let payableDays = Math.min(30, presentDays + paidLeaveDays + fridayPaidDays);
-  let base = payableDays * dayValue;
-  let periodicEarned = (payableDays / 30) * periodicAllowance;
-  let allowEarned = (payableDays / 30) * allow;
+  let payableDays = 0;
+  let base = 0;
+  let periodicEarned = 0;
+  let allowEarned = 0;
+
+  if (isFullCycle) {
+    // 1. الموظف المستمر: يستحق الراتب كاملاً (30 يوماً) ويُخصم منه الغياب فقط
+    payableDays = Math.max(0, STANDARD_DAYS - absDays);
+    base = Math.max(0, contractSalary - (absDays * dayValue));
+    periodicEarned = Math.max(0, periodicAllowance - (absDays * (periodicAllowance / STANDARD_DAYS)));
+    allowEarned = Math.max(0, allow - (absDays * (allow / STANDARD_DAYS)));
+  } else {
+    // 2. الموظف المعين جديد أو المستقيل أو التقرير الجزئي: يحاسب بالأيام الفعلية المستحقة
+    let actualDays = presentDays + paidLeaveDays + fridayPaidDays;
+    payableDays = Math.min(STANDARD_DAYS, actualDays);
+    base = payableDays * dayValue;
+    periodicEarned = (payableDays / STANDARD_DAYS) * periodicAllowance;
+    allowEarned = (payableDays / STANDARD_DAYS) * allow;
+  }
+  
   let paidLeaveVal = paidLeaveDays * dayValue;
   let absDed = absDays * dayValue;
+  
   let empLoans = db.loans.filter(x=>String(x.employee)===String(e.code) && x.date <= endDateLimit && (x.amount - x.paidAmount) > 0);
   let loanInst = 0, totalLoanRemBefore = 0;
   empLoans.forEach(l=>{ let rem = l.amount - l.paidAmount; totalLoanRemBefore += rem; loanInst += Math.min(l.installment, rem); });
   let totalLoanRemAfter = Math.max(0, totalLoanRemBefore - loanInst);
+  
   let lateMin=a.reduce((sum,x)=>sum+late(x, e),0), lateDed=(lateMin/60)*hrRate;
-  let otVal = 0, otHours = 0;
+  
+  let otVal = 0, otHours = 0, otDays = 0;
   ot.forEach(x=>{
-    if((x.unit||"hour")==="day") otVal += Number(x.hours||0) * dayValue * Number(x.factor||1);
-    else { otHours += Number(x.hours||0); otVal += Number(x.hours||0) * hrRate * Number(x.factor||1.5); }
+    if((x.unit||"hour")==="day") {
+      otDays += Number(x.hours||0);
+      otVal += Number(x.hours||0) * dayValue * Number(x.factor||1);
+    } else { 
+      otHours += Number(x.hours||0); 
+      otVal += Number(x.hours||0) * hrRate * Number(x.factor||1.5); 
+    }
   });
+  
   let bonusVal = 0;
   bns.forEach(x=>{ if(x.mode==="cash") bonusVal += Number(x.amount||0); else bonusVal += Number(x.amount||0) * dayValue; });
+  
   let dedVal = 0;
   dds.forEach(x=>{
     if(x.unit==="hour") dedVal += Number(x.qty||0) * hrRate;
     else if(x.unit==="cash") dedVal += Number(x.qty||0);
     else dedVal += Number(x.qty||0) * dayValue;
   });
+  
   let insPercent = Number(db.settings.insurancePercent ?? 11);
   let taxPercent = Number(db.settings.taxPercent ?? 5);
   let subjectSalary = e.allowanceSubjectToOT ? (base + periodicEarned + allowEarned) : base;
@@ -1973,10 +2120,11 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   
   return {
     contractSalary, periodicAllowance, periodicEarned, base, allow:allowEarned, dayValue, hrRate, payableDays,
-    presentDays, paidLeaveDays, fridayPaidDays, totalCalendarDays, a, abs: explicitAbs, ot, bns, dds, lvs, paidLeaveVal,
-    lateMin, lateDed, absDays, absDed, loanInst, totalLoanRemBefore, totalLoanRemAfter, empLoans, insuranceDed, taxDed, otHours, otVal, bonusVal, dedVal, net, cycle
+    presentDays, paidLeaveDays, fridayPaidDays, totalCalendarDays: dateDays(cycle.from, endDateLimit), a, abs: explicitAbs, ot, bns, dds, lvs, paidLeaveVal,
+    lateMin, lateDed, absDays, absDed, loanInst, totalLoanRemBefore, totalLoanRemAfter, empLoans, insuranceDed, taxDed, otHours, otDays, otVal, bonusVal, dedVal, net, cycle
   };
 }
+
 function togglePayrollRangeMode(){
   let mode = document.getElementById("payRangeMode").value;
   let isCustom = mode === "custom";
@@ -2023,34 +2171,175 @@ function calculatePayroll(){
   }).join("")||`<tr><td colspan="18">لا توجد بيانات مرتبات</td></tr>`;
   applyUserPermissions();
 }
-function exportBankSheet(){
+
+function printBankSheetOfficial(){
   let mode = document.getElementById("payRangeMode").value;
   let m = document.getElementById("payMonth").value || month();
   let customRange = mode==="custom"?{from:document.getElementById("payCustomFrom").value, to:document.getElementById("payCustomTo").value}:null;
   let cycle = customRange || getCycleForMonth(m);
-  let rows = [["كود الموظف", "اسم الموظف", "رقم الحساب البنكي / المحفظة", "الراتب الأساسي التعاقدي", "أيام الاستحقاق", "الراتب المستحق الصافي النهائي (جنيه)", "البيان"]];
   let eligibleEmps = db.employees.filter(e=>e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= cycle.from));
-  eligibleEmps.forEach(e=>{
+  let totalNet = 0;
+  let rows = eligibleEmps.map(e=>{
     let p = calc(e, m, null, customRange);
-    rows.push([e.code, e.name, e.bankAccount || "بدون حساب مسجل", p.contractSalary.toFixed(2), p.payableDays, p.net.toFixed(2), `مرتب فترة ${cycle.from} إلى ${cycle.to}`]);
-  });
-  let csvContent = "\uFEFF" + rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([csvContent], { type: "text/csv;charset=utf-8;" }));
-  a.download = `كشف_تحويلات_البنك_${cycle.from}_${cycle.to}.csv`;
-  a.click();
+    totalNet += p.net;
+    return `<tr><td>${e.code}</td><td><b>${esc(e.name)}</b></td><td><b style="color:#2563eb">${esc(e.bankAccount || "بدون حساب مسجل")}</b></td><td>${money(p.contractSalary)} ج.م</td><td>${p.payableDays} يوماً</td><td><b style="color:#1e40af">${money(p.net)} ج.م</b></td><td>تحويل الراتب الدوري</td></tr>`;
+  }).join("");
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>اسم الموظف</th><th>رقم الحساب البنكي / المحفظة</th><th>الأساسي التعاقدي</th><th>أيام الاستحقاق</th><th>صافي الراتب المحول</th><th>البيان والغرض</th></tr></thead><tbody>${rows}</tbody></table>`;
+  let sumBox = `<div class="summary-box"><b>إجمالي المبالغ المطلوب تحويلها للمصرف:</b> <b style="color:#1e40af;font-size:15px">${money(totalNet)} جنيه مصري</b> | <b>إجمالي عدد المستفيدين:</b> ${eligibleEmps.length} موظفاً</div>`;
+  printReportDocument("🏦 كشف مسير تحويلات الرواتب للبنك", `عن الدورة المحاسبية (${cycle.from} ⬅️ ${cycle.to})`, tableHtml, sumBox);
 }
+
+// -------------------------------------------------------------
+// قسيمة الراتب الشاملة والمحدثة بالكامل
+// -------------------------------------------------------------
 function printPayslip(code, m){
   let e = db.employees.find(x=>String(x.code)===String(code));
   if(!e) return;
   let mode = document.getElementById("payRangeMode").value;
   let customRange = mode==="custom"?{from:document.getElementById("payCustomFrom").value, to:document.getElementById("payCustomTo").value}:null;
   let p = calc(e, m, null, customRange);
+  
   let totalEarnings = p.base + p.periodicEarned + p.allow + p.otVal + p.bonusVal;
-  let totalDeductions = p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
-  let html = `<html dir=rtl><head><meta charset=utf-8><title>قسيمة راتب - ${esc(e.name)}</title><style>body{font-family:Arial;padding:20px;max-width:700px;margin:auto}.slip{border:2px dashed #0f172a;padding:20px;border-radius:12px}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}th,td{border:1px solid #cbd5e1;padding:8px;text-align:right}th{background:#f1f5f9}.total{background:#f8fafc;font-weight:bold;font-size:15px}</style></head><body><div class="slip"><h2 style="text-align:center">🧾 قسيمة استلام الراتب</h2><div><b>اسم الموظف:</b> ${esc(e.name)} (${e.code})</div><div><b>الراتب الأساسي التعاقدي:</b> ${money(p.contractSalary)} ج.م</div><table><thead><tr><th>المستحقات</th><th>المبلغ</th><th>الاستقطاعات</th><th>المبلغ</th></tr></thead><tbody><tr><td>الأساسي المستحق (${p.payableDays} يوم)</td><td>${money(p.base)}</td><td>خصم التأخيرات (${p.lateMin} د)</td><td>${money(p.lateDed)}</td></tr><tr><td>العلاوة الدورية</td><td>${money(p.periodicEarned)}</td><td>خصم قسط السلفة</td><td>${money(p.loanInst)}</td></tr><tr><td>البدلات</td><td>${money(p.allow)}</td><td>تأمينات وضرائب</td><td>${money(p.insuranceDed + p.taxDed)}</td></tr><tr><td>إضافي ومكافآت</td><td>${money(p.otVal + p.bonusVal)}</td><td>جزاءات</td><td>${money(p.dedVal)}</td></tr><tr class="total"><td>إجمالي المستحقات</td><td>${money(totalEarnings)}</td><td>إجمالي الاستقطاعات</td><td>${money(totalDeductions)}</td></tr></tbody></table><h3 style="text-align:center;background:#e0f2fe;padding:10px">الراتب الصافي النهائي: ${money(p.net)} جنيه</h3></div><script>window.print()<\/script></body></html>`;
+  let totalDeductions = p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal + p.absDed;
+  
+  let html = `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8">
+  <title>قسيمة استلام الراتب — ${esc(e.name)}</title>
+  <style>
+    body{font-family:'Segoe UI',Arial,sans-serif;padding:25px;max-width:850px;margin:auto;background:#fff;color:#0f172a;line-height:1.4}
+    .slip{border:2px solid #0f172a;padding:24px;border-radius:14px}
+    .header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:16px}
+    .header h2{margin:0;font-size:20px;color:#1e3a8a}
+    .grid-info{display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;background:#f8fafc;padding:12px;border-radius:8px;margin-bottom:16px;border:1px solid #e2e8f0;font-size:12.5px}
+    table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px}
+    th,td{border:1px solid #cbd5e1;padding:8px 10px;text-align:right}
+    th{background:#f1f5f9;font-weight:bold;color:#334155}
+    .total-row{background:#f8fafc;font-weight:bold;font-size:13.5px}
+    .net-box{display:flex;justify-content:space-between;align-items:center;background:#eff6ff;border:2px solid #2563eb;padding:12px 18px;border-radius:10px;margin-top:16px}
+    .net-box .num{font-size:22px;font-weight:900;color:#1e40af}
+    .signatures{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center;margin-top:35px;font-size:12px}
+    .sign-line{border-top:1px dashed #64748b;margin-top:40px;padding-top:5px}
+    @media print{.slip{border:1px solid #000}}
+  </style>
+  </head><body>
+  <div class="slip">
+    <div class="header">
+      <div>
+        <h2>🧾 مفردات وقسيمة صرف الراتب</h2>
+        <small style="color:#64748b">HRMS Enterprise V7.2 Luxury Industrial</small>
+      </div>
+      <div style="text-align:left">
+        <b>الفترة:</b> ${p.cycle.from} ⬅️ ${p.cycle.to}<br>
+        <small>الأساس المحاسبي: 30 يوماً</small>
+      </div>
+    </div>
+
+    <div class="grid-info">
+      <div><b>كود العامل:</b> ${e.code}</div>
+      <div><b>اسم العامل:</b> ${esc(e.name)}</div>
+      <div><b>الوظيفة:</b> ${esc(e.job || '—')}</div>
+      <div><b>القسم:</b> ${esc(e.dept || '—')}</div>
+      <div><b>الأساسي التعاقدي:</b> ${money(p.contractSalary)} ج.م</div>
+      <div><b>أجر اليوم (أساس 30):</b> ${money(p.dayValue)} ج.م</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:50%;background:#ecfdf5;color:#065f46">➕ الاستحقاقات والأرباح</th>
+          <th style="width:50%;background:#fef2f2;color:#991b1b">➖ الاستقطاعات والخصومات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <b>الأجر الأساسي المستحق:</b> ${money(p.base)} ج.م<br>
+            <small style="color:#64748b">• الحضور الفعلي: ${p.presentDays} يوم | جمعة مستحقة: ${p.fridayPaidDays} يوم | إجمالي الاستحقاق: ${p.payableDays} يوم</small>
+          </td>
+          <td>
+            <b>خصم الغياب غير المدفوع:</b> ${money(p.absDed)} ج.م<br>
+            <small style="color:#b91c1c">• عدد أيام الغياب: ${p.absDays} يوم</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>العلاوة الدورية المستحقة:</b> ${money(p.periodicEarned)} ج.م<br>
+            <small style="color:#64748b">• العلاوة التعاقدية الثابتة: ${money(p.periodicAllowance)} ج.م</small>
+          </td>
+          <td>
+            <b>خصم التأخيرات:</b> ${money(p.lateDed)} ج.م<br>
+            <small style="color:#64748b">• إجمالي دقائق التأخير: ${p.lateMin} دقيقة</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>البدلات الثابتة الأخرى:</b> ${money(p.allow)} ج.م
+          </td>
+          <td>
+            <b>الجزاءات والاستقطاعات الإدارية:</b> ${money(p.dedVal)} ج.م
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>الإجازات المدفوعة (سنوية/أعياد):</b> ${money(p.paidLeaveVal)} ج.م<br>
+            <small style="color:#0369a1">• عدد الأيام المدفوعة: ${p.paidLeaveDays} يوم</small>
+          </td>
+          <td>
+            <b>قسط السلفة الشهرية:</b> ${money(p.loanInst)} ج.م<br>
+            <small style="color:#64748b">• المتبقي من السلفة بعد الخصم: ${money(p.totalLoanRemAfter)} ج.م</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>العمل الإضافي:</b> ${money(p.otVal)} ج.م<br>
+            <small style="color:#64748b">• ساعات الإضافي: ${p.otHours} س | أيام الإضافي: ${p.otDays} يوم</small>
+          </td>
+          <td>
+            <b>تأمينات اجتماعية وضرائب:</b> ${money(p.insuranceDed + p.taxDed)} ج.م<br>
+            <small style="color:#64748b">• تأمينات: ${money(p.insuranceDed)} | ضرائب: ${money(p.taxDed)}</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>المكافآت التشجيعية:</b> ${money(p.bonusVal)} ج.م
+          </td>
+          <td>—</td>
+        </tr>
+        <tr class="total-row">
+          <td style="color:#059669">إجمالي الاستحقاقات: ${money(totalEarnings)} ج.م</td>
+          <td style="color:#dc2626">إجمالي الاستقطاعات: ${money(totalDeductions)} ج.م</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="net-box">
+      <div>
+        <b style="font-size:16px">الراتب الصافي النهائي المستحق للصرف:</b><br>
+        <span style="font-size:12px;color:#475569">فقط وقدره: بحسب الحسابات المحاسبية المعتمدة للمنشأة</span>
+      </div>
+      <div class="num">${money(p.net)} ج.م</div>
+    </div>
+
+    <div class="signatures">
+      <div>
+        <b>إعداد الموارد البشرية</b>
+        <div class="sign-line">م/ سرحان سيد محمد</div>
+      </div>
+      <div>
+        <b>المراجعة والتدقيق المالي</b>
+        <div class="sign-line">الشئون المالية</div>
+      </div>
+      <div>
+        <b>توقيع واستلام العامل</b>
+        <div class="sign-line">${esc(e.name)}</div>
+      </div>
+    </div>
+  </div>
+  <script>window.print()<\/script>
+  </body></html>`;
+  
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
+
 function initMidMonthView(){
   document.getElementById("midEmpSelect").innerHTML = empOptions();
   document.getElementById("midReportDate").value = today();
@@ -2078,9 +2367,16 @@ function printMidMonthReport(){
   let e = db.employees.find(x=>String(x.code)===String(empCode));
   let cycle = getCycleForDate(reportDate);
   let p = calc(e, cycle.monthKey, reportDate);
-  let html=`<html dir=rtl><head><meta charset=utf-8><title>تقرير مستحقات - ${esc(e.name)}</title><style>body{font-family:Arial;padding:25px}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #aaa;padding:7px;text-align:right}h1{text-align:center}</style></head><body><h1>تقرير تسوية ومستحقات عامل</h1><div><b>اسم العامل:</b> ${esc(e.name)} — <b>الكود:</b> ${e.code}</div><div><b>الراتب الأساسي التعاقدي:</b> ${money(p.contractSalary)} جنيه | <b>الأيام المستحقة:</b> ${p.payableDays} يوم</div><h3>الصافي المستحق: ${money(p.net)} جنيه</h3><script>window.print()<\/script></body></html>`;
-  let w=window.open("","_blank");w.document.write(html);w.document.close();
+  let contentTable = `<table>
+    <tr><th>اسم الموظف</th><td>${esc(e.name)} (${e.code})</td><th>القسم</th><td>${esc(e.dept)}</td></tr>
+    <tr><th>الأساسي التعاقدي</th><td>${money(p.contractSalary)} ج.م</td><th>أيام الاستحقاق الفعلية</th><td>${p.payableDays} يوم</td></tr>
+    <tr><th>الأجر الأساسي المستحق</th><td>${money(p.base)} ج.م</td><th>العلاوة المستحقة</th><td>${money(p.periodicEarned)} ج.م</td></tr>
+    <tr><th>الإضافي والمكافآت</th><td>${money(p.otVal + p.bonusVal)} ج.م</td><th>إجمالي الاستقطاعات والجزاءات</th><td>${money(p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal)} ج.م</td></tr>
+  </table>`;
+  let sumBox = `<div class="summary-box"><b>صافي المستحق للصرف الفعلي حتى تاريخ ${reportDate}:</b> <b style="color:#1e40af;font-size:16px">${money(p.net)} جنيه مصري</b></div>`;
+  printReportDocument("📋 تقرير التسوية الجزئية ومستحقات الموظف أثناء الدورة", `تاريخ التقرير: ${reportDate}`, contentTable, sumBox);
 }
+
 function initSummaryView(){
   document.getElementById("sumFrom").value = getCycleForDate(today()).from;
   document.getElementById("sumTo").value = today();
@@ -2104,9 +2400,10 @@ function generateSummaryReport(){
 function printSummaryReport(){
   let from = document.getElementById("sumFrom").value, to = document.getElementById("sumTo").value, content = document.getElementById("summaryTableBody").innerHTML;
   if(!content) return alert("استخرج التقرير أولاً");
-  let h=`<html dir=rtl><head><meta charset=utf-8><title>التقرير المجمع الشامل</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid #aaa;padding:6px;text-align:right}h1{text-align:center}</style></head><body><h1>التقرير المجمع الشامل للأنشطة</h1><p>من: ${from} إلى: ${to}</p><table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table><script>window.print()<\/script></body></html>`;
-  let w=window.open("","_blank");w.document.write(h);w.document.close();
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table>`;
+  printReportDocument("📊 التقرير المجمع الشامل للأنشطة والأنصبة", `الفترة: من ${from} إلى ${to}`, tableHtml);
 }
+
 function initCostCentersView(){
   if(!document.getElementById("costFrom").value){
     let curCycle = getCycleForDate(today());
@@ -2132,6 +2429,13 @@ function renderCostCenters(){
   });
   document.getElementById("costBody").innerHTML = rows || `<tr><td colspan="11">لا توجد بيانات للأقسام</td></tr>`;
 }
+function printCostCentersReport(){
+  let from = document.getElementById("costFrom").value, to = document.getElementById("costTo").value;
+  let content = document.getElementById("costBody").innerHTML;
+  let tableHtml = `<table><thead><tr><th>القسم / خط الإنتاج</th><th>عدد العمال</th><th>إجمالي الأساسي التعاقدي</th><th>إجمالي الأساسي المستحق</th><th>إجمالي العلاوات</th><th>إجمالي البدلات</th><th>إجمالي الإجازات</th><th>تكلفة الإضافي</th><th>المكافآت</th><th>إجمالي الجزاءات</th><th>صافي الرواتب</th></tr></thead><tbody>${content}</tbody></table>`;
+  printReportDocument("🏭 تقرير مراكز التكلفة وتوزيع الأجور", `الفترة: من ${from} إلى ${to}`, tableHtml);
+}
+
 function initFormsView(){
   document.getElementById("formEmpSelect").innerHTML = empOptions();
   document.getElementById("formDate").value = today();
@@ -2210,8 +2514,15 @@ function changePayrollStatus(){
 function printEmployee(code,m){
   let e=db.employees.find(x=>String(x.code)===String(code));if(!e)return;
   let p=calc(e,m);
-  let html=`<html dir=rtl><head><meta charset=utf-8><title>تقرير مفصل - ${esc(e.name)}</title><style>body{font-family:Arial;padding:25px}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #aaa;padding:7px}h1{text-align:center}</style></head><body><h1>التقرير المالي المفصل للعامل</h1><div><b>العامل:</b> ${esc(e.name)} — ${e.code}</div><div><b>الراتب الأساسي:</b> ${money(p.contractSalary)} جنيه</div><h2>المستحقات والاستقطاعات</h2><table><tr><th>الراتب الأساسي المستحق (${p.payableDays} يوم)</th><td>${money(p.base)}</td></tr><tr><th>العلاوة الدورية</th><td>${money(p.periodicEarned)}</td></tr><tr><th>البدلات</th><td>${money(p.allow)}</td></tr><tr><th>الإضافي والمكافآت</th><td>${money(p.otVal + p.bonusVal)}</td></tr><tr><th>الاستقطاعات والتأمينات والضرائب</th><td>${money(p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal)}</td></tr><tr><th>الراتب الصافي النهائي</th><td><b>${money(p.net)}</b></td></tr></table><script>window.print()<\/script></body></html>`;
-  let w=window.open("","_blank");w.document.write(html);w.document.close();
+  let contentTable = `<table>
+    <tr><th>اسم الموظف</th><td>${esc(e.name)} (${e.code})</td><th>القسم</th><td>${esc(e.dept)}</td></tr>
+    <tr><th>الراتب الأساسي التعاقدي</th><td>${money(p.contractSalary)} ج.م</td><th>أيام الاستحقاق</th><td>${p.payableDays} يوم</td></tr>
+    <tr><th>الراتب الأساسي المستحق</th><td>${money(p.base)} ج.م</td><th>العلاوة الدورية</th><td>${money(p.periodicEarned)} ج.م</td></tr>
+    <tr><th>البدلات الثابتة</th><td>${money(p.allow)} ج.م</td><th>الإضافي والمكافآت</th><td>${money(p.otVal + p.bonusVal)} ج.م</td></tr>
+    <tr><th>إجمالي الاستقطاعات</th><td colspan="3">${money(p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal + p.absDed)} ج.م</td></tr>
+  </table>`;
+  let sumBox = `<div class="summary-box"><b>الراتب الصافي النهائي المستحق:</b> <b style="color:#1e40af;font-size:16px">${money(p.net)} جنيه مصري</b></div>`;
+  printReportDocument("📄 التقرير المالي المفصل للعامل", `الدورة المحاسبية: ${m}`, contentTable, sumBox);
 }
 function printPayroll(){
   let mode = document.getElementById("payRangeMode").value;
@@ -2222,9 +2533,10 @@ function printPayroll(){
     let p=calc(e,m, null, customRange);
     return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td><td>${money(p.dayValue)}</td><td>${p.payableDays} ي</td><td><b>${money(p.base)}</b></td><td><b style="color:#059669">${money(p.periodicEarned)}</b></td><td>${money(p.allow)}</td><td>${p.paidLeaveDays} ي</td><td>${money(p.otVal)}</td><td>${money(p.bonusVal)}</td><td><span style="color:#b91c1c">${p.absDays} ي</span></td><td>${money(p.lateDed)}</td><td>${money(p.loanInst)}</td><td>${money(p.insuranceDed+p.taxDed)}</td><td>${money(p.dedVal)}</td><td><b style="color:#1e40af">${money(p.net)}</b></td></tr>`;
   }).join("");
-  let h=`<html dir=rtl><head><meta charset=utf-8><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #aaa;padding:5px}h1{text-align:center}</style></head><body><h1>كشف المرتبات المجمع لجميع الموظفين</h1><p style="text-align:center">الفترة: من ${cycle.from} إلى ${cycle.to}</p><table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>أيام الاستحقاق</th><th>الأساسي المستحق</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>أيام غياب</th><th>خصم تأخير</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table><script>window.print()<\/script></body></html>`;
-  let w=window.open("","_blank");w.document.write(h);w.document.close();
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>أيام الاستحقاق</th><th>الأساسي المستحق</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>أيام غياب</th><th>خصم تأخير</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table>`;
+  printReportDocument("🧾 كشف المرتبات المجمع لجميع الموظفين", `الفترة: من ${cycle.from} إلى ${cycle.to}`, tableHtml);
 }
+
 function loadSettings(){
   let s=db.settings || {};
   let elStart = document.getElementById("sStart"); if(elStart) elStart.value = s.start ?? 26;
