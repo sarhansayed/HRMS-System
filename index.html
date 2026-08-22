@@ -164,7 +164,7 @@ tr:hover td{background:#f8fafc}
 </div>
 </div>
 <div>
-<button class="btn danger full" onclick="logout()">تسجيل الخروج</button>
+<button class="btn danger full" id="logoutBtn" onclick="logout()">تسجيل الخروج</button>
 </div>
 </aside>
 <main>
@@ -207,7 +207,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>المعادلات والقواعد المحاسبية المعتمدة (الاستحقاق الفعلي والتشغيلي V7.2)</h3>
-<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة فقط إذا حقق العامل حضوراً أو إجازة مدفوعة في أسبوعها.</p>
+<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها.</p>
 <p>• الراتب الأساسي التعاقدي = الراتب الثابت المسجل في بيانات العامل.</p>
 <p>• الأجر اليومي المحاسبي = الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا.</p>
 <p>• الدورة المحاسبية: من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي.</p>
@@ -217,10 +217,10 @@ tr:hover td{background:#f8fafc}
 <section id="page-employees" class="hidden">
 <div class="card">
 <div class="toolbar">
-<button class="btn primary" onclick="employeeModal()">＋ إضافة عامل فردي</button>
-<button class="btn warning" onclick="bulkImportModal()">👥 إضافة واستيراد جماعي</button>
-<button class="btn success" onclick="printEmployeeList()">🖨️ طباعة كشف بيانات العاملين</button>
-<button class="btn secondary" onclick="exportTableToCSV('empTable', 'جدول_بيانات_العاملين.csv')">📊 تصدير Excel</button>
+<button class="btn primary btn-add" onclick="employeeModal()">＋ إضافة عامل فردي</button>
+<button class="btn warning btn-add" onclick="bulkImportModal()">👥 إضافة واستيراد جماعي</button>
+<button class="btn success btn-print" onclick="printEmployeeList()">🖨️ طباعة كشف بيانات العاملين</button>
+<button class="btn secondary btn-export" onclick="exportTableToCSV('empTable', 'جدول_بيانات_العاملين.csv')">📊 تصدير Excel</button>
 </div>
 <div class="form-grid">
 <div class="field span2"><label>بحث</label><input id="empSearch" oninput="renderEmployees()" placeholder="اسم / كود / قسم / تليفون"></div>
@@ -253,10 +253,10 @@ tr:hover td{background:#f8fafc}
 <section id="page-attendance" class="hidden">
 <div class="card">
 <div class="toolbar">
-<button class="btn success" onclick="bulkAttendance()">👥 تحضير جميع العاملين اليوم</button>
-<button class="btn primary" onclick="attendanceModal()">＋ تسجيل فردي أو فترة تواريخ</button>
-<button class="btn secondary" onclick="downloadAttendanceTemplate()">⬇ تحميل نموذج استيراد الحضور</button>
-<button class="btn warning" onclick="biometricModal()">⏱️ استيراد ملف حضور / بصمة</button>
+<button class="btn success btn-add" onclick="bulkAttendance()">👥 تحضير جميع العاملين اليوم</button>
+<button class="btn primary btn-add" onclick="attendanceModal()">＋ تسجيل فردي أو فترة تواريخ</button>
+<button class="btn secondary btn-export" onclick="downloadAttendanceTemplate()">⬇ تحميل نموذج استيراد الحضور</button>
+<button class="btn warning btn-add" onclick="biometricModal()">⏱️ استيراد ملف حضور / بصمة</button>
 </div>
 <div class="form-grid">
 <div class="field"><label>عرض يوم</label><input id="attDate" type="date" onchange="renderAttendance()"></div>
@@ -274,8 +274,8 @@ tr:hover td{background:#f8fafc}
 <div class="card">
 <div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد.</div>
 <div class="toolbar">
-<button class="btn primary" onclick="leaveModal()">＋ تسجيل إجازة مدفوعة فردية</button>
-<button class="btn warning" onclick="bulkLeaveModal()">🏖️ إضافة إجازة جماعية لجميع العاملين (أعياد / عطلات)</button>
+<button class="btn primary btn-add" onclick="leaveModal()">＋ تسجيل إجازة مدفوعة فردية</button>
+<button class="btn warning btn-add" onclick="bulkLeaveModal()">🏖️ إضافة إجازة جماعية لجميع العاملين (أعياد / عطلات)</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -285,7 +285,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-absence" class="hidden">
 <div class="card">
 <div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة.</div>
-<button class="btn primary" onclick="absenceModal()">＋ تسجيل غياب / إجازة غير مدفوعة</button>
+<button class="btn primary btn-add" onclick="absenceModal()">＋ تسجيل غياب / إجازة غير مدفوعة</button>
 </div>
 <div class="card table-wrap">
 <table><thead><tr><th>التاريخ</th><th>العامل</th><th>الأيام</th><th>السبب</th><th>الخصم المستحق</th><th>الإجراءات</th></tr></thead><tbody id="absenceTable"></tbody></table>
@@ -301,8 +301,8 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="toolbar" style="margin-top:10px">
 <button class="btn primary" onclick="renderMonthlyMatrix()">🔄 تحديث الجدول</button>
-<button class="btn success" onclick="printMonthlyMatrix()">🖨️ طباعة جدول حالة الشهر بالحصر المالي</button>
-<button class="btn secondary" onclick="exportTableToCSV('matrixTable', 'جدول_حالة_الموظفين_اليومية.csv')">📊 تصدير Excel</button>
+<button class="btn success btn-print" onclick="printMonthlyMatrix()">🖨️ طباعة جدول حالة الشهر بالحصر المالي</button>
+<button class="btn secondary btn-export" onclick="exportTableToCSV('matrixTable', 'جدول_حالة_الموظفين_اليومية.csv')">📊 تصدير Excel</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -315,8 +315,8 @@ tr:hover td{background:#f8fafc}
 <section id="page-overtime" class="hidden">
 <div class="card">
 <div class="toolbar">
-<button class="btn primary" onclick="otModal()">＋ تسجيل إضافي فردي</button>
-<button class="btn success" onclick="bulkOTModal()">👥 إضافة عمل إضافي جماعي للمصنع</button>
+<button class="btn primary btn-add" onclick="otModal()">＋ تسجيل إضافي فردي</button>
+<button class="btn success btn-add" onclick="bulkOTModal()">👥 إضافة عمل إضافي جماعي للمصنع</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -326,8 +326,8 @@ tr:hover td{background:#f8fafc}
 <section id="page-bonuses" class="hidden">
 <div class="card">
 <div class="toolbar">
-<button class="btn primary" onclick="bonusModal()">＋ إضافة مكافأة فردية</button>
-<button class="btn success" onclick="bulkBonusModal()">👥 إضافة مكافأة جماعية لجميع العاملين</button>
+<button class="btn primary btn-add" onclick="bonusModal()">＋ إضافة مكافأة فردية</button>
+<button class="btn success btn-add" onclick="bulkBonusModal()">👥 إضافة مكافأة جماعية لجميع العاملين</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -335,13 +335,13 @@ tr:hover td{background:#f8fafc}
 </div>
 </section>
 <section id="page-deductions" class="hidden">
-<div class="card"><button class="btn primary" onclick="deductionModal()">＋ إضافة جزاء / استقطاع</button></div>
+<div class="card"><button class="btn primary btn-add" onclick="deductionModal()">＋ إضافة جزاء / استقطاع</button></div>
 <div class="card table-wrap">
 <table><thead><tr><th>التاريخ</th><th>العامل</th><th>الوحدة</th><th>الكمية</th><th>السبب</th><th>الإجراءات</th></tr></thead><tbody id="dedTable"></tbody></table>
 </div>
 </section>
 <section id="page-loans" class="hidden">
-<div class="card"><button class="btn primary" onclick="loanModal()">＋ تسجيل سلفة جديدة</button></div>
+<div class="card"><button class="btn primary btn-add" onclick="loanModal()">＋ تسجيل سلفة جديدة</button></div>
 <div class="card table-wrap">
 <table><thead><tr><th>تاريخ السلفة</th><th>العامل</th><th>إجمالي السلفة</th><th>القسط الشهري</th><th>المسدد</th><th>المتبقي</th><th>الإجراءات</th></tr></thead><tbody id="loanTable"></tbody></table>
 </div>
@@ -366,13 +366,13 @@ tr:hover td{background:#f8fafc}
 <div id="payrollLockNotice" class="danger-note hidden">
 🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق.
 <br style="margin-bottom:8px">
-<button class="btn warning" style="margin-top:8px" onclick="unlockPayrollModal()">🔓 طلب فتح كشف المرتبات المغلق استثنائيًا</button>
+<button class="btn warning admin-only" style="margin-top:8px" onclick="unlockPayrollModal()">🔓 طلب فتح كشف المرتبات المغلق استثنائيًا</button>
 </div>
 <div class="toolbar">
 <button id="btnCalcPayroll" class="btn primary" onclick="calculatePayroll()">🔄 احتساب كشف المرتبات</button>
-<button class="btn success" onclick="printPayroll()">🖨️ طباعة كشف المرتبات المجمع</button>
-<button class="btn secondary" onclick="exportTableToCSV('payTable', 'كشف_مرتبات_الشهر.csv')">📊 تصدير لـ Excel</button>
-<button class="btn warning" onclick="exportBankSheet()">🏦 تصدير كشف البنك (Bank Sheet)</button>
+<button class="btn success btn-print" onclick="printPayroll()">🖨️ طباعة كشف المرتبات المجمع</button>
+<button class="btn secondary btn-export" onclick="exportTableToCSV('payTable', 'كشف_مرتبات_الشهر.csv')">📊 تصدير لـ Excel</button>
+<button class="btn warning btn-export" onclick="exportBankSheet()">🏦 تصدير كشف البنك (Bank Sheet)</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -420,7 +420,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="toolbar" style="margin-top:10px">
 <button class="btn primary" onclick="calculateMidMonthReport()">📊 احتساب مستحقات الموظف الآن</button>
-<button class="btn success" onclick="printMidMonthReport()">🖨️ طباعة تقرير التسوية الجزئية</button>
+<button class="btn success btn-print" onclick="printMidMonthReport()">🖨️ طباعة تقرير التسوية الجزئية</button>
 </div>
 </div>
 <div id="midReportResult" class="card hidden">
@@ -439,8 +439,8 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="toolbar" style="margin-top:10px">
 <button class="btn primary" onclick="generateSummaryReport()">🔄 استخراج التقرير الجدولى المفصل</button>
-<button class="btn success" onclick="printSummaryReport()">🖨️ طباعة التقرير الشامل</button>
-<button class="btn secondary" onclick="exportTableToCSV('summaryTableBody', 'التقرير_المجمع_الشامل.csv')">📊 تصدير لـ Excel</button>
+<button class="btn success btn-print" onclick="printSummaryReport()">🖨️ طباعة التقرير الشامل</button>
+<button class="btn secondary btn-export" onclick="exportTableToCSV('summaryTableBody', 'التقرير_المجمع_الشامل.csv')">📊 تصدير لـ Excel</button>
 </div>
 </div>
 <div id="summaryResult" class="card hidden">
@@ -480,7 +480,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="toolbar">
 <button class="btn primary" onclick="renderCostCenters()">🔄 احتساب مراكز التكلفة للفترة</button>
-<button class="btn secondary" onclick="exportTableToCSV('costTable', 'مراكز_التكلفة.csv')">📊 تصدير Excel</button>
+<button class="btn secondary btn-export" onclick="exportTableToCSV('costTable', 'مراكز_التكلفة.csv')">📊 تصدير Excel</button>
 </div>
 </div>
 <div class="card table-wrap">
@@ -521,7 +521,7 @@ tr:hover td{background:#f8fafc}
 <div class="field"><label>تاريخ الاستمارة</label><input id="formDate" type="date"></div>
 </div>
 <div class="toolbar">
-<button class="btn primary" onclick="printOfficialForm()">🖨️ إنشاء وطباعة النموذج الإداري</button>
+<button class="btn primary btn-print" onclick="printOfficialForm()">🖨️ إنشاء وطباعة النموذج الإداري</button>
 </div>
 </div>
 </section>
@@ -555,7 +555,7 @@ tr:hover td{background:#f8fafc}
 <div class="field"><label>نهاية دورة الراتب (يوم من الشهر الحالي)</label><input id="sEnd" type="number" min="1" max="31"></div>
 <div class="field span2"><label>معاملة يوم الجمعة في النظام (V7.2 Logic)</label>
 <select id="sFriday">
-<option value="conditional">مشروط بالعمل خلال الأسبوع (موصى به - يستحق الجمعة من عمل بأسبوعها فقط)</option>
+<option value="conditional">مشروط بالعمل خلال الأسبوع (موصى به - يستحق الجمعة من عمل يوماً واحداً بأسبوعها)</option>
 <option value="paid">مدفوعة الأجر دائماً (تُحسب تلقائياً دون شرط الحضور)</option>
 <option value="unpaid">غير مدفوعة (تخضع لتسجيل الحضور الفعلي فقط)</option>
 </select>
@@ -588,7 +588,7 @@ tr:hover td{background:#f8fafc}
 </div>
 </section>
 <section id="page-audit" class="hidden"><div class="card"><h2>🛡️ سجل العمليات والأمان الشامل</h2><div class="table-wrap"><table><thead><tr><th>التاريخ والوقت</th><th>المستخدم</th><th>نوع العملية</th><th>كود الموظف</th><th>تفاصيل الإجراء</th></tr></thead><tbody id="auditTable"></tbody></table></div></div></section>
-<section id="page-backup" class="hidden"><div class="card"><h2>💾 النسخ الاحتياطي والاستعادة المحمية</h2><div class="toolbar"><button class="btn success" onclick="backup()">⬇ تنزيل نسخة احتياطية (JSON)</button><button class="btn primary" onclick="document.getElementById('restoreFile').click()">⬆ استعادة نسخة</button><input id="restoreFile" type="file" accept=".json" class="hidden" onchange="restore(this)"></div></div></section>
+<section id="page-backup" class="hidden"><div class="card"><h2>💾 النسخ الاحتياطي والاستعادة المحمية</h2><div class="toolbar"><button class="btn success btn-export" onclick="backup()">⬇ تنزيل نسخة احتياطية (JSON)</button><button class="btn primary admin-only" onclick="document.getElementById('restoreFile').click()">⬆ استعادة نسخة</button><input id="restoreFile" type="file" accept=".json" class="hidden" onchange="restore(this)"></div></div></section>
 </div>
 </main>
 </div>
@@ -626,9 +626,9 @@ tr:hover td{background:#f8fafc}
           <label>مستوى الصلاحية:</label>
           <select id="userRole" required>
             <option value="hr_admin">مسؤول موارد بشرية (HR Admin)</option>
-            <option value="finance_admin">مسؤول شئون مالية (Finance Admin)</option>
-            <option value="auditor">مراقب نظام (Auditor / Viewer)</option>
-            <option value="super_admin">مدير عام (Super Admin)</option>
+            <option value="auditor">مسؤول شئون مالية ومراجعة (Finance / Auditor - طباعة فقط)</option>
+            <option value="Viewer">مشاهد فقط (Viewer - اطلاع بدون طباعة)</option>
+            <option value="super_admin">مدير عام (Super Admin - تحكم كامل)</option>
           </select>
         </div>
         <div class="toolbar" style="display:flex; gap:10px; justify-content:flex-end; margin-top:15px;">
@@ -644,22 +644,44 @@ const KEY="HRMS_ENTERPRISE_SYSTEM_DB_V7_2_ONLINE";
 const OFFLINE_QUEUE_KEY = "HRMS_OFFLINE_QUEUE_V7";
 const SUPABASE_URL="https://urvycpeulzuvvtiipsud.supabase.co";
 const SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVydnljcGV1bHp1dnZ0aWlwc3VkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NzkyNjEsImV4cCI6MjEwMjU1NTI2MX0.Pn_PTyoIO1szHZagzB_kpMIhS0cU6VODF1iT4FMXjhs";
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+let sb = null;
+let realtimeChannel = null;
+try {
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+} catch (e) {
+  console.warn("Supabase client init offline mode:", e);
+}
 let cloudSyncBusy=false, cloudSyncQueued=false;
 let isRemoteUpdate=false, session=null;
-
 const ROLE_MAP = {
   "super_admin": "المدير العام — تحكم كامل",
+  "admin": "المدير العام — تحكم كامل",
   "Administrator": "المدير العام — تحكم كامل",
   "hr_admin": "مسؤول موارد بشرية",
+  "hr": "مسؤول موارد بشرية",
   "HR": "مسؤول موارد بشرية",
-  "finance_admin": "مسؤول شئون مالية",
-  "auditor": "مراقب نظام",
+  "finance_admin": "مسؤول مالي وتدقيق (طباعة فقط)",
+  "auditor": "مسؤول مالي وتدقيق (طباعة فقط)",
   "Viewer": "مشاهد فقط",
+  "viewer": "مشاهد فقط",
   "DataEntry": "مدخل بيانات"
 };
-
+function parseLocalDate(dateStr) {
+  if (!dateStr) return new Date();
+  const cleanStr = String(dateStr).split('T')[0];
+  const parts = cleanStr.split('-').map(Number);
+  if (parts.length < 3 || isNaN(parts[0])) return new Date();
+  return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+}
+function formatLocalDate(d) {
+  if (!(d instanceof Date) || isNaN(d)) d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
 function hashPass(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -668,7 +690,6 @@ function hashPass(str) {
   }
   return "HASH_" + Math.abs(hash);
 }
-
 const defaultDB = () => ({
   schemaVersion: "7.2",
   app: "HRMS Enterprise V7.2 Luxury Industrial",
@@ -680,9 +701,7 @@ const defaultDB = () => ({
   attendance:[],leaves:[],absence:[],overtime:[],bonuses:[],deductions:[],loans:[],loanLedger:[],payrollMeta:{},audit:[],
   settings:{start:26,end:25,monthDays:30,workStart:"08:00",workEnd:"16:00",workStart2:"16:00",workEnd2:"00:00",workStart3:"00:00",workEnd3:"08:00",grace:10,annual:21,friday:"conditional",insurancePercent:11,taxPercent:5}
 });
-
 let db = loadDB();
-
 function loadDB(){
   try{
     let raw = localStorage.getItem(KEY);
@@ -697,11 +716,10 @@ function loadDB(){
     return x;
   }catch(e){ return defaultDB(); }
 }
-
 function updateSyncBadge(){
   const el = document.getElementById("syncStatusBadge");
   if(!el) return;
-  if(navigator.onLine){
+  if(navigator.onLine && sb){
     el.innerHTML = "🟢 بث لحظي متصل";
     el.className = "sync-indicator sync-online";
   } else {
@@ -710,15 +728,24 @@ function updateSyncBadge(){
     el.className = "sync-indicator sync-offline";
   }
 }
-
 function getOfflineQueue(){
   try { return JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]'); } catch(e){ return []; }
 }
-
-function saveDB(){
+function saveDB(broadcast=true){
   localStorage.setItem(KEY, JSON.stringify(db));
-  if(navigator.onLine && !isRemoteUpdate) {
+  if(navigator.onLine && sb && !isRemoteUpdate) {
     queueCloudSync();
+    if(broadcast && realtimeChannel) {
+      try {
+        realtimeChannel.send({
+          type: 'broadcast',
+          event: 'state_change',
+          payload: { timestamp: Date.now(), from: session?.userId || 'client' }
+        });
+      } catch(e) {
+        console.warn("Broadcast warning:", e);
+      }
+    }
   } else if(!isRemoteUpdate) {
     let q = getOfflineQueue();
     q.push({ type: 'APP_STATE', data: db, timestamp: new Date().toISOString() });
@@ -726,8 +753,8 @@ function saveDB(){
     updateSyncBadge();
   }
 }
-
 function queueCloudSync(){
+  if(!sb) return;
   cloudSyncQueued = true;
   if(cloudSyncBusy) return;
   cloudSyncBusy = true;
@@ -735,25 +762,25 @@ function queueCloudSync(){
     do {
       cloudSyncQueued = false;
       try {
-        await sb.from('app_state').upsert({
-          id: 1,
-          data: db,
-          updated_at: new Date().toISOString(),
-          updated_by: session?.userId || null
-        });
+        if(sb) {
+          await sb.from('app_state').upsert({
+            id: 1,
+            data: db,
+            updated_at: new Date().toISOString(),
+            updated_by: session?.userId || null
+          });
+        }
       } catch(e) {
         console.warn("Cloud sync warning:", e);
       }
     } while(cloudSyncQueued);
     cloudSyncBusy = false;
     updateSyncBadge();
-  }, 250);
+  }, 100);
 }
-
-// استرجاع البيانات ومزامنة جدول المستخدمين من Supabase
 async function syncAllDataFromCloud() {
   updateSyncBadge();
-  if (!navigator.onLine) return;
+  if (!navigator.onLine || !sb) return;
   try {
     const { data: usersData } = await sb.from('system_users').select('*');
     if (usersData && usersData.length > 0) {
@@ -769,36 +796,41 @@ async function syncAllDataFromCloud() {
         createdAt: u.created_at ? new Date(u.created_at).toLocaleDateString("ar-EG") : "2026-08-01"
       }));
     }
-
     const { data, error } = await sb.from('app_state').select('data').eq('id', 1).maybeSingle();
     if (!error && data?.data) {
       isRemoteUpdate = true;
       let remoteUsers = db.users;
       db = data.data;
-      db.users = remoteUsers; // الاحتفاظ ببيانات المستخدمين المجلوبة حياً
+      db.users = remoteUsers;
       localStorage.setItem(KEY, JSON.stringify(db));
       isRemoteUpdate = false;
-      if (session) renderAll();
+      if (session) {
+        renderAll();
+        const activeNav = document.querySelector('.nav button.active');
+        if(activeNav) show(activeNav.getAttribute('data-page'));
+      }
     }
   } catch (err) {
     console.error("Cloud Sync Error:", err);
   }
 }
-syncAllDataFromCloud();
-
-// معالجة طابور الحركات غير المتصلة بالإنترنت
+if(sb) syncAllDataFromCloud();
 window.addEventListener('online', async () => {
-  console.log('Online restored. Flushing queue...');
   updateSyncBadge();
+  if(!sb) return;
   let q = getOfflineQueue();
   if (q.length > 0) {
     for (const item of q) {
-      if (item.type === 'APP_STATE') {
-        await sb.from('app_state').upsert({ id: 1, data: item.data, updated_at: new Date().toISOString() });
-      } else if (item.type === 'USER_INSERT') {
-        await sb.from('system_users').insert(item.data);
-      } else if (item.type === 'USER_DELETE') {
-        await sb.from('system_users').delete().eq('id', item.id);
+      try {
+        if (item.type === 'APP_STATE') {
+          await sb.from('app_state').upsert({ id: 1, data: item.data, updated_at: new Date().toISOString() });
+        } else if (item.type === 'USER_INSERT') {
+          await sb.from('system_users').insert(item.data);
+        } else if (item.type === 'USER_DELETE') {
+          await sb.from('system_users').delete().eq('id', item.id);
+        }
+      } catch(err) {
+        console.warn("Sync queue item error:", err);
       }
     }
     localStorage.removeItem(OFFLINE_QUEUE_KEY);
@@ -807,33 +839,57 @@ window.addEventListener('online', async () => {
   }
 });
 window.addEventListener('offline', updateSyncBadge);
-
-// الاستماع اللحظي الشامل للتغييرات عبر جميع الأجهزة المفتوحة
-sb.channel('realtime:live_sync')
-  .on('postgres_changes', { event: '*', schema: 'public', table: 'app_state' }, payload => {
-    if (payload.new && payload.new.data) {
-      isRemoteUpdate = true;
-      db = payload.new.data;
-      localStorage.setItem(KEY, JSON.stringify(db));
-      isRemoteUpdate = false;
-      if (session) {
-        renderAll();
-        const activeNav = document.querySelector('.nav button.active');
-        const currentPage = activeNav ? activeNav.getAttribute('data-page') : 'dashboard';
-        show(currentPage);
-      }
-    }
-  })
-  .on('postgres_changes', { event: '*', schema: 'public', table: 'system_users' }, () => {
-    syncAllDataFromCloud().then(() => { if (session) renderUsers(); });
-  })
-  .subscribe();
-
-function isAdmin(){ return session?.role === "super_admin" || session?.role === "Administrator"; }
+if(sb) {
+  try {
+    realtimeChannel = sb.channel('hrms_realtime_stream', { config: { broadcast: { self: false } } })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'app_state' }, payload => {
+        if (payload.new && payload.new.data) {
+          isRemoteUpdate = true;
+          db = payload.new.data;
+          localStorage.setItem(KEY, JSON.stringify(db));
+          isRemoteUpdate = false;
+          if (session) {
+            renderAll();
+            const activeNav = document.querySelector('.nav button.active');
+            const currentPage = activeNav ? activeNav.getAttribute('data-page') : 'dashboard';
+            show(currentPage);
+          }
+        }
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'system_users' }, () => {
+        syncAllDataFromCloud().then(() => { if (session) renderUsers(); });
+      })
+      .on('broadcast', { event: 'state_change' }, () => {
+        syncAllDataFromCloud();
+      })
+      .subscribe();
+  } catch(e) {
+    console.warn("Realtime sub error:", e);
+  }
+}
+function isAdmin(){ return session?.role === "super_admin" || session?.role === "admin" || session?.role === "Administrator"; }
 function openSidebar(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('show'); }
 function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); }
-
-// تسجيل الدخول بالتحقق من جدول system_users في Supabase
+function applyUserPermissions() {
+  const role = session?.role || "Viewer";
+  const isSuper = isAdmin();
+  const isHR = role === "hr_admin" || role === "hr" || role === "HR";
+  const isAuditor = role === "auditor" || role === "finance_admin";
+  const isViewer = role === "Viewer" || role === "viewer";
+  ["settingsNav", "auditNav", "backupNav", "usersNav"].forEach(id => {
+    let el = document.getElementById(id);
+    if(el) el.classList.toggle("hidden", !isSuper);
+  });
+  document.querySelectorAll('.btn-add, .btn-edit, .btn-save, form button[type="submit"]').forEach(btn => {
+    btn.style.display = (isSuper || isHR) ? '' : 'none';
+  });
+  document.querySelectorAll('.btn-delete, .admin-only').forEach(btn => {
+    btn.style.display = isSuper ? '' : 'none';
+  });
+  document.querySelectorAll('.btn-print, .btn-export').forEach(btn => {
+    btn.style.display = (isSuper || isAuditor) ? '' : (isViewer ? 'none' : '');
+  });
+}
 async function login(){
   let uInput = document.getElementById("loginUser"), pInput = document.getElementById("loginPass");
   let err = document.getElementById("loginError");
@@ -843,14 +899,12 @@ async function login(){
   if(!val || !password){ err.textContent = "يرجى كتابة اسم المستخدم/البريد وكلمة المرور"; return; }
   
   err.textContent = "جاري التحقق من بيانات الدخول...";
-
-  if(navigator.onLine){
+  if(navigator.onLine && sb){
     try {
       const { data: dbUser, error } = await sb.from('system_users')
         .select('*')
         .eq('username', val)
         .maybeSingle();
-
       if(!error && dbUser){
         if(dbUser.password === password || dbUser.password === hashPass(password)){
           session = {
@@ -872,8 +926,6 @@ async function login(){
       console.warn("Online login fallback to local cache:", e);
     }
   }
-
-  // تسجيل الدخول بحساب المدير الرئيسي أو من الذاكرة المحلية (Offline Fallback)
   const ADMIN_EMAIL = "sarhanyasmen2@gmail.com";
   const ADMIN_PASS = "RQuol852";
   if(val === ADMIN_EMAIL || val === "sarhan"){
@@ -895,11 +947,10 @@ async function login(){
   }
   err.textContent = "❌ اسم المستخدم أو كلمة المرور غير صحيحة!";
 }
-
 function logout(){
   if(session){
     logSecurityAudit("تسجيل الخروج", `قام المستخدم (${session.name}) بتسجيل الخروج من النظام`);
-    saveDB();
+    saveDB(false);
   }
   session = null;
   document.getElementById("app").classList.add("hidden");
@@ -907,7 +958,6 @@ function logout(){
   document.getElementById("loginUser").value = "";
   document.getElementById("loginPass").value = "";
 }
-
 function enterSystem(){
   let err = document.getElementById("loginError");
   if(err) err.textContent = "";
@@ -916,25 +966,14 @@ function enterSystem(){
   document.getElementById("currentUser").textContent = session.name;
   document.getElementById("currentRole").textContent = session.roleText;
   
-  let isAdm = isAdmin();
-  ["settingsNav", "auditNav", "backupNav", "usersNav"].forEach(id => {
-    let el = document.getElementById(id);
-    if(el) el.classList.toggle("hidden", !isAdm);
-  });
-  
-  let isObserver = session.role === "auditor" || session.role === "Viewer";
-  document.querySelectorAll('.btn-add, .btn-edit, .btn-delete, .btn-save, form button[type="submit"]').forEach(btn => {
-    btn.style.display = isObserver ? 'none' : '';
-  });
-  
+  applyUserPermissions();
   logSecurityAudit("تسجيل الدخول", `دخول النظام بصلاحية: ${session.roleText}`);
-  saveDB();
+  saveDB(false);
   loadSettings();
   renderAll();
   show("dashboard");
   updateSyncBadge();
 }
-
 function getCycleForMonth(monthKeyStr){
   let parts = monthKeyStr.split("-").map(Number);
   let yr = parts[0], m = parts[1];
@@ -944,12 +983,11 @@ function getCycleForMonth(monthKeyStr){
   let from = `${prevYr}-${String(prevM).padStart(2,'0')}-${String(startDay).padStart(2,'0')}`;
   let endDay = db.settings.end ?? 25;
   let to = `${yr}-${String(m).padStart(2,'0')}-${String(endDay).padStart(2,'0')}`;
-  let dFrom = new Date(prevYr, prevM - 1, startDay);
-  let dTo = new Date(yr, m - 1, endDay);
+  let dFrom = parseLocalDate(from);
+  let dTo = parseLocalDate(to);
   let totalDays = Math.round((dTo - dFrom) / (1000 * 60 * 60 * 24)) + 1;
   return {from, to, monthKey: monthKeyStr, totalDays};
 }
-
 function getCycleForDate(dateStr){
   let parts = dateStr.split("-").map(Number);
   let yr = parts[0], m = parts[1], d = parts[2];
@@ -962,12 +1000,11 @@ function getCycleForDate(dateStr){
     return getCycleForMonth(`${yr}-${String(m).padStart(2,'0')}`);
   }
 }
-
 function checkRangeLock(fromDateStr, toDateStr){
-  let d1 = new Date(fromDateStr+'T00:00:00');
-  let d2 = new Date((toDateStr||fromDateStr)+'T00:00:00');
-  for(let d=new Date(d1); d<=d2; d.setDate(d.getDate()+1)){
-    let curDate = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  let d1 = parseLocalDate(fromDateStr);
+  let d2 = parseLocalDate(toDateStr || fromDateStr);
+  for(let d = new Date(d1); d <= d2; d.setDate(d.getDate() + 1)){
+    let curDate = formatLocalDate(d);
     let cycle = getCycleForDate(curDate);
     if(db.payrollMeta[cycle.monthKey]?.status === "معتمد ومغلق"){
       return {locked: true, monthKey: cycle.monthKey, lockedDate: curDate};
@@ -975,9 +1012,7 @@ function checkRangeLock(fromDateStr, toDateStr){
   }
   return {locked: false};
 }
-
 const titles={dashboard:"لوحة التحكم",employees:"بيانات العاملين والورديات",attendance:"الحضور والانصراف والبصمة",leaves:"الإجازات المدفوعة",absence:"الغياب","monthly-matrix":"جدول حالة الدورة الشهري",overtime:"الإضافي",bonuses:"المكافآت",deductions:"الجزاءات والاستقطاعات",loans:"السلف والأقساط",payroll:"كشف المرتبات المجمع",midmonth:"تقارير العاملين أثناء الشهر",summary:"التقرير المجمع الشامل للأنشطة",costcenters:"مراكز التكلفة والورديات",forms:"النماذج والاستمارات الإدارية",users:"إدارة المستخدمين والصلاحيات",settings:"إعدادات البرنامج",audit:"سجل العمليات",backup:"النسخ الاحتياطي"};
-
 function show(page){
   if(["settings","audit","backup","users"].includes(page)&&!isAdmin()){alert("خاص بالمدير العام فقط");return;}
   document.querySelectorAll("main section[id^=page-]").forEach(x=>x.classList.add("hidden"));
@@ -1002,10 +1037,10 @@ function show(page){
   if(page==="forms")initFormsView();
   if(page==="users")renderUsers();
   if(page==="audit")renderAudit();
+  applyUserPermissions();
 }
-
-function today(){return new Date().toISOString().slice(0,10)}
-function month(){return new Date().toISOString().slice(0,7)}
+function today(){return formatLocalDate(new Date());}
+function month(){let d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
 function money(n){return Number(n||0).toLocaleString("ar-EG",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function empOptions(selected=""){return db.employees.map(e=>`<option value="${e.code}" ${String(e.code)===String(selected)?"selected":""}>${e.code} — ${esc(e.name)}</option>`).join("")}
@@ -1013,14 +1048,12 @@ function nextCode(){ let nums = db.employees.map(e => parseInt(e.code) || 0); re
 function openModal(title,body){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.remove("hidden")}
 function closeModal(){document.getElementById("modal").classList.add("hidden")}
 function daily(e){return Number(e?.salary||0)/30}
-
 function getEmpShiftTimes(e){
   let s = String(e?.shift || "1");
   if(s === "2") return {start: db.settings.workStart2 || "16:00", end: db.settings.workEnd2 || "00:00", name: "الوردية الثانية (مسائية)"};
   if(s === "3") return {start: db.settings.workStart3 || "00:00", end: db.settings.workEnd3 || "08:00", name: "الوردية الثالثة (ليلية)"};
   return {start: db.settings.workStart || "08:00", end: db.settings.workEnd || "16:00", name: "الوردية الأولى (صباحية)"};
 }
-
 function hourlyRate(e){
   let shift = getEmpShiftTimes(e);
   let wStart = mins(shift.start) || 480;
@@ -1032,7 +1065,6 @@ function hourlyRate(e){
   if(e?.allowanceSubjectToOT) subjectSalary += Number(e?.allowances||0) + Number(e?.periodicAllowance||0);
   return (subjectSalary / 30) / totalHours;
 }
-
 function exportTableToCSV(tableId, filename) {
   let table = document.getElementById(tableId);
   if(!table) return alert("لا توجد بيانات للتصدير");
@@ -1052,7 +1084,6 @@ function exportTableToCSV(tableId, filename) {
   a.download = filename;
   a.click();
 }
-
 function employeeModal(code=""){
   let e=db.employees.find(x=>String(x.code)===String(code))||{name:"",dept:"الإنتاج",job:"",shift:"1",phone:"",address:"",hire:today(),familyMembers:1,salary:0,periodicAllowance:0,allowances:0,allowanceSubjectToOT:true,status:"على رأس العمل",bankAccount:""};
   openModal(code?"تعديل بيانات عامل":"إضافة عامل جديد",`<div class="form-grid">
@@ -1077,9 +1108,8 @@ function employeeModal(code=""){
   <div class="field"><label>البدلات الثابتة الأخرى</label><input id="fAllow" type="number" min="0" value="${e.allowances}"></div>
   <div class="field"><label>تخضع البدلات والعلاوة للإضافي؟</label><select id="fAllowOT"><option value="1" ${e.allowanceSubjectToOT?"selected":""}>نعم</option><option value="0" ${!e.allowanceSubjectToOT?"selected":""}>لا</option></select></div>
   <div class="field"><label>الحالة</label><select id="fStatus"><option ${e.status==="على رأس العمل"?"selected":""}>على رأس العمل</option><option ${e.status==="إجازة"?"selected":""}>إجازة</option><option ${e.status==="منتهى الخدمة"?"selected":""}>منتهى الخدمة</option></select></div>
-  </div><button class="btn primary" onclick="saveEmployee('${code}')">💾 حفظ بيانات العامل</button>`);
+  </div><button class="btn primary btn-save" onclick="saveEmployee('${code}')">💾 حفظ بيانات العامل</button>`);
 }
-
 function saveEmployee(code){
   let name=document.getElementById("fName").value.trim(), newCode=document.getElementById("fCode").value.trim();
   if(!name||!newCode)return alert("أدخل اسم ورقم كود العامل");
@@ -1103,7 +1133,6 @@ function saveEmployee(code){
   else{db.employees.push(obj); logSecurityAudit("إضافة موظف جديد", `إضافة العامل ${obj.name} (${obj.code})`);}
   saveDB();closeModal();renderEmployees();dashboard();
 }
-
 function bulkImportModal(){
   openModal("👥 إضافة واستيراد جماعي للموظفين", `
   <div class="notice">💡 يمكنك لصق بيانات الموظفين مباشرة بصيغة:<br><b>الاسم, الكود, الوظيفة, القسم, التليفون, العنوان, الراتب_الأساسي, العلاوة_الدورية, البدلات, أفراد_الأسرة, الوردية(1/2/3)</b></div>
@@ -1112,11 +1141,10 @@ function bulkImportModal(){
   <textarea id="bulkText" rows="8" placeholder="أحمد محمد, 2, فني إنتاج, قسم الصيانة, 01000000000, القاهرة, 6000, 500, 300, 3, 1"></textarea>
   </div>
   <div class="toolbar">
-  <button class="btn primary" onclick="processBulkText()">⚡ معالجة وإضافة البيانات</button>
+  <button class="btn primary btn-save" onclick="processBulkText()">⚡ معالجة وإضافة البيانات</button>
   </div>
   `);
 }
-
 function processBulkText(){
   let txt = document.getElementById("bulkText").value.trim();
   if(!txt) return alert("يرجى إدخال بيانات الموظفين أولاً");
@@ -1140,7 +1168,6 @@ function processBulkText(){
   saveDB(); closeModal(); renderEmployees(); dashboard();
   alert(`تمت الإضافة الجماعية بنجاح: تم إضافة ${added} عامل جديد.`);
 }
-
 function renderEmployees(){
   let q=(document.getElementById("empSearch").value||"").toLowerCase(),st=document.getElementById("empStatusFilter").value;
   let dFilter = document.getElementById("empDeptFilter").value;
@@ -1149,10 +1176,10 @@ function renderEmployees(){
   document.getElementById("empDeptFilter").innerHTML = `<option value="">جميع الأقسام</option>` + depts.map(d=>`<option value="${d}" ${d===curDeptVal?"selected":""}>${d}</option>`).join("");
   document.getElementById("empTable").innerHTML=db.employees.filter(e=>(!st||e.status===st)&&(!dFilter||e.dept===dFilter)&&(e.name+" "+e.code+" "+e.dept+" "+(e.phone||"")).toLowerCase().includes(q)).map(e=>{
     let sInfo = getEmpShiftTimes(e);
-    return `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td>${esc(e.job)}</td><td>${esc(e.dept)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td><b>${e.familyMembers||1}</b></td><td><b>${money(e.salary)}</b></td><td>${money(daily(e))}</td><td><b style="color:#059669">${money(e.periodicAllowance||0)}</b></td><td>${money(e.allowances)}</td><td>${e.status}</td><td><button class="btn secondary" onclick="employeeModal('${e.code}')">✏️ تعديل</button> <button class="btn danger" onclick="disableEmployee('${e.code}')">🛑 إنهاء الخدمة</button></td></tr>`;
+    return `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td>${esc(e.job)}</td><td>${esc(e.dept)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td><b>${e.familyMembers||1}</b></td><td><b>${money(e.salary)}</b></td><td>${money(daily(e))}</td><td><b style="color:#059669">${money(e.periodicAllowance||0)}</b></td><td>${money(e.allowances)}</td><td>${e.status}</td><td><button class="btn secondary btn-edit" onclick="employeeModal('${e.code}')">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="disableEmployee('${e.code}')">🛑 إنهاء الخدمة</button></td></tr>`;
   }).join("")||`<tr><td colspan="12">لا توجد بيانات</td></tr>`;
+  applyUserPermissions();
 }
-
 function printEmployeeList(){
   let rows = db.employees.map(e=>`<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td>${esc(e.job)}</td><td>${esc(e.dept)}</td><td>${getEmpShiftTimes(e).name}</td><td>${e.familyMembers||1}</td><td>${money(e.salary)}</td><td>${money(e.periodicAllowance||0)}</td><td>${money(daily(e))}</td><td>${esc(e.phone||"—")}</td><td>${e.status}</td></tr>`).join("");
   let html = `<html dir=rtl><head><meta charset=utf-8><title>كشف بيانات العاملين</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;margin-top:15px;font-size:12px}th,td{border:1px solid #aaa;padding:8px;text-align:right}th{background:#f1f5f9}h2{text-align:center}</style></head><body>
@@ -1162,18 +1189,16 @@ function printEmployeeList(){
   <script>window.print()<\/script></body></html>`;
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function disableEmployee(code){
   let e = db.employees.find(x=>String(x.code)===String(code));
   if(!e) return;
   let reason = prompt("أدخل سبب إنهاء خدمة الموظف "+e.name+":", "استقالة / نهاية عقد");
   if(reason!==null){
-    e.status="منتهى الخدمة"; e.endServiceReason = reason; e.endServiceDate = today();
+    e.status="منتهى الخدمة"; e.endServiceDate = today();
     logSecurityAudit("إنهاء خدمة موظف", `إنهاء خدمة العامل ${e.name} (${code}) - سبب: ${reason}`);
     saveDB();renderEmployees();dashboard();
   }
 }
-
 function downloadAttendanceTemplate(){
   let rows = [["كود_الموظف","اسم_الموظف","التاريخ","وقت_الحضور","وقت_الانصراف","الحالة"]];
   let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
@@ -1185,24 +1210,21 @@ function downloadAttendanceTemplate(){
   a.download = `نموذج_استيراد_الحضور_${today()}.csv`;
   a.click();
 }
-
 function biometricModal(){
   openModal("⏱️ استيراد الحضور (نموذج جاهز أو ملف بصمة)", `
   <div class="notice">📄 <b>الطريقة الأسهل:</b> حمّل نموذج Excel/CSV جاهز، املأه ثم ارفعه هنا مباشرة.</div>
   <button class="btn primary full" onclick="downloadAttendanceTemplate()" style="margin-bottom:14px">⬇ تحميل نموذج استيراد الحضور (Excel/CSV)</button>
   <div class="field"><label>رفع النموذج بعد تعبئته، أو ملف البصمة:</label><input type="file" id="bioFile" accept=".txt,.dat,.csv" onchange="readBioFile(this)"></div>
   <div class="field"><label>أو لصق البيانات مباشرة:</label><textarea id="bioText" rows="7" placeholder="1 2026-08-15 07:55:00\n1 2026-08-15 16:05:00"></textarea></div>
-  <button class="btn success full" onclick="processBiometricData()">⚡ مطابقة وتحضير البيانات آلياً</button>
+  <button class="btn success full btn-save" onclick="processBiometricData()">⚡ مطابقة وتحضير البيانات آلياً</button>
   `);
 }
-
 function readBioFile(input){
   let f = input.files[0]; if(!f) return;
   let r = new FileReader();
   r.onload = e => { document.getElementById("bioText").value = e.target.result; };
   r.readAsText(f);
 }
-
 function processBiometricData(){
   let raw = document.getElementById("bioText").value.trim();
   if(!raw) return alert("يرجى إدخال أو تحميل بيانات الحضور");
@@ -1262,7 +1284,6 @@ function processBiometricData(){
   saveDB(); closeModal(); renderAttendance(); dashboard();
   alert(`تمت معالجة بيانات الحضور بنجاح! تم تسجيل وتحضير ${processed} حركة.`);
 }
-
 function attendanceModal(){
   openModal("تسجيل حضور فردي أو نطاق تواريخ",`<div class="form-grid">
   <div class="field span2"><label>العامل</label><select id="aEmp">${empOptions()}</select></div>
@@ -1271,11 +1292,13 @@ function attendanceModal(){
   <div class="field"><label>الحضور</label><input id="aIn" type="time" value="${db.settings.workStart}"></div>
   <div class="field"><label>الانصراف</label><input id="aOut" type="time" value="${db.settings.workEnd}"></div>
   <div class="field span2"><label>الحالة</label><select id="aStatus"><option>حاضر</option><option>مأمورية</option><option>راحة أسبوعية</option><option>عطلة رسمية</option><option>نصف يوم</option></select></div>
-  </div><button class="btn primary" onclick="saveAttendanceRange()">💾 تطبيق والتسجيل</button>`);
+  </div><button class="btn primary btn-save" onclick="saveAttendanceRange()">💾 تطبيق والتسجيل</button>`);
 }
-
 function saveAttendanceRange(){
-  let emp=document.getElementById("aEmp").value, d1=new Date(document.getElementById("aFrom").value), d2=new Date(document.getElementById("aTo").value), status=document.getElementById("aStatus").value, inn=document.getElementById("aIn").value, out=document.getElementById("aOut").value;
+  let emp=document.getElementById("aEmp").value;
+  let d1=parseLocalDate(document.getElementById("aFrom").value);
+  let d2=parseLocalDate(document.getElementById("aTo").value);
+  let status=document.getElementById("aStatus").value, inn=document.getElementById("aIn").value, out=document.getElementById("aOut").value;
   let empObj = db.employees.find(e=>String(e.code)===String(emp));
   if(empObj && empObj.status === "منتهى الخدمة") return alert("🛑 لا يمكن تسجيل حضور لموظف منتهى الخدمة!");
   if(d1 > d2) return alert("تاريخ البداية يجب أن يكون قبل تاريخ النهاية");
@@ -1283,7 +1306,7 @@ function saveAttendanceRange(){
   if(lockCheck.locked) return alert("🔒 العملية مرفوضة! النطاق يقع ضمن شهر مغلق ماليًا!");
   let count=0;
   for(let d=new Date(d1); d<=d2; d.setDate(d.getDate()+1)){
-    let dateStr = d.toISOString().slice(0,10);
+    let dateStr = formatLocalDate(d);
     db.absence = db.absence.filter(x => !(String(x.employee) === String(emp) && x.date === dateStr));
     db.leaves = db.leaves.filter(x => !(String(x.employee) === String(emp) && x.from <= dateStr && x.to >= dateStr));
     db.attendance = db.attendance.filter(x => !(String(x.employee) === String(emp) && x.date === dateStr));
@@ -1294,7 +1317,6 @@ function saveAttendanceRange(){
   saveDB();closeModal();renderAttendance();dashboard();
   alert("تم تسجيل الحضور بنجاح.");
 }
-
 function deleteAttendance(code, date){
   let lockCheck = checkRangeLock(date, date);
   if(lockCheck.locked) return alert("🔒 تقرير هذا الشهر معتمد ومغلق ولا يمكن الحذف فيه!");
@@ -1303,7 +1325,6 @@ function deleteAttendance(code, date){
     logSecurityAudit("حذف حضور", `حذف حضور تاريخ ${date} للعامل (${code})`); saveDB();renderAttendance();dashboard();
   }
 }
-
 function mins(t){if(!t)return null;let [h,m]=t.split(":").map(Number);return h*60+m}
 function late(x, emp){
   if(!x.in||x.status!=="حاضر")return 0;
@@ -1314,14 +1335,12 @@ function late(x, emp){
   if(inMins <= startMins + grace) return 0;
   return inMins - startMins - grace;
 }
-
 function workHours(x){
   if(!x.in||!x.out)return 0;
   let diff = mins(x.out) - mins(x.in);
   if(diff < 0) diff += 1440;
   return Math.max(0, diff/60);
 }
-
 function bulkAttendance(){
   let d=document.getElementById("attDate").value||today(),n=0;
   let lockCheck = checkRangeLock(d, d);
@@ -1337,17 +1356,16 @@ function bulkAttendance(){
   logSecurityAudit("تحضير جماعي", `تحضير ${n} عامل ليوم ${d}`);
   saveDB();renderAttendance();dashboard();alert("تم تحضير "+n+" عامل بنجاح.");
 }
-
 function renderAttendance(){
   let dDate = document.getElementById("attDate"); if(!dDate.value) dDate.value = today();
   let d=dDate.value, q=(document.getElementById("attSearch").value||"").toLowerCase();
   document.getElementById("attTable").innerHTML=db.employees.filter(e=>(e.name+" "+e.code).toLowerCase().includes(q)).map(e=>{
     let x=db.attendance.find(a=>String(a.employee)===String(e.code)&&a.date===d);
     let sInfo = getEmpShiftTimes(e);
-    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?late(x, e):"—"} د</td><td>${x?workHours(x).toFixed(2):"—"}</td><td>${x?.status||"غير مسجل"}</td><td>${x?`<button class="btn danger" onclick="deleteAttendance('${e.code}','${d}')">🗑️ حذف</button>`:`—`}</td></tr>`;
+    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?late(x, e):"—"} د</td><td>${x?workHours(x).toFixed(2):"—"}</td><td>${x?.status||"غير مسجل"}</td><td>${x?`<button class="btn danger btn-delete" onclick="deleteAttendance('${e.code}','${d}')">🗑️ حذف</button>`:`—`}</td></tr>`;
   }).join("");
+  applyUserPermissions();
 }
-
 function leaveModal(idx=null){
   let x = idx!==null ? db.leaves[idx] : {employee:"", type:"سنوية", from:today(), to:today(), days:1};
   openModal(idx!==null?"تعديل إجازة مدفوعة":"تسجيل إجازة مدفوعة الأجر (يدوي)",`<div class="form-grid">
@@ -1355,19 +1373,21 @@ function leaveModal(idx=null){
   <div class="field"><label>نوع الإجازة المدفوعة</label><select id="lType"><option ${x.type==="سنوية"?"selected":""}>سنوية</option><option ${x.type==="عارضة"?"selected":""}>عارضة</option><option ${x.type==="مرضية مدفوعة"?"selected":""}>مرضية مدفوعة</option><option ${x.type==="عطلة رسمية / عيد"?"selected":""}>عطلة رسمية / عيد</option></select></div>
   <div class="field"><label>من تاريخ</label><input id="lFrom" type="date" value="${x.from}"></div>
   <div class="field"><label>إلى تاريخ</label><input id="lTo" type="date" value="${x.to}"></div>
-  </div><button class="btn primary" onclick="saveLeave(${idx})">💾 حفظ الإجازة المدفوعة</button>`);
+  </div><button class="btn primary btn-save" onclick="saveLeave(${idx})">💾 حفظ الإجازة المدفوعة</button>`);
 }
-
-function dateDays(a,b){return Math.floor((new Date(b)-new Date(a))/86400000)+1}
-
+function dateDays(a,b){
+  let d1 = parseLocalDate(a), d2 = parseLocalDate(b);
+  return Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+}
 function saveLeave(idx){
-  let d1=new Date(document.getElementById("lFrom").value), d2=new Date(document.getElementById("lTo").value);
+  let d1=parseLocalDate(document.getElementById("lFrom").value);
+  let d2=parseLocalDate(document.getElementById("lTo").value);
   let d=dateDays(document.getElementById("lFrom").value,document.getElementById("lTo").value);if(d<1)return alert("راجع تاريخ الإجازة");
   let emp = document.getElementById("lEmp").value;
   let lockCheck = checkRangeLock(document.getElementById("lFrom").value, document.getElementById("lTo").value);
   if(lockCheck.locked) return alert("🔒 النطاق يقع ضمن شهر مغلق ماليًا!");
   for(let cur=new Date(d1); cur<=d2; cur.setDate(cur.getDate()+1)){
-    let dateStr = cur.toISOString().slice(0,10);
+    let dateStr = formatLocalDate(cur);
     db.attendance = db.attendance.filter(x => !(String(x.employee) === String(emp) && x.date === dateStr));
     db.absence = db.absence.filter(x => !(String(x.employee) === String(emp) && x.date === dateStr));
   }
@@ -1377,7 +1397,6 @@ function saveLeave(idx){
   saveDB();closeModal();renderLeaves();dashboard();
   alert("تم تسجيل الإجازة المدفوعة بنجاح.");
 }
-
 function bulkLeaveModal(){
   openModal("🏖️ تسجيل إجازة جماعية لكل العاملين (الأعياد والمناسبات الرسمية)", `
   <div class="form-grid">
@@ -1385,15 +1404,14 @@ function bulkLeaveModal(){
   <div class="field"><label>من تاريخ</label><input id="bkLFrom" type="date" value="${today()}"></div>
   <div class="field"><label>إلى تاريخ</label><input id="bkLTo" type="date" value="${today()}"></div>
   </div>
-  <button class="btn warning full" onclick="saveBulkLeave()">⚡ تطبيق الإجازة الجماعية على كافة الموظفين</button>
+  <button class="btn warning full btn-save" onclick="saveBulkLeave()">⚡ تطبيق الإجازة الجماعية على كافة الموظفين</button>
   `);
 }
-
 function saveBulkLeave(){
   let fStr = document.getElementById("bkLFrom").value;
   let tStr = document.getElementById("bkLTo").value;
   let type = document.getElementById("bkLType").value;
-  let d1 = new Date(fStr), d2 = new Date(tStr);
+  let d1 = parseLocalDate(fStr), d2 = parseLocalDate(tStr);
   let daysCount = dateDays(fStr, tStr);
   if(daysCount < 1) return alert("يرجى التأكد من التواريخ");
   let lockCheck = checkRangeLock(fStr, tStr);
@@ -1401,7 +1419,7 @@ function saveBulkLeave(){
   let activeEmps = db.employees.filter(e => e.status === "على رأس العمل");
   activeEmps.forEach(emp => {
     for(let cur=new Date(d1); cur<=d2; cur.setDate(cur.getDate()+1)){
-      let dateStr = cur.toISOString().slice(0,10);
+      let dateStr = formatLocalDate(cur);
       db.attendance = db.attendance.filter(x => !(String(x.employee) === String(emp.code) && x.date === dateStr));
       db.absence = db.absence.filter(x => !(String(x.employee) === String(emp.code) && x.date === dateStr));
     }
@@ -1411,7 +1429,6 @@ function saveBulkLeave(){
   saveDB(); closeModal(); renderLeaves(); dashboard();
   alert(`تم إضافة الإجازة الجماعية بنجاح لجميع العاملين على رأس العمل (${activeEmps.length} عامل).`);
 }
-
 function deleteLeave(idx){
   let item = db.leaves[idx];
   if(item){
@@ -1420,20 +1437,18 @@ function deleteLeave(idx){
     if(confirm("حذف الإجازة؟")){ logSecurityAudit("حذف إجازة", `حذف إجازة للعامل (${item.employee})`); db.leaves.splice(idx,1);saveDB();renderLeaves(); }
   }
 }
-
 function leaveUsed(code, targetYear=today().slice(0,4), excludeIdx=null){
   return db.leaves.filter((x,i)=>String(x.employee)===String(code) && x.type==="سنوية" && x.from.startsWith(targetYear) && i!==excludeIdx).reduce((s,x)=>s+x.days,0);
 }
-
 function renderLeaves(){
   document.getElementById("leaveTable").innerHTML=db.leaves.map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let yr = x.from.slice(0,4);
     let rem=Math.max(0,db.settings.annual-leaveUsed(x.employee, yr));
-    return `<tr><td>${e?.code||""} — ${esc(e?.name||"")}</td><td>${x.type}</td><td>${x.from}</td><td>${x.to}</td><td>${x.days}</td><td><b>مدفوع</b></td><td>${rem} (${yr})</td><td><button class="btn secondary" onclick="leaveModal(${i})">✏️ تعديل</button> <button class="btn danger" onclick="deleteLeave(${i})">🗑️ حذف</button></td></tr>`;
+    return `<tr><td>${e?.code||""} — ${esc(e?.name||"")}</td><td>${x.type}</td><td>${x.from}</td><td>${x.to}</td><td>${x.days}</td><td><b>مدفوع</b></td><td>${rem} (${yr})</td><td><button class="btn secondary btn-edit" onclick="leaveModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteLeave(${i})">🗑️ حذف</button></td></tr>`;
   }).join("")||`<tr><td colspan="8">لا توجد إجازات مدفوعة مسجلة</td></tr>`;
+  applyUserPermissions();
 }
-
 function absenceModal(idx=null){
   let x = idx!==null ? db.absence[idx] : {employee:"", date:today(), days:1, reason:""};
   openModal(idx!==null?"تعديل غياب":"تسجيل غياب / إجازة غير مدفوعة",`<div class="form-grid">
@@ -1441,11 +1456,13 @@ function absenceModal(idx=null){
   <div class="field"><label>من تاريخ</label><input id="abFrom" type="date" value="${x.date}"></div>
   <div class="field"><label>إلى تاريخ</label><input id="abTo" type="date" value="${x.date}"></div>
   <div class="field span2"><label>السبب / الملاحظات</label><input id="abReason" value="${esc(x.reason)}" placeholder="غياب بدون إذن / إجازة غير مدفوعة الأجر"></div>
-  </div><button class="btn primary" onclick="saveAbsenceRange(${idx})">💾 حفظ الحركة</button>`);
+  </div><button class="btn primary btn-save" onclick="saveAbsenceRange(${idx})">💾 حفظ الحركة</button>`);
 }
-
 function saveAbsenceRange(idx){
-  let emp=document.getElementById("abEmp").value, d1=new Date(document.getElementById("abFrom").value), d2=new Date(document.getElementById("abTo").value), reason=document.getElementById("abReason").value;
+  let emp=document.getElementById("abEmp").value;
+  let d1=parseLocalDate(document.getElementById("abFrom").value);
+  let d2=parseLocalDate(document.getElementById("abTo").value);
+  let reason=document.getElementById("abReason").value;
   let lockCheck = checkRangeLock(document.getElementById("abFrom").value, document.getElementById("abTo").value);
   if(lockCheck.locked) return alert("🔒 العملية مرفوضة! النطاق يتداخل مع شهر مغلق ماليًا!");
   let numDays = dateDays(document.getElementById("abFrom").value, document.getElementById("abTo").value);
@@ -1455,7 +1472,7 @@ function saveAbsenceRange(idx){
   } else {
     let count = 0;
     for(let d=new Date(d1); d<=d2; d.setDate(d.getDate()+1)){
-      let dateStr = d.toISOString().slice(0,10);
+      let dateStr = formatLocalDate(d);
       if(d.getDay() === 5 && db.settings.friday !== "unpaid") continue;
       db.attendance = db.attendance.filter(x => !(String(x.employee) === String(emp) && x.date === dateStr));
       db.leaves = db.leaves.filter(x => !(String(x.employee) === String(emp) && x.from <= dateStr && x.to >= dateStr));
@@ -1468,7 +1485,6 @@ function saveAbsenceRange(idx){
   saveDB();closeModal();renderAbsence();dashboard();
   alert("تم تسجيل الغياب بنجاح.");
 }
-
 function deleteAbsence(idx){
   let item = db.absence[idx];
   if(item){
@@ -1480,22 +1496,21 @@ function deleteAbsence(idx){
     }
   }
 }
-
 function renderAbsence(){
-  document.getElementById("absenceTable").innerHTML=db.absence.map((x,i)=>{let e=db.employees.find(y=>String(y.code)===String(x.employee));return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.days}</td><td>${esc(x.reason)}</td><td>${money(x.days*daily(e))}</td><td><button class="btn secondary" onclick="absenceModal(${i})">✏️ تعديل</button> <button class="btn danger" onclick="deleteAbsence(${i})">🗑️ حذف</button></td></tr>`;}).join("")||`<tr><td colspan="6">لا توجد بيانات غياب</td></tr>`;
+  document.getElementById("absenceTable").innerHTML=db.absence.map((x,i)=>{let e=db.employees.find(y=>String(y.code)===String(x.employee));return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.days}</td><td>${esc(x.reason)}</td><td>${money(x.days*daily(e))}</td><td><button class="btn secondary btn-edit" onclick="absenceModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteAbsence(${i})">🗑️ حذف</button></td></tr>`;}).join("")||`<tr><td colspan="6">لا توجد بيانات غياب</td></tr>`;
+  applyUserPermissions();
 }
-
 function renderMonthlyMatrix(){
   let mInp = document.getElementById("matrixMonth");
   if(!mInp.value) mInp.value = month();
   let mKey = mInp.value;
   let cycle = getCycleForMonth(mKey);
   let q = (document.getElementById("matrixSearch").value||"").toLowerCase();
-  let dStart = new Date(cycle.from+'T00:00:00');
-  let dEnd = new Date(cycle.to+'T00:00:00');
+  let dStart = parseLocalDate(cycle.from);
+  let dEnd = parseLocalDate(cycle.to);
   let dateList = [];
   for(let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate()+1)){
-    dateList.push({str: cur.toISOString().slice(0,10), dayOfWeek: cur.getDay()});
+    dateList.push({str: formatLocalDate(cur), dayOfWeek: cur.getDay()});
   }
   let headHtml = `<tr><th>الكود</th><th>اسم الموظف</th><th>الأساسي التعاقدي</th>` +
   dateList.map(d=>`<th style="${d.dayOfWeek===5?'background:#f1f5f9;color:#2563eb':''}">${d.str.slice(8,10)}/${d.str.slice(5,7)}</th>`).join("") +
@@ -1518,10 +1533,10 @@ function renderMonthlyMatrix(){
       if(dObj.dayOfWeek === 5){
         if(db.settings.friday === "paid" && !abs) return `<td class="st-fri" title="جمعة: إجازة أسبوعية مدفوعة">جمعة</td>`;
         if(db.settings.friday === "conditional" && !abs){
-          let curD = new Date(dStr+'T00:00:00');
+          let curD = parseLocalDate(dStr);
           let wStart = new Date(curD); wStart.setDate(curD.getDate() - 6);
-          let wStartStr = wStart.toISOString().slice(0,10);
-          let hasWorked = a.some(x => x.date >= wStartStr && x.date < dStr && (x.status==="حاضر" || x.status==="مأمورية")) || lvs.some(x => x.from <= dStr && x.to >= wStartStr);
+          let wStartStr = formatLocalDate(wStart);
+          let hasWorked = a.some(x => x.date >= wStartStr && x.date <= dStr && (x.status==="حاضر" || x.status==="مأمورية")) || lvs.some(x => x.from <= dStr && x.to >= wStartStr);
           return hasWorked ? `<td class="st-fri" title="جمعة مستحقة">جمعة</td>` : `<td class="st-abs" title="جمعة غير مستحقة">غ</td>`;
         }
       }
@@ -1537,8 +1552,8 @@ function renderMonthlyMatrix(){
     return `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td>${cells}<td style="background:#f0fdf4;font-weight:bold;color:#15803d">${p.presentDays}</td><td style="background:#fef2f2;font-weight:bold;color:#b91c1c">${p.absDays}</td><td style="background:#f0f9ff;font-weight:bold;color:#0369a1">${p.paidLeaveDays}</td><td style="background:#fffbeb;font-weight:bold;color:#1e40af">${money(p.net)} ج.م</td></tr>`;
   }).join("");
   document.getElementById("matrixBody").innerHTML = bodyHtml || `<tr><td colspan="40">لا توجد بيانات للعرض</td></tr>`;
+  applyUserPermissions();
 }
-
 function printMonthlyMatrix(){
   let mVal = document.getElementById("matrixMonth").value || month();
   let cycle = getCycleForMonth(mVal);
@@ -1551,7 +1566,6 @@ function printMonthlyMatrix(){
   <script>window.print()<\/script></body></html>`;
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function otModal(idx=null){
   let x = idx!==null ? db.overtime[idx] : {employee:"", date:today(), hours:1, unit:"hour", factor:1.5, reason:""};
   openModal(idx!==null?"تعديل إضافي":"تسجيل إضافي فردي",`<div class="form-grid">
@@ -1561,9 +1575,8 @@ function otModal(idx=null){
   <div class="field"><label>الكمية (ساعات/أيام)</label><input id="oHours" type="number" min="0" step="0.5" value="${x.hours}"></div>
   <div class="field"><label>المعامل</label><input id="oFactor" type="number" min="0" step="0.1" value="${x.factor||1.5}"></div>
   <div class="field span2"><label>السبب</label><input id="oReason" value="${esc(x.reason)}"></div>
-  </div><button class="btn primary" onclick="saveOT(${idx})">💾 حفظ الحركة</button>`);
+  </div><button class="btn primary btn-save" onclick="saveOT(${idx})">💾 حفظ الحركة</button>`);
 }
-
 function saveOT(idx){
   let oDateVal = document.getElementById("oDate").value;
   let oEmpVal = document.getElementById("oEmp").value;
@@ -1573,7 +1586,6 @@ function saveOT(idx){
   if(idx!==null) db.overtime[idx]=obj; else db.overtime.push(obj);
   logSecurityAudit("تسجيل إضافي", `إضافي ${obj.hours} للعامل (${oEmpVal})`); saveDB();closeModal();renderOT();
 }
-
 function bulkOTModal(){
   openModal("إضافة عمل إضافي جماعي لكل العاملين بالمصنع",`<div class="form-grid">
   <div class="field"><label>التاريخ</label><input id="bOtDate" type="date" value="${today()}"></div>
@@ -1581,9 +1593,8 @@ function bulkOTModal(){
   <div class="field"><label>الكمية لكل عامل</label><input id="bOtQty" type="number" min="0" step="0.5" value="1"></div>
   <div class="field"><label>المعامل</label><input id="bOtFactor" type="number" min="0" step="0.1" value="1.0"></div>
   <div class="field span4"><label>سبب الإضافي الجماعي</label><input id="bOtReason" value="إضافي جماعي قرار إدارة المصنع"></div>
-  </div><button class="btn success" onclick="saveBulkOT()">⚡ تطبيق الإضافي الجماعي لجميع الموظفين</button>`);
+  </div><button class="btn success btn-save" onclick="saveBulkOT()">⚡ تطبيق الإضافي الجماعي لجميع الموظفين</button>`);
 }
-
 function saveBulkOT(){
   let d = document.getElementById("bOtDate").value;
   if(checkRangeLock(d, d).locked) return alert("🔒 التاريخ يقع ضمن شهر مغلق ماليًا!");
@@ -1592,7 +1603,6 @@ function saveBulkOT(){
   activeEmps.forEach(e=>{ db.overtime.push({employee:e.code, date:d, unit:unit, hours:qty, factor:factor, rate:hourlyRate(e), reason:reason}); });
   logSecurityAudit("إضافي جماعي", `إصدار إضافي جماعي لعدد ${activeEmps.length} عامل`); saveDB(); closeModal(); renderOT(); alert("تم تطبيق الإضافي الجماعي بنجاح.");
 }
-
 function deleteOT(idx){
   let item = db.overtime[idx];
   if(item){
@@ -1600,15 +1610,14 @@ function deleteOT(idx){
     if(confirm("حذف الحركة الإضافية؟")){ logSecurityAudit("حذف إضافي", `حذف إضافي للعامل (${item.employee})`); db.overtime.splice(idx,1);saveDB();renderOT(); }
   }
 }
-
 function renderOT(){
   document.getElementById("otTable").innerHTML=db.overtime.map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let val = (x.unit||"hour")==="day" ? (x.hours * daily(e) * (x.factor||1)) : (x.hours * hourlyRate(e) * (x.factor||1.5));
-    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.hours} ${(x.unit==="day"?"أيام":"ساعات")}</td><td>${x.factor||1.5}</td><td>${money(val)}</td><td>${esc(x.reason)}</td><td><button class="btn secondary" onclick="otModal(${i})">✏️ تعديل</button> <button class="btn danger" onclick="deleteOT(${i})">🗑️ حذف</button></td></tr>`;
+    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.hours} ${(x.unit==="day"?"أيام":"ساعات")}</td><td>${x.factor||1.5}</td><td>${money(val)}</td><td>${esc(x.reason)}</td><td><button class="btn secondary btn-edit" onclick="otModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteOT(${i})">🗑️ حذف</button></td></tr>`;
   }).join("")||`<tr><td colspan="7">لا توجد بيانات إضافي</td></tr>`;
+  applyUserPermissions();
 }
-
 function bonusModal(idx=null){
   let x = idx!==null ? db.bonuses[idx] : {employee:"", date:today(), mode:"day", amount:1, reason:""};
   openModal(idx!==null?"تعديل مكافأة":"إضافة مكافأة فردية",`<div class="form-grid">
@@ -1617,9 +1626,8 @@ function bonusModal(idx=null){
   <div class="field"><label>طريقة المكافأة</label><select id="bMode"><option value="day" ${x.mode==="day"?"selected":""}>باليوم</option><option value="cash" ${x.mode==="cash"?"selected":""}>مبلغ نقدي</option></select></div>
   <div class="field"><label>القيمـــة</label><input id="bAmount" type="number" min="0" step="0.1" value="${x.amount}"></div>
   <div class="field span2"><label>السبب</label><input id="bReason" value="${esc(x.reason)}"></div>
-  </div><button class="btn primary" onclick="saveBonus(${idx})">💾 حفظ المكافأة</button>`);
+  </div><button class="btn primary btn-save" onclick="saveBonus(${idx})">💾 حفظ المكافأة</button>`);
 }
-
 function saveBonus(idx){
   let d = document.getElementById("bDate").value;
   let emp = document.getElementById("bEmp").value;
@@ -1629,16 +1637,14 @@ function saveBonus(idx){
   if(idx!==null) db.bonuses[idx]=obj; else db.bonuses.push(obj);
   logSecurityAudit("إضافة مكافأة", `مكافأة للعامل (${emp})`); saveDB();closeModal();renderBonuses();
 }
-
 function bulkBonusModal(){
   openModal("إضافة مكافأة جماعية لجميع العاملين بالمصنع",`<div class="form-grid">
   <div class="field"><label>التاريخ</label><input id="bkBDate" type="date" value="${today()}"></div>
   <div class="field"><label>طريقة الاحتساب</label><select id="bkBMode"><option value="day">عدد أيام</option><option value="cash">مبلغ ثابت</option></select></div>
   <div class="field span2"><label>القيمة الممنوحة لكل عامل</label><input id="bkBAmount" type="number" min="0" step="0.5" value="1"></div>
   <div class="field span4"><label>سبب المكافأة الجماعية</label><input id="bkBReason" value="مكافأة تشجيعية جماعية"></div>
-  </div><button class="btn success" onclick="saveBulkBonus()">🎁 تطبيق المكافأة الجماعية لجميع الموظفين</button>`);
+  </div><button class="btn success btn-save" onclick="saveBulkBonus()">🎁 تطبيق المكافأة الجماعية لجميع الموظفين</button>`);
 }
-
 function saveBulkBonus(){
   let d = document.getElementById("bkBDate").value;
   if(checkRangeLock(d, d).locked) return alert("🔒 الشهر مغلق ماليًا!");
@@ -1647,7 +1653,6 @@ function saveBulkBonus(){
   activeEmps.forEach(e=>{ db.bonuses.push({employee:e.code, date:d, mode:mode, amount:amt, reason:reason}); });
   logSecurityAudit("مكافأة جماعية", `منح مكافأة جماعية لعدد ${activeEmps.length}`); saveDB(); closeModal(); renderBonuses(); alert("تم تطبيق المكافأة الجماعية بنجاح.");
 }
-
 function deleteBonus(idx){
   let item = db.bonuses[idx];
   if(item){
@@ -1655,15 +1660,14 @@ function deleteBonus(idx){
     if(confirm("حذف المكافأة؟")){ logSecurityAudit("حذف مكافأة", `حذف مكافأة للعامل (${item.employee})`); db.bonuses.splice(idx,1);saveDB();renderBonuses(); }
   }
 }
-
 function renderBonuses(){
   document.getElementById("bonusTable").innerHTML=db.bonuses.map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let val = x.mode==="cash" ? x.amount : (x.amount * daily(e));
-    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.mode==="cash"?"مبلغ نقدي":"عدد أيام"}</td><td>${x.amount} ${(x.mode==="cash"?"جنيه":"يوم")}</td><td><b>${money(val)}</b></td><td>${esc(x.reason)}</td><td><button class="btn secondary" onclick="bonusModal(${i})">✏️ تعديل</button> <button class="btn danger" onclick="deleteBonus(${i})">🗑️ حذف</button></td></tr>`;
+    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.mode==="cash"?"مبلغ نقدي":"عدد أيام"}</td><td>${x.amount} ${(x.mode==="cash"?"جنيه":"يوم")}</td><td><b>${money(val)}</b></td><td>${esc(x.reason)}</td><td><button class="btn secondary btn-edit" onclick="bonusModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteBonus(${i})">🗑️ حذف</button></td></tr>`;
   }).join("")||`<tr><td colspan="7">لا توجد مكافآت مسجلة</td></tr>`;
+  applyUserPermissions();
 }
-
 function deductionModal(idx=null){
   let x = idx!==null ? db.deductions[idx] : {employee:"", date:today(), unit:"day", qty:1, reason:""};
   openModal(idx!==null?"تعديل جزاء":"تسجيل جزاء / استقطاع",`<div class="form-grid">
@@ -1672,9 +1676,8 @@ function deductionModal(idx=null){
   <div class="field"><label>الوحدة</label><select id="dUnit"><option value="day" ${x.unit==="day"?"selected":""}>يوم</option><option value="hour" ${x.unit==="hour"?"selected":""}>ساعة</option><option value="cash" ${x.unit==="cash"?"selected":""}>مبلغ بالجنيه</option></select></div>
   <div class="field"><label>الكمية / المبلغ</label><input id="dQty" type="number" min="0" step="0.1" value="${x.qty}"></div>
   <div class="field span2"><label>السبب</label><input id="dReason" value="${esc(x.reason)}"></div>
-  </div><button class="btn primary" onclick="saveDeduction(${idx})">💾 حفظ الجزاء</button>`);
+  </div><button class="btn primary btn-save" onclick="saveDeduction(${idx})">💾 حفظ الجزاء</button>`);
 }
-
 function saveDeduction(idx){
   let d = document.getElementById("dDate").value;
   let emp = document.getElementById("dEmp").value;
@@ -1684,7 +1687,6 @@ function saveDeduction(idx){
   if(idx!==null) db.deductions[idx]=obj; else db.deductions.push(obj);
   logSecurityAudit("تسجيل جزاء", `جزاء للعامل (${emp})`); saveDB();closeModal();renderDeductions();
 }
-
 function deleteDeduction(idx){
   let item = db.deductions[idx];
   if(item){
@@ -1692,15 +1694,14 @@ function deleteDeduction(idx){
     if(confirm("حذف الجزاء؟")){ logSecurityAudit("حذف جزاء", `حذف جزاء للعامل (${item.employee})`); db.deductions.splice(idx,1);saveDB();renderDeductions(); }
   }
 }
-
 function renderDeductions(){
   document.getElementById("dedTable").innerHTML=db.deductions.map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let uLabel = x.unit==="hour"?"ساعة":(x.unit==="cash"?"جنيه":"يوم");
-    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${uLabel}</td><td>${x.qty}</td><td>${esc(x.reason)}</td><td><button class="btn secondary" onclick="deductionModal(${i})">✏️ تعديل</button> <button class="btn danger" onclick="deleteDeduction(${i})">🗑️ حذف</button></td></tr>`;
+    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${uLabel}</td><td>${x.qty}</td><td>${esc(x.reason)}</td><td><button class="btn secondary btn-edit" onclick="deductionModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteDeduction(${i})">🗑️ حذف</button></td></tr>`;
   }).join("")||`<tr><td colspan="6">لا توجد جزاءات مسجلة</td></tr>`;
+  applyUserPermissions();
 }
-
 function loanModal(idx=null){
   let x = idx!==null ? db.loans[idx] : {employee:"", date:today(), amount:1000, installment:200, paidAmount:0};
   openModal(idx!==null?"تعديل سلفة":"تسجيل سلفة جديدة",`<div class="form-grid">
@@ -1708,9 +1709,8 @@ function loanModal(idx=null){
   <div class="field"><label>التاريخ</label><input id="lnDate" type="date" value="${x.date}"></div>
   <div class="field"><label>إجمالي السلفة</label><input id="lnAmount" type="number" min="0" value="${x.amount}"></div>
   <div class="field"><label>القسط الشهري</label><input id="lnInst" type="number" min="0" value="${x.installment}"></div>
-  </div><button class="btn primary" onclick="saveLoan(${idx})">💾 حفظ السلفة</button>`);
+  </div><button class="btn primary btn-save" onclick="saveLoan(${idx})">💾 حفظ السلفة</button>`);
 }
-
 function saveLoan(idx){
   let lnDateVal = document.getElementById("lnDate").value;
   let lnEmpVal = document.getElementById("lnEmp").value;
@@ -1719,7 +1719,6 @@ function saveLoan(idx){
   if(idx!==null) db.loans[idx]=obj; else db.loans.push(obj);
   logSecurityAudit("تسجيل سلفة", `سلفة للعامل (${lnEmpVal})`); saveDB();closeModal();renderLoans();
 }
-
 function deleteLoan(idx){
   let item = db.loans[idx];
   if(item){
@@ -1727,7 +1726,6 @@ function deleteLoan(idx){
     if(confirm("حذف السلفة بالكامل؟")){ logSecurityAudit("حذف سلفة", `حذف سلفة للعامل (${item.employee})`); db.loans.splice(idx,1);saveDB();renderLoans(); }
   }
 }
-
 function loanStatementModal(loanId){
   let loan = db.loans.find(l=>l.id===loanId);
   if(!loan) return;
@@ -1743,10 +1741,9 @@ function loanStatementModal(loanId){
   </div>
   <h4>سجل الأقساط المسددة:</h4>
   <table style="margin-top:10px"><thead><tr><th>تاريخ السداد</th><th>بيان الحركة</th><th>المبلغ المسدد</th></tr></thead><tbody>${historyRows}</tbody></table>
-  ${rem > 0 ? `<div style="margin-top:15px"><button class="btn warning" onclick="payLoanCash('${loan.id}')">💵 تسجيل سداد قسط نقدي</button></div>` : ''}
+  ${rem > 0 ? `<div style="margin-top:15px"><button class="btn warning btn-save" onclick="payLoanCash('${loan.id}')">💵 تسجيل سداد قسط نقدي</button></div>` : ''}
   `);
 }
-
 function payLoanCash(loanId){
   let loan = db.loans.find(l=>l.id===loanId);
   if(!loan) return;
@@ -1760,18 +1757,14 @@ function payLoanCash(loanId){
     saveDB(); closeModal(); renderLoans(); alert("تم تسجيل السداد النقدي بنجاح.");
   } else if(p!==null) alert("قيمة المبلغ غير صحيحة!");
 }
-
 function renderLoans(){
   document.getElementById("loanTable").innerHTML=db.loans.map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let rem = Math.max(0, x.amount - x.paidAmount);
-    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${money(x.amount)}</td><td>${money(x.installment)}</td><td>${money(x.paidAmount)}</td><td><b>${money(rem)}</b></td><td><button class="btn primary" onclick="loanStatementModal('${x.id}')">📊 كشف حساب</button> <button class="btn secondary" onclick="loanModal(${i})">✏️ تعديل</button> <button class="btn danger" onclick="deleteLoan(${i})">🗑️ حذف</button></td></tr>`;
+    return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${money(x.amount)}</td><td>${money(x.installment)}</td><td>${money(x.paidAmount)}</td><td><b>${money(rem)}</b></td><td><button class="btn primary" onclick="loanStatementModal('${x.id}')">📊 كشف حساب</button> <button class="btn secondary btn-edit" onclick="loanModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteLoan(${i})">🗑️ حذف</button></td></tr>`;
   }).join("")||`<tr><td colspan="7">لا توجد سلف مسجلة</td></tr>`;
+  applyUserPermissions();
 }
-
-// ------------------------------------------
-// إدارة المستخدمين والصلاحيات المربوطة سحابياً
-// ------------------------------------------
 function openAddUserModal() {
   if (!isAdmin()) return alert("⛔ هذه الصلاحية للمدير العام فقط!");
   document.getElementById("userForm").reset();
@@ -1781,11 +1774,9 @@ function openAddUserModal() {
   document.getElementById("userModalBoxTitle").textContent = "إضافة مستخدم جديد";
   document.getElementById("userModalBox").classList.remove("hidden");
 }
-
 function closeUserModal() {
   document.getElementById("userModalBox").classList.add("hidden");
 }
-
 async function saveUser(e) {
   if (e) e.preventDefault();
   if (!isAdmin()) return alert("⛔ غير مصرح لغير المدير العام بإضافة أو تعديل المستخدمين!");
@@ -1801,7 +1792,7 @@ async function saveUser(e) {
   const ADMIN_EMAIL = "sarhanyasmen2@gmail.com";
   if ((username === ADMIN_EMAIL || username === "sarhan") && id !== "admin-master-uid") return alert("⛔ هذا البريد خاص بحساب المدير العام الرئيسي فقط!");
   
-  if(navigator.onLine){
+  if(navigator.onLine && sb){
     try {
       if (id) {
         let updatePayload = { name: name, username: username, role: role };
@@ -1824,7 +1815,6 @@ async function saveUser(e) {
       alert("حدث خطأ أثناء حفظ المستخدم سحابياً!");
     }
   } else {
-    // حفظ أوفلاين
     let q = getOfflineQueue();
     if(id){
       let u = (db.users||[]).find(x=>x.id===id);
@@ -1843,7 +1833,6 @@ async function saveUser(e) {
   closeUserModal();
   alert("✅ تم حفظ بيانات المستخدم بنجاح ومزامنتها");
 }
-
 function editUser(id) {
   if (!isAdmin()) return alert("⛔ غير مصرح لك بتعديل بيانات المستخدمين!");
   let u = (db.users || []).find(x => x.id === id);
@@ -1858,29 +1847,25 @@ function editUser(id) {
   document.getElementById("userModalBoxTitle").textContent = "تعديل حساب: " + u.name;
   document.getElementById("userModalBox").classList.remove("hidden");
 }
-
 async function deleteUser(id) {
   if (!isAdmin()) return alert("⛔ حذف الحسابات خاص بالمدير العام فقط!");
   if (id === "admin-master-uid") return alert("⛔ لا يمكن حذف حساب المدير العام الرئيسي!");
   let u = (db.users || []).find(x => x.id === id);
   if (!u) return;
   if (!confirm(`هل أنت متأكد من رغبتك في حذف حساب "${u.name}" نهائياً؟`)) return;
-
-  if(navigator.onLine){
+  if(navigator.onLine && sb){
     await sb.from('system_users').delete().eq('id', id);
   } else {
     let q = getOfflineQueue();
     q.push({ type: 'USER_DELETE', id: id });
     localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(q));
   }
-
   db.users = (db.users || []).filter(item => item.id !== id);
   logSecurityAudit("حذف مستخدم", `حذف الحساب: ${u.username||u.email}`);
   saveDB();
   renderUsers();
   alert("🗑️ تم حذف الحساب بنجاح");
 }
-
 function renderUsers() {
   let tbody = document.getElementById("usersTableBody");
   if (!tbody) return;
@@ -1906,10 +1891,6 @@ function renderUsers() {
     </tr>
   `).join("");
 }
-
-// ------------------------------------------
-// الاحتساب المحاسبي وكشف الرواتب
-// ------------------------------------------
 function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let isLocked = !customRange && (db.payrollMeta[monthKeyStr]?.status === "معتمد ومغلق");
   let snap = db.payrollMeta[monthKeyStr]?.snapshot?.[e.code];
@@ -1923,8 +1904,8 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let hrRate = hourlyRate(e);
   let cycle = customRange ? {from: customRange.from, to: customRange.to, monthKey: "CUSTOM", totalDays: dateDays(customRange.from, customRange.to)} : getCycleForMonth(monthKeyStr);
   let endDateLimit = targetCutoffDate || cycle.to;
-  let dStart = new Date(cycle.from+'T00:00:00');
-  let dEnd = new Date(endDateLimit+'T00:00:00');
+  let dStart = parseLocalDate(cycle.from);
+  let dEnd = parseLocalDate(endDateLimit);
   let presentDays = 0, paidLeaveDays = 0, fridayPaidDays = 0, absDays = 0, totalCalendarDays = 0;
   let a = db.attendance.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=endDateLimit);
   let explicitAbs = db.absence.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=endDateLimit);
@@ -1935,7 +1916,7 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let fridaySetting = db.settings.friday || "conditional";
   
   for(let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate()+1)){
-    let curDateStr = cur.toISOString().slice(0,10);
+    let curDateStr = formatLocalDate(cur);
     if(e.hire && curDateStr < e.hire) continue;
     if(e.status === "منتهى الخدمة" && e.endServiceDate && curDateStr > e.endServiceDate) continue;
     totalCalendarDays++;
@@ -1946,12 +1927,14 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
     if(isAtt){ presentDays++; }
     else if(isLea){ paidLeaveDays++; }
     else if(isFriday){
-      if(isExplicitAbs || fridaySetting === "unpaid") absDays++;
-      else if(fridaySetting === "paid") fridayPaidDays++;
-      else if(fridaySetting === "conditional"){
+      if(isExplicitAbs || fridaySetting === "unpaid") {
+        absDays++;
+      } else if(fridaySetting === "paid") {
+        fridayPaidDays++;
+      } else if(fridaySetting === "conditional"){
         let weekStart = new Date(cur); weekStart.setDate(cur.getDate() - 6);
-        let weekStartStr = weekStart.toISOString().slice(0,10);
-        let hasWorked = a.some(x => x.date >= weekStartStr && x.date < curDateStr && (x.status==="حاضر" || x.status==="مأمورية")) || lvs.some(x => x.from <= curDateStr && x.to >= weekStartStr);
+        let weekStartStr = formatLocalDate(weekStart);
+        let hasWorked = a.some(x => x.date >= weekStartStr && x.date <= curDateStr && (x.status==="حاضر" || x.status==="مأمورية")) || lvs.some(x => x.from <= curDateStr && x.to >= weekStartStr);
         if(hasWorked) fridayPaidDays++; else absDays++;
       }
     } else { absDays++; }
@@ -1994,7 +1977,6 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
     lateMin, lateDed, absDays, absDed, loanInst, totalLoanRemBefore, totalLoanRemAfter, empLoans, insuranceDed, taxDed, otHours, otVal, bonusVal, dedVal, net, cycle
   };
 }
-
 function togglePayrollRangeMode(){
   let mode = document.getElementById("payRangeMode").value;
   let isCustom = mode === "custom";
@@ -2008,7 +1990,6 @@ function togglePayrollRangeMode(){
   }
   calculatePayroll();
 }
-
 function calculatePayroll(){
   let mode = document.getElementById("payRangeMode").value;
   let cycle = null, m = "", customRange = null;
@@ -2037,11 +2018,11 @@ function calculatePayroll(){
     let p = calc(e, m, null, customRange);
     return `<tr>
     <td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td><td>${money(p.dayValue)}</td><td><b style="color:#2563eb">${p.payableDays} ي</b></td><td><b>${money(p.base)}</b></td><td><b style="color:#059669">${money(p.periodicEarned)}</b></td><td>${money(p.allow)}</td><td><span style="color:#0369a1;font-weight:bold">${p.paidLeaveDays} ي (${money(p.paidLeaveVal)})</span></td><td>${money(p.otVal)}</td><td>${money(p.bonusVal)}</td><td><span style="color:#b91c1c;font-weight:bold">${p.absDays} يوم</span></td><td><span style="color:#b91c1c">${money(p.lateDed)}</span></td><td>${money(p.loanInst)}</td><td>${money(p.insuranceDed + p.taxDed)}</td><td>${money(p.dedVal)}</td><td><b style="color:#1e40af;font-size:14px">${money(p.net)}</b></td>
-    <td><button class="btn secondary" onclick="printEmployee('${e.code}','${m}')">تقرير مفصل</button> <button class="btn primary" onclick="printPayslip('${e.code}','${m}')">🧾 قسيمة الراتب</button></td>
+    <td><button class="btn secondary btn-print" onclick="printEmployee('${e.code}','${m}')">تقرير مفصل</button> <button class="btn primary btn-print" onclick="printPayslip('${e.code}','${m}')">🧾 قسيمة الراتب</button></td>
     </tr>`;
   }).join("")||`<tr><td colspan="18">لا توجد بيانات مرتبات</td></tr>`;
+  applyUserPermissions();
 }
-
 function exportBankSheet(){
   let mode = document.getElementById("payRangeMode").value;
   let m = document.getElementById("payMonth").value || month();
@@ -2059,7 +2040,6 @@ function exportBankSheet(){
   a.download = `كشف_تحويلات_البنك_${cycle.from}_${cycle.to}.csv`;
   a.click();
 }
-
 function printPayslip(code, m){
   let e = db.employees.find(x=>String(x.code)===String(code));
   if(!e) return;
@@ -2071,12 +2051,10 @@ function printPayslip(code, m){
   let html = `<html dir=rtl><head><meta charset=utf-8><title>قسيمة راتب - ${esc(e.name)}</title><style>body{font-family:Arial;padding:20px;max-width:700px;margin:auto}.slip{border:2px dashed #0f172a;padding:20px;border-radius:12px}table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}th,td{border:1px solid #cbd5e1;padding:8px;text-align:right}th{background:#f1f5f9}.total{background:#f8fafc;font-weight:bold;font-size:15px}</style></head><body><div class="slip"><h2 style="text-align:center">🧾 قسيمة استلام الراتب</h2><div><b>اسم الموظف:</b> ${esc(e.name)} (${e.code})</div><div><b>الراتب الأساسي التعاقدي:</b> ${money(p.contractSalary)} ج.م</div><table><thead><tr><th>المستحقات</th><th>المبلغ</th><th>الاستقطاعات</th><th>المبلغ</th></tr></thead><tbody><tr><td>الأساسي المستحق (${p.payableDays} يوم)</td><td>${money(p.base)}</td><td>خصم التأخيرات (${p.lateMin} د)</td><td>${money(p.lateDed)}</td></tr><tr><td>العلاوة الدورية</td><td>${money(p.periodicEarned)}</td><td>خصم قسط السلفة</td><td>${money(p.loanInst)}</td></tr><tr><td>البدلات</td><td>${money(p.allow)}</td><td>تأمينات وضرائب</td><td>${money(p.insuranceDed + p.taxDed)}</td></tr><tr><td>إضافي ومكافآت</td><td>${money(p.otVal + p.bonusVal)}</td><td>جزاءات</td><td>${money(p.dedVal)}</td></tr><tr class="total"><td>إجمالي المستحقات</td><td>${money(totalEarnings)}</td><td>إجمالي الاستقطاعات</td><td>${money(totalDeductions)}</td></tr></tbody></table><h3 style="text-align:center;background:#e0f2fe;padding:10px">الراتب الصافي النهائي: ${money(p.net)} جنيه</h3></div><script>window.print()<\/script></body></html>`;
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function initMidMonthView(){
   document.getElementById("midEmpSelect").innerHTML = empOptions();
   document.getElementById("midReportDate").value = today();
 }
-
 function calculateMidMonthReport(){
   let empCode = document.getElementById("midEmpSelect").value;
   let reportDate = document.getElementById("midReportDate").value;
@@ -2093,7 +2071,6 @@ function calculateMidMonthReport(){
   </div>
   `;
 }
-
 function printMidMonthReport(){
   let empCode = document.getElementById("midEmpSelect").value;
   let reportDate = document.getElementById("midReportDate").value;
@@ -2104,13 +2081,11 @@ function printMidMonthReport(){
   let html=`<html dir=rtl><head><meta charset=utf-8><title>تقرير مستحقات - ${esc(e.name)}</title><style>body{font-family:Arial;padding:25px}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #aaa;padding:7px;text-align:right}h1{text-align:center}</style></head><body><h1>تقرير تسوية ومستحقات عامل</h1><div><b>اسم العامل:</b> ${esc(e.name)} — <b>الكود:</b> ${e.code}</div><div><b>الراتب الأساسي التعاقدي:</b> ${money(p.contractSalary)} جنيه | <b>الأيام المستحقة:</b> ${p.payableDays} يوم</div><h3>الصافي المستحق: ${money(p.net)} جنيه</h3><script>window.print()<\/script></body></html>`;
   let w=window.open("","_blank");w.document.write(html);w.document.close();
 }
-
 function initSummaryView(){
   document.getElementById("sumFrom").value = getCycleForDate(today()).from;
   document.getElementById("sumTo").value = today();
   document.getElementById("sumEmpSelect").innerHTML = `<option value="ALL">جميع العاملين بالمنشأة</option>` + empOptions();
 }
-
 function generateSummaryReport(){
   let from = document.getElementById("sumFrom").value, to = document.getElementById("sumTo").value, empSel = document.getElementById("sumEmpSelect").value;
   if(!from || !to) return alert("اختر نطاق التواريخ من - إلى");
@@ -2124,15 +2099,14 @@ function generateSummaryReport(){
   });
   document.getElementById("summaryTableBody").innerHTML = rowsHtml || `<tr><td colspan="14">لا توجد بيانات للفترة المحددة</td></tr>`;
   document.getElementById("summaryResult").classList.remove("hidden");
+  applyUserPermissions();
 }
-
 function printSummaryReport(){
   let from = document.getElementById("sumFrom").value, to = document.getElementById("sumTo").value, content = document.getElementById("summaryTableBody").innerHTML;
   if(!content) return alert("استخرج التقرير أولاً");
   let h=`<html dir=rtl><head><meta charset=utf-8><title>التقرير المجمع الشامل</title><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid #aaa;padding:6px;text-align:right}h1{text-align:center}</style></head><body><h1>التقرير المجمع الشامل للأنشطة</h1><p>من: ${from} إلى: ${to}</p><table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table><script>window.print()<\/script></body></html>`;
   let w=window.open("","_blank");w.document.write(h);w.document.close();
 }
-
 function initCostCentersView(){
   if(!document.getElementById("costFrom").value){
     let curCycle = getCycleForDate(today());
@@ -2141,7 +2115,6 @@ function initCostCentersView(){
   }
   renderCostCenters();
 }
-
 function renderCostCenters(){
   let from = document.getElementById("costFrom").value, to = document.getElementById("costTo").value;
   if(!from || !to) return;
@@ -2159,12 +2132,10 @@ function renderCostCenters(){
   });
   document.getElementById("costBody").innerHTML = rows || `<tr><td colspan="11">لا توجد بيانات للأقسام</td></tr>`;
 }
-
 function initFormsView(){
   document.getElementById("formEmpSelect").innerHTML = empOptions();
   document.getElementById("formDate").value = today();
 }
-
 function printOfficialForm(){
   let code = document.getElementById("formEmpSelect").value, type = document.getElementById("formType").value, dt = document.getElementById("formDate").value;
   let e = db.employees.find(x=>String(x.code)===String(code));
@@ -2186,7 +2157,6 @@ function printOfficialForm(){
   let html = `<html dir=rtl><head><meta charset=utf-8><title>${formTitle}</title><style>body{font-family:Arial;padding:35px;max-width:800px;margin:auto}.doc{border:2px solid #334155;padding:30px;border-radius:12px}h2{text-align:center}</style></head><body><div class="doc"><h2>${formTitle}</h2>${formBody}</div><script>window.print()<\/script></body></html>`;
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function unlockPayrollModal(){
   if(!isAdmin()) return alert("خاص بالمدير العام فقط!");
   let m=document.getElementById("payMonth").value||month();
@@ -2207,7 +2177,6 @@ function unlockPayrollModal(){
   saveDB(); calculatePayroll(); renderLoans();
   alert("تم فتح كشف المرتبات بنجاح.");
 }
-
 function changePayrollStatus(){
   let mode = document.getElementById("payRangeMode").value;
   if(mode === "custom") return alert("الاعتماد متاح فقط للدورات الشهرية النظامية!");
@@ -2238,14 +2207,12 @@ function changePayrollStatus(){
   logSecurityAudit("تغيير حالة كشف المرتبات", `تغيير شهر ${m} إلى حالة ${newSt}`);
   saveDB(); calculatePayroll(); renderLoans();
 }
-
 function printEmployee(code,m){
   let e=db.employees.find(x=>String(x.code)===String(code));if(!e)return;
   let p=calc(e,m);
   let html=`<html dir=rtl><head><meta charset=utf-8><title>تقرير مفصل - ${esc(e.name)}</title><style>body{font-family:Arial;padding:25px}table{width:100%;border-collapse:collapse;margin:12px 0}th,td{border:1px solid #aaa;padding:7px}h1{text-align:center}</style></head><body><h1>التقرير المالي المفصل للعامل</h1><div><b>العامل:</b> ${esc(e.name)} — ${e.code}</div><div><b>الراتب الأساسي:</b> ${money(p.contractSalary)} جنيه</div><h2>المستحقات والاستقطاعات</h2><table><tr><th>الراتب الأساسي المستحق (${p.payableDays} يوم)</th><td>${money(p.base)}</td></tr><tr><th>العلاوة الدورية</th><td>${money(p.periodicEarned)}</td></tr><tr><th>البدلات</th><td>${money(p.allow)}</td></tr><tr><th>الإضافي والمكافآت</th><td>${money(p.otVal + p.bonusVal)}</td></tr><tr><th>الاستقطاعات والتأمينات والضرائب</th><td>${money(p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal)}</td></tr><tr><th>الراتب الصافي النهائي</th><td><b>${money(p.net)}</b></td></tr></table><script>window.print()<\/script></body></html>`;
   let w=window.open("","_blank");w.document.write(html);w.document.close();
 }
-
 function printPayroll(){
   let mode = document.getElementById("payRangeMode").value;
   let m=document.getElementById("payMonth").value||month();
@@ -2258,18 +2225,23 @@ function printPayroll(){
   let h=`<html dir=rtl><head><meta charset=utf-8><style>body{font-family:Arial;padding:20px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #aaa;padding:5px}h1{text-align:center}</style></head><body><h1>كشف المرتبات المجمع لجميع الموظفين</h1><p style="text-align:center">الفترة: من ${cycle.from} إلى ${cycle.to}</p><table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>أيام الاستحقاق</th><th>الأساسي المستحق</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>أيام غياب</th><th>خصم تأخير</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table><script>window.print()<\/script></body></html>`;
   let w=window.open("","_blank");w.document.write(h);w.document.close();
 }
-
 function loadSettings(){
-  let s=db.settings;
-  document.getElementById("sStart").value=s.start??26; document.getElementById("sEnd").value=s.end??25; document.getElementById("sGrace").value=s.grace??10;
-  document.getElementById("sFriday").value=s.friday||"conditional";
-  document.getElementById("sWorkStart").value=s.workStart||"08:00"; document.getElementById("sWorkEnd").value=s.workEnd||"16:00";
-  document.getElementById("sWorkStart2").value=s.workStart2||"16:00"; document.getElementById("sWorkEnd2").value=s.workEnd2||"00:00";
-  document.getElementById("sWorkStart3").value=s.workStart3||"00:00"; document.getElementById("sWorkEnd3").value=s.workEnd3||"08:00";
-  document.getElementById("sInsurance").value=s.insurancePercent??11; document.getElementById("sTax").value=s.taxPercent??5;
-  document.getElementById("dashStart").textContent=s.start??26; document.getElementById("dashEnd").textContent=s.end??25;
+  let s=db.settings || {};
+  let elStart = document.getElementById("sStart"); if(elStart) elStart.value = s.start ?? 26;
+  let elEnd = document.getElementById("sEnd"); if(elEnd) elEnd.value = s.end ?? 25;
+  let elGrace = document.getElementById("sGrace"); if(elGrace) elGrace.value = s.grace ?? 10;
+  let elFriday = document.getElementById("sFriday"); if(elFriday) elFriday.value = s.friday || "conditional";
+  let elWorkStart = document.getElementById("sWorkStart"); if(elWorkStart) elWorkStart.value = s.workStart || "08:00";
+  let elWorkEnd = document.getElementById("sWorkEnd"); if(elWorkEnd) elWorkEnd.value = s.workEnd || "16:00";
+  let elWorkStart2 = document.getElementById("sWorkStart2"); if(elWorkStart2) elWorkStart2.value = s.workStart2 || "16:00";
+  let elWorkEnd2 = document.getElementById("sWorkEnd2"); if(elWorkEnd2) elWorkEnd2.value = s.workEnd2 || "00:00";
+  let elWorkStart3 = document.getElementById("sWorkStart3"); if(elWorkStart3) elWorkStart3.value = s.workStart3 || "00:00";
+  let elWorkEnd3 = document.getElementById("sWorkEnd3"); if(elWorkEnd3) elWorkEnd3.value = s.workEnd3 || "08:00";
+  let elIns = document.getElementById("sInsurance"); if(elIns) elIns.value = s.insurancePercent ?? 11;
+  let elTax = document.getElementById("sTax"); if(elTax) elTax.value = s.taxPercent ?? 5;
+  let elDashStart = document.getElementById("dashStart"); if(elDashStart) elDashStart.textContent = s.start ?? 26;
+  let elDashEnd = document.getElementById("dashEnd"); if(elDashEnd) elDashEnd.textContent = s.end ?? 25;
 }
-
 function saveSettings(){
   if(!isAdmin())return alert("خاص بالمدير العام فقط!");
   db.settings={
@@ -2282,12 +2254,11 @@ function saveSettings(){
   };
   logSecurityAudit("حفظ الإعدادات", "تعديل إعدادات الدوام والورديات"); saveDB(); loadSettings(); alert("تم حفظ إعدادات البرنامج بنجاح");
 }
-
 function changeAdminPassword(){
   let oldP = document.getElementById("passOld").value, newP = document.getElementById("passNew").value, confP = document.getElementById("passConfirm").value;
   if(!oldP || !newP) return alert("يرجى ملء الحقول المطلوبة");
   if(newP !== confP) return alert("كلمة المرور الجديدة غير متطابقة");
-  if(session.role === "super_admin" || session.role === "Administrator"){
+  if(session.role === "super_admin" || session.role === "admin" || session.role === "Administrator"){
     if(oldP !== db.adminPass && oldP !== "RQuol852") return alert("كلمة المرور الحالية غير صحيحة");
     db.adminPass = newP;
   }
@@ -2297,7 +2268,6 @@ function changeAdminPassword(){
   saveDB(); alert("تم تحديث كلمة المرور بنجاح");
   document.getElementById("passOld").value = ""; document.getElementById("passNew").value = ""; document.getElementById("passConfirm").value = "";
 }
-
 function factoryReset(){
   if(!isAdmin()) return alert("خاص بالمدير العام فقط!");
   let p = prompt("أدخل كلمة مرور المدير العام للمتابعة:");
@@ -2307,13 +2277,10 @@ function factoryReset(){
     db = defaultDB(); saveDB(); renderAll(); alert("تمت استعادة ضبط المصنع بالكامل");
   }
 }
-
 function renderAudit(){
   document.getElementById("auditTable").innerHTML=db.audit.map(x=>`<tr><td>${x.date}</td><td>${esc(x.user)}</td><td>${esc(x.action)}</td><td>${esc(x.empCode)}</td><td>${esc(x.details)}</td></tr>`).join("")||`<tr><td colspan=5>لا توجد عمليات مسجلة</td></tr>`;
 }
-
 function backup(){ logSecurityAudit("نسخ احتياطي", "تصدير نسخة احتياطية JSON"); download("HRMS_Backup_V7_"+today()+".json",JSON.stringify(db,null,2),"application/json"); }
-
 function restore(inp){
   if(!isAdmin()) return alert("خاص بالمدير العام فقط!");
   let f=inp.files[0];if(!f)return;
@@ -2331,15 +2298,13 @@ function restore(inp){
   };
   r.readAsText(f);
 }
-
 function download(name,data,type){let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();}
-
 function checkDashboardAlerts(){
   let alerts = [];
   let curDate = new Date();
   db.employees.filter(e=>e.status==="على رأس العمل").forEach(e=>{
     if(e.hire){
-      let diffDays = Math.floor((curDate - new Date(e.hire+'T00:00:00')) / (1000 * 60 * 60 * 24));
+      let diffDays = Math.floor((curDate - parseLocalDate(e.hire)) / (1000 * 60 * 60 * 24));
       if(diffDays >= 75 && diffDays <= 90){
         alerts.push(`• الموظف <b>${e.name}</b> (${e.code}) قَرُبت نهاية فترة تجربته (مر عليها ${diffDays} يوماً).`);
       }
@@ -2357,7 +2322,6 @@ function checkDashboardAlerts(){
   if(alerts.length > 0){ content.innerHTML = alerts.join("<br>"); box.classList.remove("hidden"); }
   else { box.classList.add("hidden"); }
 }
-
 function dashboard(){
   let d=today(), m=month();
   let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
@@ -2369,7 +2333,6 @@ function dashboard(){
   document.getElementById("kOT").textContent = db.overtime.filter(x=>x.date>=cycle.from && x.date<=cycle.to).reduce((s,x)=>s+Number(x.hours||0),0).toFixed(1);
   checkDashboardAlerts();
 }
-
 function renderAll(){
   dashboard();
   renderEmployees();
@@ -2384,8 +2347,8 @@ function renderAll(){
   renderAudit();
   renderUsers();
   loadSettings();
+  applyUserPermissions();
 }
-
 function logSecurityAudit(action, details) {
   if (db) {
     db.audit = db.audit || [];
@@ -2399,9 +2362,13 @@ function logSecurityAudit(action, details) {
     db.audit = db.audit.slice(0, 1000);
   }
 }
-
-document.getElementById("attDate").value = today();
-document.getElementById("payMonth").value = month();
+window.addEventListener('DOMContentLoaded', () => {
+  const attInp = document.getElementById("attDate");
+  if(attInp) attInp.value = today();
+  const payInp = document.getElementById("payMonth");
+  if(payInp) payInp.value = month();
+  updateSyncBadge();
+});
 </script>
 </body>
 </html>
