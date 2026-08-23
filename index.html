@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <link rel="icon" href="data:,">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>HRMS Enterprise V7.2 Online — النظام المحاسبي السحابي المعتمد</title>
 <style>
 :root{
@@ -19,7 +19,7 @@
 --radius:14px;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);direction:rtl;line-height:1.5}
+body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);direction:rtl;line-height:1.5;overflow-x:hidden}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);border:0}
 .hidden{display:none!important}
@@ -29,7 +29,7 @@ button{cursor:pointer;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);border:0}
 .muted{color:var(--muted);font-size:13px}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:15px;text-align:right}
 .field label{font-weight:700;font-size:13px;color:#334155}
-.field input,.field select,.field textarea{border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;outline:none;background:#fff;transition:all 0.2s;color:#1e293b}
+.field input,.field select,.field textarea{border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;outline:none;background:#fff;transition:all 0.2s;color:#1e293b;width:100%}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,0.12)}
 .btn{border-radius:10px;padding:10px 18px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;box-shadow:var(--shadow-sm);font-size:13.5px}
 .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
@@ -56,11 +56,11 @@ button{cursor:pointer;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);border:0}
 .page-title{margin:0;font-size:22px;font-weight:800;color:#0f172a}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:20px;box-shadow:var(--shadow)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:20px;box-shadow:var(--shadow);overflow:hidden}
 .kpi{border-top:4px solid var(--primary);position:relative;overflow:hidden}
 .kpi .num{font-size:32px;font-weight:900;margin-top:6px;color:#0f172a}
-.table-wrap{overflow:auto;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
-table{width:100%;border-collapse:collapse;min-width:1150px;background:#fff}
+.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);width:100%}
+table{width:100%;border-collapse:collapse;min-width:1000px;background:#fff}
 th,td{border-bottom:1px solid var(--border);padding:11px 14px;text-align:right;white-space:nowrap;font-size:13px}
 th{background:#f8fafc;font-weight:700;color:#475569;font-size:12.5px;text-transform:uppercase}
 tr:hover td{background:#f8fafc}
@@ -88,6 +88,7 @@ tr:hover td{background:#f8fafc}
 .sync-indicator{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:bold;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#475569}
 .sync-online{background:#dcfce7;color:#15803d}
 .sync-offline{background:#fee2e2;color:#b91c1c}
+
 @media(max-width:1100px){
   .app{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative}
@@ -104,18 +105,18 @@ tr:hover td{background:#f8fafc}
   .sidebar-close{display:inline-block}
   .sidebar-overlay.show{display:block}
   .top{padding:12px 16px}
-  .content{padding:14px}
+  .content{padding:12px}
   .page-title{font-size:18px}
   .grid,.grid2,.form-grid{grid-template-columns:1fr}
   .span2,.span3,.span4{grid-column:auto}
-  .kpi .num{font-size:26px}
-  .card{padding:16px;border-radius:12px}
-  .modal-box{padding:18px;border-radius:16px;max-height:96vh}
-  .login-box{padding:28px 22px}
+  .kpi .num{font-size:24px}
+  .card{padding:14px;border-radius:12px;margin-bottom:14px}
+  .modal-box{padding:16px;border-radius:16px;max-height:96vh}
+  .login-box{padding:24px 18px}
   .toolbar{gap:8px}
-  .toolbar .btn{flex:1 1 auto;font-size:12.5px;padding:9px 12px}
+  .toolbar .btn{flex:1 1 100%;font-size:13px;padding:9px 12px}
   button.btn,.field input,.field select,.field textarea{min-height:42px}
-  table{min-width:900px}
+  table{min-width:780px}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -207,10 +208,10 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>المعادلات والقواعد المحاسبية المعتمدة (الأساس المحاسبي الثابت 30 يوماً V7.2)</h3>
-<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية (28، 30، أو 31 يوماً)[span_1](start_span)[span_1](end_span).</p>
-<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها[span_2](start_span)[span_2](end_span).</p>
-<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا[span_3](start_span)[span_3](end_span).</p>
-<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي[span_4](start_span)[span_4](end_span).</p>
+<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية (28، 30، أو 31 يوماً)[span_6](start_span)[span_6](end_span).</p>
+<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها[span_7](start_span)[span_7](end_span).</p>
+<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا[span_8](start_span)[span_8](end_span).</p>
+<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي[span_9](start_span)[span_9](end_span).</p>
 </div>
 </div>
 </section>
@@ -271,7 +272,7 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-leaves" class="hidden">
 <div class="card">
-<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد[span_5](start_span)[span_5](end_span).</div>
+<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد[span_10](start_span)[span_10](end_span).</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="leaveModal()">＋ تسجيل إجازة مدفوعة فردية</button>
 <button class="btn warning btn-add" onclick="bulkLeaveModal()">🏖️ إضافة إجازة جماعية لجميع العاملين (أعياد / عطلات)</button>
@@ -284,7 +285,7 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-absence" class="hidden">
 <div class="card">
-<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة[span_6](start_span)[span_6](end_span).</div>
+<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة[span_11](start_span)[span_11](end_span).</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="absenceModal()">＋ تسجيل غياب / إجازة غير مدفوعة</button>
 <button class="btn success btn-print" onclick="printAbsenceReport()">🖨️ طباعة سجل الغياب والانقطاع</button>
@@ -297,7 +298,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-monthly-matrix" class="hidden">
 <div class="card">
 <h3>📅 جدول حالة الموظف اليومية التفصيلي خلال الدورة المحاسبية للمرتبات</h3>
-<div class="notice">💡 الحالات: (<b>ح</b>: حضور | <b>غ</b>: غياب غير مدفوع | <b>ج</b>: إجازة مدفوعة | <b>م</b>: مأمورية | <b>جمعة</b>: إجازة جمعة مدفوعة مشروطة | <b>ر</b>: راحة)[span_7](start_span)[span_7](end_span).</div>
+<div class="notice">💡 الحالات: (<b>ح</b>: حضور | <b>غ</b>: غياب غير مدفوع | <b>ج</b>: إجازة مدفوعة | <b>م</b>: مأمورية | <b>جمعة</b>: إجازة جمعة مدفوعة مشروطة | <b>ر</b>: راحة)[span_12](start_span)[span_12](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>شهر الدورة المحاسبية</label><input id="matrixMonth" type="month" onchange="renderMonthlyMatrix()"></div>
 <div class="field span2"><label>تصفية / بحث عن موظف</label><input id="matrixSearch" oninput="renderMonthlyMatrix()" placeholder="اسم أو كود الموظف"></div>
@@ -378,7 +379,7 @@ tr:hover td{background:#f8fafc}
 📅 <b>الدورة المحاسبية الحالية للكشف:</b> <span id="lblCycleFrom">—</span> ⬅️ <span id="lblCycleTo">—</span> | <b>عدد الأيام الفعلية:</b> <span id="lblCycleDays">0</span> يوماً (<b>الأساس المحاسبي المعتمد: 30 يوماً</b>).
 </div>
 <div id="payrollLockNotice" class="danger-note hidden">
-🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق[span_8](start_span)[span_8](end_span).
+🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق[span_13](start_span)[span_13](end_span).
 <br style="margin-bottom:8px">
 <button class="btn warning admin-only" style="margin-top:8px" onclick="unlockPayrollModal()">🔓 طلب فتح كشف المرتبات المغلق استثنائيًا</button>
 </div>
@@ -396,19 +397,20 @@ tr:hover td{background:#f8fafc}
 <th>العامل</th>
 <th>الراتب الأساسي التعاقدي</th>
 <th>قيمة اليوم</th>
-<th>أيام الاستحقاق</th>
-<th>الأساسي المستحق</th>
+<th>أيام الحضور</th>
+<th>الجمعة المستحقة</th>
+<th>أيام الغياب</th>
+<th>خصم الغياب</th>
 <th>العلاوة الدورية</th>
 <th>البدلات</th>
 <th>إجازات مدفوعة</th>
 <th>إضافي</th>
 <th>مكافآت</th>
-<th>أيام الغياب</th>
 <th>خصم تأخير</th>
 <th>قسط سلفة</th>
 <th>تأمينات/ضرائب</th>
 <th>جزاءات</th>
-<th>الراتب المستحق الصافي النهائي</th>
+<th>الراتب الصافي النهائي</th>
 <th>الإجراءات والطباعة</th>
 </tr>
 </thead>
@@ -419,7 +421,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-midmonth" class="hidden">
 <div class="card">
 <h3>📋 تقارير أجور واستحقاقات العاملين أثناء الشهر (المستقيلين / المنقطعين / الفترات الجزئية)</h3>
-<div class="notice">💡 احتساب دقيق بحسب الأيام الفعلية المحضورة مع تطبيق استحقاق الجمعة المشروط والعلاوات الدورية على أساس 30 يوماً[span_9](start_span)[span_9](end_span).</div>
+<div class="notice">💡 احتساب دقيق معتمد على الأساس الثابت (30 يوماً) واستحقاق الجمعة المشروط وحصر أيام الغياب والخصم المالي الصريح[span_14](start_span)[span_14](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="midEmpSelect"></select></div>
 <div class="field"><label>تاريخ التقرير المحاسبي</label><input id="midReportDate" type="date"></div>
@@ -444,7 +446,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-summary" class="hidden">
 <div class="card">
 <h3>📊 التقرير المجمع الشامل للأنشطة والأنصبة الفتراتية</h3>
-<div class="notice">💡 حصر دقيق ومفصل لكافة متغيرات العاملين مبني على الحضور الفعلي والأيام المستحقة[span_10](start_span)[span_10](end_span).</div>
+<div class="notice">💡 حصر شامل ودقيق لكافة متغيرات العاملين مبني على الأساس المحاسبي المعتمد[span_15](start_span)[span_15](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="sumFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="sumTo" type="date"></div>
@@ -467,14 +469,16 @@ tr:hover td{background:#f8fafc}
 <th>قيمة اليوم</th>
 <th>العلاوة الدورية</th>
 <th>أيام الحضور</th>
+<th>الجمعة المستحقة</th>
 <th>أيام الغياب</th>
+<th>خصم الغياب</th>
 <th>إجازات مدفوعة</th>
 <th>دقائق التأخير</th>
 <th>قسط السلفة</th>
-<th>الإضافي (ساعات/أيام)</th>
-<th>المكافآت (جنيه)</th>
-<th>الجزاءات (جنيه)</th>
-<th>الراتب المستحق الصافي النهائي</th>
+<th>الإضافي</th>
+<th>المكافآت</th>
+<th>الجزاءات</th>
+<th>الراتب الصافي النهائي</th>
 </tr>
 </thead>
 <tbody id="summaryTableBody"></tbody>
@@ -485,7 +489,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-costcenters" class="hidden">
 <div class="card">
 <h3>🏭 تقرير مراكز التكلفة وتوزيع الأجور حسب خطوط الإنتاج والورديات</h3>
-<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة[span_11](start_span)[span_11](end_span).</div>
+<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة[span_16](start_span)[span_16](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="costFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="costTo" type="date"></div>
@@ -519,7 +523,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-forms" class="hidden">
 <div class="card">
 <h3>🖨️ طباعة النماذج والاستمارات الإدارية المعتمدة</h3>
-<div class="notice">💡 استخراج وطباعة استمارات رسمية مباشرة موثقة بختم وكود النظام[span_12](start_span)[span_12](end_span).</div>
+<div class="notice">💡 استخراج وطباعة استمارات رسمية مباشرة موثقة بختم وكود النظام[span_17](start_span)[span_17](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="formEmpSelect"></select></div>
 <div class="field"><label>نوع النموذج الإداري</label>
@@ -595,7 +599,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>🏭 إعادة ضبط المصنع للنظام</h3>
-<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_13](start_span)"[span_13](end_span).</div>
+<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_18](start_span)"[span_18](end_span).</div>
 <button class="btn danger" onclick="factoryReset()">⚠️ إجراء ضبط المصنع</button>
 </div>
 </section>
@@ -1078,7 +1082,7 @@ function hourlyRate(e){
   return (subjectSalary / 30) / totalHours;
 }
 
-// دالة الطباعة الموحدة الشاملة
+// دالة الطباعة الموحدة
 function printReportDocument(title, subTitle, contentTableHtml, summaryBoxHtml="") {
   let html = `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8">
   <title>${title}</title>
@@ -1560,7 +1564,7 @@ function renderMonthlyMatrix(){
   }
   let headHtml = `<tr><th>الكود</th><th>اسم الموظف</th><th>الأساسي التعاقدي</th>` +
   dateList.map(d=>`<th style="${d.dayOfWeek===5?'background:#f1f5f9;color:#2563eb':''}">${d.str.slice(8,10)}/${d.str.slice(5,7)}</th>`).join("") +
-  `<th style="background:#dcfce7">أيام الحضور</th><th style="background:#fee2e2">أيام الغياب</th><th style="background:#e0f2fe">إجازات مدفوعة</th><th style="background:#fef3c7">الراتب الصافي النهائي</th></tr>`;
+  `<th style="background:#dcfce7">أيام الحضور</th><th style="background:#f1f5f9">الجمعة المستحقة</th><th style="background:#fee2e2">أيام الغياب</th><th style="background:#e0f2fe">إجازات مدفوعة</th><th style="background:#fef3c7">الراتب الصافي النهائي</th></tr>`;
   document.getElementById("matrixHead").innerHTML = headHtml;
   
   let emps = db.employees.filter(e=>(e.name+" "+e.code).toLowerCase().includes(q));
@@ -1595,7 +1599,7 @@ function renderMonthlyMatrix(){
       }
       return `<td class="st-abs">غ</td>`;
     }).join("");
-    return `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td>${cells}<td style="background:#f0fdf4;font-weight:bold;color:#15803d">${p.presentDays}</td><td style="background:#fef2f2;font-weight:bold;color:#b91c1c">${p.absDays}</td><td style="background:#f0f9ff;font-weight:bold;color:#0369a1">${p.paidLeaveDays}</td><td style="background:#fffbeb;font-weight:bold;color:#1e40af">${money(p.net)} ج.م</td></tr>`;
+    return `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td>${cells}<td style="background:#f0fdf4;font-weight:bold;color:#15803d">${p.presentDays}</td><td style="background:#f1f5f9;font-weight:bold;color:#2563eb">${p.fridayPaidDays}</td><td style="background:#fef2f2;font-weight:bold;color:#b91c1c">${p.absDays}</td><td style="background:#f0f9ff;font-weight:bold;color:#0369a1">${p.paidLeaveDays}</td><td style="background:#fffbeb;font-weight:bold;color:#1e40af">${money(p.net)} ج.م</td></tr>`;
   }).join("");
   document.getElementById("matrixBody").innerHTML = bodyHtml || `<tr><td colspan="40">لا توجد بيانات للعرض</td></tr>`;
   applyUserPermissions();
@@ -1986,7 +1990,7 @@ function renderUsers() {
 }
 
 // -------------------------------------------------------------
-// خوارزمية احتساب كشف المرتبات المعتمدة بالأساس الثابت 30 يوماً
+// الخوارزمية المحاسبية الموحدة الشاملة (قاعدة 30 يوماً الصارمة)
 // -------------------------------------------------------------
 function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let isLocked = !customRange && (db.payrollMeta[monthKeyStr]?.status === "معتمد ومغلق");
@@ -1994,11 +1998,11 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   if(isLocked && snap && !targetCutoffDate && !customRange){
     return {...snap, contractSalary: Number(e.salary||0), periodicAllowance: Number(e.periodicAllowance||0), cycle: getCycleForMonth(monthKeyStr)};
   }
-  const STANDARD_DAYS = 30; // تثبيت الأساس الشهري على 30 يوماً دائماً[span_14](start_span)[span_14](end_span)
+  const STANDARD_DAYS = 30; // تثبيت الشهر على 30 يوماً دائماً[span_19](start_span)[span_19](end_span)
   let contractSalary = Number(e.salary||0);
   let periodicAllowance = Number(e.periodicAllowance||0);
   let allow = Number(e.allowances||0);
-  let dayValue = contractSalary / STANDARD_DAYS; //[span_15](start_span)[span_15](end_span)
+  let dayValue = contractSalary / STANDARD_DAYS; //[span_20](start_span)[span_20](end_span)
   let hrRate = hourlyRate(e);
   
   let cycle = customRange ? {from: customRange.from, to: customRange.to, monthKey: "CUSTOM", totalDays: dateDays(customRange.from, customRange.to)} : getCycleForMonth(monthKeyStr);
@@ -2014,11 +2018,6 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let dds = db.deductions.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=endDateLimit);
   let lvs = db.leaves.filter(x=>String(x.employee)===String(e.code) && x.from<=endDateLimit && x.to>=cycle.from);
   let fridaySetting = db.settings.friday || "conditional";
-  
-  let isFullCycle = true;
-  if(e.hire && e.hire > cycle.from) isFullCycle = false;
-  if(e.status === "منتهى الخدمة" && e.endServiceDate && e.endServiceDate < cycle.to) isFullCycle = false;
-  if(targetCutoffDate || customRange) isFullCycle = false;
   
   for(let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate()+1)){
     let curDateStr = formatLocalDate(cur);
@@ -2050,25 +2049,13 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
     }
   }
   
-  let payableDays = 0;
-  let base = 0;
-  let periodicEarned = 0;
-  let allowEarned = 0;
-  if (isFullCycle) {
-    payableDays = Math.max(0, STANDARD_DAYS - absDays);
-    base = Math.max(0, contractSalary - (absDays * dayValue));
-    periodicEarned = Math.max(0, periodicAllowance - (absDays * (periodicAllowance / STANDARD_DAYS)));
-    allowEarned = Math.max(0, allow - (absDays * (allow / STANDARD_DAYS)));
-  } else {
-    let actualDays = presentDays + paidLeaveDays + fridayPaidDays;
-    payableDays = Math.min(STANDARD_DAYS, actualDays);
-    base = payableDays * dayValue;
-    periodicEarned = (payableDays / STANDARD_DAYS) * periodicAllowance;
-    allowEarned = (payableDays / STANDARD_DAYS) * allow;
-  }
-  
+  // الحساب الموحد الصارم:
+  let payableDays = presentDays + paidLeaveDays + fridayPaidDays;
+  let base = contractSalary; // الأساسي يوضع كاستحقاق كامل[span_21](start_span)[span_21](end_span)
+  let periodicEarned = periodicAllowance; // العلاوة توضع كاستحقاق كامل[span_22](start_span)[span_22](end_span)
+  let allowEarned = allow; // البدلات توضع كاستحقاق كامل[span_23](start_span)[span_23](end_span)
+  let absDed = absDays * dayValue; // الغياب يخصم صراحة في الاستقطاعات[span_24](start_span)[span_24](end_span)
   let paidLeaveVal = paidLeaveDays * dayValue;
-  let absDed = absDays * dayValue;
   
   let empLoans = db.loans.filter(x=>String(x.employee)===String(e.code) && x.date <= endDateLimit && (x.amount - x.paidAmount) > 0);
   let loanInst = 0, totalLoanRemBefore = 0;
@@ -2103,7 +2090,11 @@ function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let subjectSalary = e.allowanceSubjectToOT ? (base + periodicEarned + allowEarned) : base;
   let insuranceDed = payableDays > 0 ? (subjectSalary * (insPercent / 100)) : 0;
   let taxDed = payableDays > 0 ? (subjectSalary * (taxPercent / 100)) : 0;
-  let net = Math.max(0, base + periodicEarned + allowEarned + otVal + bonusVal - lateDed - loanInst - insuranceDed - taxDed - dedVal);
+  
+  // المعادلة الموحدة لصافي الراتب:
+  let totalEarn = base + periodicEarned + allowEarned + otVal + bonusVal;
+  let totalDeductions = absDed + lateDed + loanInst + insuranceDed + taxDed + dedVal;
+  let net = Math.max(0, totalEarn - totalDeductions);
   
   return {
     contractSalary, periodicAllowance, periodicEarned, base, allow:allowEarned, dayValue, hrRate, payableDays,
@@ -2153,10 +2144,10 @@ function calculatePayroll(){
   document.getElementById("payTable").innerHTML=eligibleEmps.map(e=>{
     let p = calc(e, m, null, customRange);
     return `<tr>
-    <td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td><td>${money(p.dayValue)}</td><td><b style="color:#2563eb">${p.payableDays} ي</b></td><td><b>${money(p.base)}</b></td><td><b style="color:#059669">${money(p.periodicEarned)}</b></td><td>${money(p.allow)}</td><td><span style="color:#0369a1;font-weight:bold">${p.paidLeaveDays} ي (${money(p.paidLeaveVal)})</span></td><td>${money(p.otVal)}</td><td>${money(p.bonusVal)}</td><td><span style="color:#b91c1c;font-weight:bold">${p.absDays} يوم</span></td><td><span style="color:#b91c1c">${money(p.lateDed)}</span></td><td>${money(p.loanInst)}</td><td>${money(p.insuranceDed + p.taxDed)}</td><td>${money(p.dedVal)}</td><td><b style="color:#1e40af;font-size:14px">${money(p.net)}</b></td>
+    <td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td><td>${money(p.dayValue)}</td><td><b style="color:#10b981">${p.presentDays} ي</b></td><td><b style="color:#2563eb">${p.fridayPaidDays} ي</b></td><td><span style="color:#b91c1c;font-weight:bold">${p.absDays} يوم</span></td><td><span style="color:#b91c1c;font-weight:bold">${money(p.absDed)}</span></td><td><b style="color:#059669">${money(p.periodicEarned)}</b></td><td>${money(p.allow)}</td><td><span style="color:#0369a1;font-weight:bold">${p.paidLeaveDays} ي</span></td><td>${money(p.otVal)}</td><td>${money(p.bonusVal)}</td><td><span style="color:#b91c1c">${money(p.lateDed)}</span></td><td>${money(p.loanInst)}</td><td>${money(p.insuranceDed + p.taxDed)}</td><td>${money(p.dedVal)}</td><td><b style="color:#1e40af;font-size:14px">${money(p.net)}</b></td>
     <td><button class="btn secondary btn-print" onclick="printEmployee('${e.code}','${m}')">تقرير مفصل</button> <button class="btn primary btn-print" onclick="printPayslip('${e.code}','${m}')">🧾 قسيمة الراتب</button></td>
     </tr>`;
-  }).join("")||`<tr><td colspan="18">لا توجد بيانات مرتبات</td></tr>`;
+  }).join("")||`<tr><td colspan="19">لا توجد بيانات مرتبات</td></tr>`;
   applyUserPermissions();
 }
 
@@ -2177,9 +2168,6 @@ function printBankSheetOfficial(){
   printReportDocument("🏦 كشف مسير تحويلات الرواتب للبنك", `عن الدورة المحاسبية (${cycle.from} ⬅️ ${cycle.to})`, tableHtml, sumBox);
 }
 
-// -------------------------------------------------------------
-// قسيمة الراتب المصححة والمتطابقة محاسبياً 100%
-// -------------------------------------------------------------
 function printPayslip(code, m){
   let e = db.employees.find(x=>String(x.code)===String(code));
   if(!e) return;
@@ -2188,7 +2176,7 @@ function printPayslip(code, m){
   let p = calc(e, m, null, customRange);
   
   let totalEarnings = p.base + p.periodicEarned + p.allow + p.otVal + p.bonusVal;
-  let totalDeductions = p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
+  let totalDeductions = p.absDed + p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
   
   let html = `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8">
   <title>قسيمة استلام الراتب — ${esc(e.name)}</title>
@@ -2238,18 +2226,17 @@ function printPayslip(code, m){
       <tbody>
         <tr>
           <td>
-            <b>الأجر الأساسي المستحق:</b> ${money(p.base)} ج.م<br>
-            <small style="color:#64748b">• الحضور: ${p.presentDays} ي | جمعة: ${p.fridayPaidDays} ي | إجمالي الأيام: ${p.payableDays} ي</small>
+            <b>الأجر الأساسي التعاقدي:</b> ${money(p.base)} ج.م<br>
+            <small style="color:#64748b">• الحضور: ${p.presentDays} ي | جمعة: ${p.fridayPaidDays} ي | إجازات: ${p.paidLeaveDays} ي</small>
           </td>
           <td>
-            <b>بيان أيام الغياب:</b> ${p.absDays} يوم<br>
-            <small style="color:#b91c1c">• تم استبعاد قيمتها (${money(p.absDed)} ج.م) من الأساسي المستحق</small>
+            <b>خصم أيام الغياب:</b> ${money(p.absDed)} ج.م<br>
+            <small style="color:#b91c1c">• عدد أيام الغياب: ${p.absDays} يوم</small>
           </td>
         </tr>
         <tr>
           <td>
-            <b>العلاوة الدورية المستحقة:</b> ${money(p.periodicEarned)} ج.م<br>
-            <small style="color:#64748b">• العلاوة التعاقدية الثابتة: ${money(p.periodicAllowance)} ج.م</small>
+            <b>العلاوة الدورية الثابتة:</b> ${money(p.periodicEarned)} ج.م
           </td>
           <td>
             <b>خصم التأخيرات:</b> ${money(p.lateDed)} ج.م<br>
@@ -2258,19 +2245,10 @@ function printPayslip(code, m){
         </tr>
         <tr>
           <td>
-            <b>البدلات الثابتة المكتسبة:</b> ${money(p.allow)} ج.م
+            <b>البدلات الثابتة الأخرى:</b> ${money(p.allow)} ج.م
           </td>
           <td>
             <b>الجزاءات والاستقطاعات الإدارية:</b> ${money(p.dedVal)} ج.م
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>الإجازات المدفوعة (ضمن الأساسي):</b> ${p.paidLeaveDays} يوم (${money(p.paidLeaveVal)} ج.م)
-          </td>
-          <td>
-            <b>قسط السلفة الشهرية:</b> ${money(p.loanInst)} ج.م<br>
-            <small style="color:#64748b">• المتبقي من السلفة بعد الخصم: ${money(p.totalLoanRemAfter)} ج.م</small>
           </td>
         </tr>
         <tr>
@@ -2279,15 +2257,18 @@ function printPayslip(code, m){
             <small style="color:#64748b">• ساعات الإضافي: ${p.otHours} س | أيام الإضافي: ${p.otDays} يوم</small>
           </td>
           <td>
-            <b>تأمينات اجتماعية وضرائب:</b> ${money(p.insuranceDed + p.taxDed)} ج.م<br>
-            <small style="color:#64748b">• تأمينات: ${money(p.insuranceDed)} | ضرائب: ${money(p.taxDed)}</small>
+            <b>قسط السلفة الشهرية:</b> ${money(p.loanInst)} ج.م<br>
+            <small style="color:#64748b">• المتبقي من السلفة بعد الخصم: ${money(p.totalLoanRemAfter)} ج.م</small>
           </td>
         </tr>
         <tr>
           <td>
             <b>المكافآت التشجيعية:</b> ${money(p.bonusVal)} ج.م
           </td>
-          <td>—</td>
+          <td>
+            <b>تأمينات اجتماعية وضرائب:</b> ${money(p.insuranceDed + p.taxDed)} ج.م<br>
+            <small style="color:#64748b">• تأمينات: ${money(p.insuranceDed)} | ضرائب: ${money(p.taxDed)}</small>
+          </td>
         </tr>
         <tr class="total-row">
           <td style="color:#059669">إجمالي الاستحقاقات: ${money(totalEarnings)} ج.م</td>
@@ -2324,7 +2305,7 @@ function printPayslip(code, m){
 }
 
 // -------------------------------------------------------------
-// تقارير أثناء الشهر والتسوية الجزئية المصححة
+// تقارير أثناء الشهر والتسوية الجزئية المصححة والمتوافقة مع الموبايل
 // -------------------------------------------------------------
 function initMidMonthView(){
   document.getElementById("midEmpSelect").innerHTML = empOptions();
@@ -2344,37 +2325,42 @@ function calculateMidMonthReport(){
   let p = calc(e, cycle.monthKey, reportDate);
 
   let totalAdditions = p.base + p.periodicEarned + p.allow + p.otVal + p.bonusVal;
-  let totalDeductions = p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
+  let totalDeductions = p.absDed + p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
 
   document.getElementById("midReportResult").classList.remove("hidden");
   document.getElementById("midReportContent").innerHTML = `
-  <div style="background:#f8fafc;padding:18px;border-radius:12px;border:1px solid #cbd5e1;margin-bottom:15px">
-    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0;padding-bottom:10px;margin-bottom:12px">
-      <h4 style="margin:0">👤 العامل: ${esc(e.name)} (${e.code}) | القسم: ${esc(e.dept)}</h4>
-      <span class="badge" style="background:#dbeafe;color:#1e40af">فترة الحساب: ${cycle.from} ⬅️ ${reportDate}</span>
+  <div style="background:#f8fafc;padding:16px;border-radius:12px;border:1px solid #cbd5e1;margin-bottom:15px">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0;padding-bottom:10px;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h4 style="margin:0">👤 العامل: ${esc(e.name)} (${e.code})</h4>
+      <span class="badge" style="background:#dbeafe;color:#1e40af">الفترة: ${cycle.from} ⬅️ ${reportDate}</span>
     </div>
     
-    <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;margin-bottom:14px;font-size:13px">
-      <div><b>الراتب الأساسي التعاقدي:</b> ${money(p.contractSalary)} ج.م</div>
-      <div><b>أجر اليوم (أساس 30):</b> ${money(p.dayValue)} ج.م</div>
-      <div><b>أيام الاستحقاق الفعلية:</b> <b style="color:#2563eb">${p.payableDays} يوماً</b></div>
-      <div><b>حضور فعلي:</b> ${p.presentDays} يوم</div>
-      <div><b>جمع مستحقة:</b> ${p.fridayPaidDays} يوم</div>
-      <div><b>إجازات مدفوعة:</b> ${p.paidLeaveDays} يوم</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-bottom:14px;font-size:12.5px">
+      <div><b>الأساسي التعاقدي:</b> ${money(p.contractSalary)} ج.م</div>
+      <div><b>أجر اليوم (30 يوم):</b> ${money(p.dayValue)} ج.م</div>
+      <div><b>حضور فعلي:</b> <b style="color:#10b981">${p.presentDays} يوم</b></div>
+      <div><b>جمعة مستحقة:</b> <b style="color:#2563eb">${p.fridayPaidDays} يوم</b></div>
+      <div><b>إجازة مدفوعة:</b> <b style="color:#0369a1">${p.paidLeaveDays} يوم</b></div>
+      <div><b>أيام الغياب:</b> <b style="color:#dc2626">${p.absDays} يوم</b></div>
+      <div><b>خصم الغياب:</b> <b style="color:#dc2626">${money(p.absDed)} ج.م</b></div>
     </div>
 
-    <table style="width:100%;margin-bottom:12px;font-size:12.5px">
-      <tr style="background:#f1f5f9">
-        <th>إجمالي الاستحقاقات (أساسي + علاوة + بدلات + إضافي + مكافآت)</th>
-        <th>إجمالي الاستقطاعات (تأخير + سلف + تأمينات + جزاءات)</th>
-      </tr>
-      <tr>
-        <td style="color:#059669;font-weight:bold">${money(totalAdditions)} ج.م</td>
-        <td style="color:#dc2626;font-weight:bold">${money(totalDeductions)} ج.م</td>
-      </tr>
-    </table>
+    <div class="table-wrap" style="margin-bottom:12px">
+      <table style="min-width:100%">
+        <tr style="background:#f1f5f9">
+          <th>إجمالي الاستحقاقات</th>
+          <th>إجمالي الاستقطاعات والخصومات</th>
+        </tr>
+        <tr>
+          <td style="color:#059669;font-weight:bold">${money(totalAdditions)} ج.م</td>
+          <td style="color:#dc2626;font-weight:bold">${money(totalDeductions)} ج.م</td>
+        </tr>
+      </table>
+    </div>
 
-    <p style="margin:0;font-size:15px">💰 <b>الراتب الصافي المستحق للصرف حتى تاريخه:</b> <b style="color:#1e40af;font-size:18px">${money(p.net)} ج.م</b></p>
+    <div style="background:#eff6ff;border:2px solid #2563eb;padding:12px;border-radius:10px">
+      <b>💰 صافي المستحق للصرف حتى تاريخه:</b> <b style="color:#1e40af;font-size:18px">${money(p.net)} ج.م</b>
+    </div>
   </div>
   `;
 }
@@ -2393,7 +2379,7 @@ function printMidMonthReport(){
 
   let typeText = calcType === "resigned" ? "تسوية مستقيل / نهاية خدمة" : (calcType === "cutoff" ? "تسوية انقطاع عن العمل" : "تسوية فترات جزئية دورية");
   let totalAdditions = p.base + p.periodicEarned + p.allow + p.otVal + p.bonusVal;
-  let totalDeductions = p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
+  let totalDeductions = p.absDed + p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal;
 
   let contentTable = `
   <table style="margin-bottom:15px">
@@ -2407,13 +2393,13 @@ function printMidMonthReport(){
       <th>نوع التسوية</th>
       <td><b>${typeText}</b></td>
       <th>فترة الاحتساب المحاسبي</th>
-      <td>من <b>${cycle.from}</b> إلى <b>${reportDate}</b></td>
+      <td>من <b>${cycle.from}</b> إلى <b>${reportDate}</b> (أساس 30 يوماً)</td>
     </tr>
     <tr>
       <th>الأساسي التعاقدي الشهري</th>
       <td>${money(p.contractSalary)} ج.م</td>
-      <th>أيام الاستحقاق المحسوبة</th>
-      <td><b>${p.payableDays} يوماً</b> (حضور: ${p.presentDays} + جمعة: ${p.fridayPaidDays} + إجازة: ${p.paidLeaveDays})</td>
+      <th>حصر الأيام المحسوبة</th>
+      <td>حضور: <b>${p.presentDays}</b> | جمعة: <b>${p.fridayPaidDays}</b> | إجازة: <b>${p.paidLeaveDays}</b> | غياب: <b style="color:#b91c1c">${p.absDays} يوم</b></td>
     </tr>
   </table>
 
@@ -2426,24 +2412,24 @@ function printMidMonthReport(){
     </thead>
     <tbody>
       <tr>
-        <td>الأجر الأساسي المستحق: <b>${money(p.base)} ج.م</b></td>
+        <td>الأجر الأساسي التعاقدي: <b>${money(p.base)} ج.م</b></td>
+        <td>خصم أيام الغياب: <b style="color:#dc2626">${money(p.absDed)} ج.م</b> (${p.absDays} يوم)</td>
+      </tr>
+      <tr>
+        <td>العلاوة الدورية الثابتة: <b>${money(p.periodicEarned)} ج.م</b></td>
         <td>خصم التأخيرات: <b>${money(p.lateDed)} ج.م</b> (${p.lateMin} دقيقة)</td>
       </tr>
       <tr>
-        <td>العلاوة الدورية المستحقة: <b>${money(p.periodicEarned)} ج.م</b></td>
+        <td>البدلات الثابتة الأخرى: <b>${money(p.allow)} ج.م</b></td>
         <td>قسط السلفة المحسوم: <b>${money(p.loanInst)} ج.م</b></td>
       </tr>
       <tr>
-        <td>البدلات المستحقة: <b>${money(p.allow)} ج.م</b></td>
+        <td>العمل الإضافي: <b>${money(p.otVal)} ج.م</b></td>
         <td>تأمينات وضرائب: <b>${money(p.insuranceDed + p.taxDed)} ج.م</b></td>
       </tr>
       <tr>
-        <td>العمل الإضافي: <b>${money(p.otVal)} ج.م</b></td>
-        <td>الجزاءات والاستقطاعات الإدارية: <b>${money(p.dedVal)} ج.م</b></td>
-      </tr>
-      <tr>
         <td>المكافآت التشجيعية: <b>${money(p.bonusVal)} ج.م</b></td>
-        <td>—</td>
+        <td>الجزاءات والاستقطاعات الإدارية: <b>${money(p.dedVal)} ج.م</b></td>
       </tr>
       <tr style="background:#f8fafc;font-weight:bold">
         <td style="color:#059669">إجمالي الاستحقاقات: ${money(totalAdditions)} ج.م</td>
@@ -2466,7 +2452,7 @@ function printMidMonthReport(){
 }
 
 // -------------------------------------------------------------
-// التقرير المجمع الشامل ومراكز التكلفة المصححة
+// التقرير المجمع الشامل للأنشطة
 // -------------------------------------------------------------
 function initSummaryView(){
   document.getElementById("sumFrom").value = getCycleForDate(today()).from;
@@ -2483,9 +2469,26 @@ function generateSummaryReport(){
     let p = calc(e, "CUSTOM", to, {from, to});
     let a = db.attendance.filter(x=>String(x.employee)===String(e.code) && x.date>=from && x.date<=to);
     let lateMins = a.reduce((s,x)=>s+late(x, e),0);
-    rowsHtml += `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td><td>${money(p.dayValue)}</td><td><b style="color:#059669">${money(p.periodicEarned)}</b></td><td><b>${p.presentDays}</b> يوم</td><td><span style="color:#b42318">${p.absDays}</span> يوم</td><td><b style="color:#0369a1">${p.paidLeaveDays}</b> يوم</td><td>${lateMins} دقيقة</td><td>${money(p.loanInst)} ج.م</td><td>${money(p.otVal)}</td><td>${money(p.bonusVal)}</td><td>${money(p.dedVal)}</td><td><b style="color:#1e40af">${money(p.net)}</b></td></tr>`;
+    rowsHtml += `<tr>
+      <td><b>${e.code}</b></td>
+      <td>${esc(e.name)}</td>
+      <td><b>${money(p.contractSalary)}</b></td>
+      <td>${money(p.dayValue)}</td>
+      <td><b style="color:#059669">${money(p.periodicEarned)}</b></td>
+      <td><b style="color:#10b981">${p.presentDays}</b> يوم</td>
+      <td><b style="color:#2563eb">${p.fridayPaidDays}</b> يوم</td>
+      <td><span style="color:#b42318">${p.absDays}</span> يوم</td>
+      <td><span style="color:#b42318">${money(p.absDed)}</span> ج.م</td>
+      <td><b style="color:#0369a1">${p.paidLeaveDays}</b> يوم</td>
+      <td>${lateMins} دقيقة</td>
+      <td>${money(p.loanInst)} ج.م</td>
+      <td>${money(p.otVal)}</td>
+      <td>${money(p.bonusVal)}</td>
+      <td>${money(p.dedVal)}</td>
+      <td><b style="color:#1e40af">${money(p.net)}</b></td>
+    </tr>`;
   });
-  document.getElementById("summaryTableBody").innerHTML = rowsHtml || `<tr><td colspan="14">لا توجد بيانات للفترة المحددة</td></tr>`;
+  document.getElementById("summaryTableBody").innerHTML = rowsHtml || `<tr><td colspan="16">لا توجد بيانات للفترة المحددة</td></tr>`;
   document.getElementById("summaryResult").classList.remove("hidden");
   applyUserPermissions();
 }
@@ -2493,7 +2496,7 @@ function generateSummaryReport(){
 function printSummaryReport(){
   let from = document.getElementById("sumFrom").value, to = document.getElementById("sumTo").value, content = document.getElementById("summaryTableBody").innerHTML;
   if(!content) return alert("استخرج التقرير أولاً");
-  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table>`;
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الجمعة المستحقة</th><th>الغياب</th><th>خصم الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table>`;
   printReportDocument("📊 التقرير المجمع الشامل للأنشطة والأنصبة", `الفترة: من ${from} إلى ${to}`, tableHtml);
 }
 
@@ -2616,9 +2619,9 @@ function printEmployee(code,m){
   let contentTable = `<table>
     <tr><th>اسم الموظف</th><td>${esc(e.name)} (${e.code})</td><th>القسم</th><td>${esc(e.dept)}</td></tr>
     <tr><th>الراتب الأساسي التعاقدي</th><td>${money(p.contractSalary)} ج.م</td><th>أيام الاستحقاق</th><td>${p.payableDays} يوم</td></tr>
-    <tr><th>الراتب الأساسي المستحق</th><td>${money(p.base)} ج.م</td><th>العلاوة الدورية</th><td>${money(p.periodicEarned)} ج.م</td></tr>
-    <tr><th>البدلات الثابتة</th><td>${money(p.allow)} ج.م</td><th>الإضافي والمكافآت</th><td>${money(p.otVal + p.bonusVal)} ج.م</td></tr>
-    <tr><th>إجمالي الاستقطاعات</th><td colspan="3">${money(p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal)} ج.م</td></tr>
+    <tr><th>العلاوة الدورية</th><td>${money(p.periodicEarned)} ج.م</td><th>البدلات الثابتة</th><td>${money(p.allow)} ج.م</td></tr>
+    <tr><th>خصم الغياب</th><td style="color:#dc2626">${money(p.absDed)} ج.م (${p.absDays} يوم)</td><th>الإضافي والمكافآت</th><td>${money(p.otVal + p.bonusVal)} ج.م</td></tr>
+    <tr><th>إجمالي الاستقطاعات</th><td colspan="3">${money(p.absDed + p.lateDed + p.loanInst + p.insuranceDed + p.taxDed + p.dedVal)} ج.م</td></tr>
   </table>`;
   let sumBox = `<div class="summary-box"><b>الراتب الصافي النهائي المستحق:</b> <b style="color:#1e40af;font-size:16px">${money(p.net)} جنيه مصري</b></div>`;
   printReportDocument("📄 التقرير المالي المفصل للعامل", `الدورة المحاسبية: ${m}`, contentTable, sumBox);
@@ -2631,9 +2634,28 @@ function printPayroll(){
   let cycle=customRange || getCycleForMonth(m);
   let rows=db.employees.filter(e=>e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= cycle.from)).map(e=>{
     let p=calc(e,m, null, customRange);
-    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td><b>${money(p.contractSalary)}</b></td><td>${money(p.dayValue)}</td><td>${p.payableDays} ي</td><td><b>${money(p.base)}</b></td><td><b style="color:#059669">${money(p.periodicEarned)}</b></td><td>${money(p.allow)}</td><td>${p.paidLeaveDays} ي</td><td>${money(p.otVal)}</td><td>${money(p.bonusVal)}</td><td><span style="color:#b91c1c">${p.absDays} ي</span></td><td>${money(p.lateDed)}</td><td>${money(p.loanInst)}</td><td>${money(p.insuranceDed+p.taxDed)}</td><td>${money(p.dedVal)}</td><td><b style="color:#1e40af">${money(p.net)}</b></td></tr>`;
+    return `<tr>
+      <td>${e.code}</td>
+      <td>${esc(e.name)}</td>
+      <td><b>${money(p.contractSalary)}</b></td>
+      <td>${money(p.dayValue)}</td>
+      <td><b style="color:#10b981">${p.presentDays} ي</b></td>
+      <td><b style="color:#2563eb">${p.fridayPaidDays} ي</b></td>
+      <td><span style="color:#b91c1c">${p.absDays} ي</span></td>
+      <td><span style="color:#b91c1c">${money(p.absDed)}</span></td>
+      <td><b style="color:#059669">${money(p.periodicEarned)}</b></td>
+      <td>${money(p.allow)}</td>
+      <td>${p.paidLeaveDays} ي</td>
+      <td>${money(p.otVal)}</td>
+      <td>${money(p.bonusVal)}</td>
+      <td>${money(p.lateDed)}</td>
+      <td>${money(p.loanInst)}</td>
+      <td>${money(p.insuranceDed+p.taxDed)}</td>
+      <td>${money(p.dedVal)}</td>
+      <td><b style="color:#1e40af">${money(p.net)}</b></td>
+    </tr>`;
   }).join("");
-  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>أيام الاستحقاق</th><th>الأساسي المستحق</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>أيام غياب</th><th>خصم تأخير</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table>`;
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>حضور</th><th>جمعة مستحقة</th><th>أيام غياب</th><th>خصم غياب</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>خصم تأخير</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table>`;
   printReportDocument("🧾 كشف المرتبات المجمع لجميع الموظفين", `الفترة: من ${cycle.from} إلى ${cycle.to}`, tableHtml);
 }
 
