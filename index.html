@@ -210,10 +210,10 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>المعادلات والقواعد المحاسبية المعتمدة (الأساس المحاسبي الثابت 30 يوماً V7.2)</h3>
-<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية[span_0](start_span)[span_0](end_span).</p>
-<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها[span_1](start_span)[span_1](end_span).</p>
-<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا[span_2](start_span)[span_2](end_span).</p>
-<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي[span_3](start_span)[span_3](end_span).</p>
+<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية.</p>
+<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها.</p>
+<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا.</p>
+<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي.</p>
 </div>
 </div>
 </section>
@@ -274,7 +274,7 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-leaves" class="hidden">
 <div class="card">
-<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد[span_4](start_span)[span_4](end_span).</div>
+<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد.</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="leaveModal()">＋ تسجيل إجازة مدفوعة فردية</button>
 <button class="btn warning btn-add" onclick="bulkLeaveModal()">🏖️ إضافة إجازة جماعية لجميع العاملين (أعياد / عطلات)</button>
@@ -287,7 +287,7 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-absence" class="hidden">
 <div class="card">
-<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة[span_5](start_span)[span_5](end_span).</div>
+<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة.</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="absenceModal()">＋ تسجيل غياب / إجازة غير مدفوعة</button>
 <button class="btn success btn-print" onclick="printAbsenceReport()">🖨️ طباعة سجل الغياب والانقطاع</button>
@@ -381,7 +381,7 @@ tr:hover td{background:#f8fafc}
 📅 <b>الدورة المحاسبية الحالية للكشف:</b> <span id="lblCycleFrom">—</span> ⬅️ <span id="lblCycleTo">—</span> | <b>عدد الأيام الفعلية:</b> <span id="lblCycleDays">0</span> يوماً (<b>الأساس المحاسبي المعتمد: 30 يوماً</b>).
 </div>
 <div id="payrollLockNotice" class="danger-note hidden">
-🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق[span_6](start_span)[span_6](end_span).
+🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق.
 <br style="margin-bottom:8px">
 <button class="btn warning admin-only" style="margin-top:8px" onclick="unlockPayrollModal()">🔓 طلب فتح كشف المرتبات المغلق استثنائيًا</button>
 </div>
@@ -422,7 +422,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-midmonth" class="hidden">
 <div class="card">
 <h3>📋 تقارير أجور واستحقاقات العاملين أثناء الشهر (المستقيلين / المنقطعين / الفترات الجزئية)</h3>
-<div class="notice">💡 احتساب دقيق معتمد على الأساس الثابت (30 يوماً) واستحقاق الجمعة المشروط وحصر أيام الغياب والخصم المالي الصريح[span_7](start_span)[span_7](end_span).</div>
+<div class="notice">💡 احتساب دقيق معتمد على الأساس الثابت (30 يوماً) واستحقاق الجمعة المشروط وحصر أيام الغياب والخصم المالي الصريح.</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="midEmpSelect"></select></div>
 <div class="field"><label>تاريخ التقرير المحاسبي</label><input id="midReportDate" type="date"></div>
@@ -447,7 +447,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-summary" class="hidden">
 <div class="card">
 <h3>📊 التقرير المجمع الشامل للأنشطة والأنصبة الفتراتية</h3>
-<div class="notice">💡 حصر شامل ودقيق لكافة متغيرات العاملين مبني على الأساس المحاسبي المعتمد[span_8](start_span)[span_8](end_span).</div>
+<div class="notice">💡 حصر شامل ودقيق لكافة متغيرات العاملين مبني على الأساس المحاسبي المعتمد.</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="sumFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="sumTo" type="date"></div>
@@ -490,7 +490,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-costcenters" class="hidden">
 <div class="card">
 <h3>🏭 تقرير مراكز التكلفة وتوزيع الأجور حسب خطوط الإنتاج والورديات</h3>
-<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة[span_9](start_span)[span_9](end_span).</div>
+<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة.</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="costFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="costTo" type="date"></div>
@@ -526,7 +526,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-forms" class="hidden">
 <div class="card">
 <h3>🖨️ طباعة النماذج والاستمارات الإدارية المعتمدة</h3>
-<div class="notice">💡 استخراج وطباعة استمارات رسمية منسقة ومعتمدة وموثقة بالبيانات الوظيفية الكاملة[span_10](start_span)[span_10](end_span).</div>
+<div class="notice">💡 استخراج وطباعة استمارات رسمية منسقة ومعتمدة وموثقة بالبيانات الوظيفية الكاملة.</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="formEmpSelect"></select></div>
 <div class="field"><label>نوع النموذج الإداري</label>
@@ -602,7 +602,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>🏭 إعادة ضبط المصنع للنظام</h3>
-<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_11](start_span)"[span_11](end_span).</div>
+<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف".</div>
 <button class="btn danger" onclick="factoryReset()">⚠️ إجراء ضبط المصنع</button>
 </div>
 </section>
@@ -1072,7 +1072,6 @@ function month(){let d = new Date(); return `${d.getFullYear()}-${String(d.getMo
 function money(n){return Number(n||0).toLocaleString("ar-EG",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function empOptions(selected=""){return (db.employees||[]).map(e=>`<option value="${e.code}" ${String(e.code)===String(selected)?"selected":""}>${e.code} — ${esc(e.name)}</option>`).join("")}
-
 function nextCode(){
   if(!db.employees || db.employees.length === 0) return "1";
   let numericCodes = db.employees
@@ -1090,7 +1089,6 @@ function nextCode(){
   }
   return String(expected);
 }
-
 function openModal(title,body){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.remove("hidden")}
 function closeModal(){document.getElementById("modal").classList.add("hidden")}
 function daily(e){return Number(e?.salary||0)/30}
@@ -1406,6 +1404,75 @@ function attendanceModal(){
   <div class="field span2"><label>الحالة</label><select id="aStatus"><option>حاضر</option><option>مأمورية</option><option>راحة أسبوعية</option><option>عطلة رسمية</option><option>نصف يوم</option></select></div>
   </div><button class="btn primary btn-save" onclick="saveAttendanceRange()">💾 تطبيق والتسجيل</button>`);
 }
+function editAttendanceModal(code, date){
+  let e = db.employees.find(emp => String(emp.code) === String(code));
+  let rec = db.attendance.find(a => String(a.employee) === String(code) && a.date === date);
+  let shiftInfo = getEmpShiftTimes(e);
+  let defaultIn = rec ? (rec.in || shiftInfo.start) : shiftInfo.start;
+  let defaultOut = rec ? (rec.out || shiftInfo.end) : shiftInfo.end;
+  let curStatus = rec ? (rec.status || "حاضر") : "حاضر";
+
+  openModal(`✏️ تعديل حضور / انصراف: ${e ? e.name : code} (${date})`, `
+  <div class="form-grid">
+    <div class="field span2">
+      <label>الموظف</label>
+      <input type="text" value="${e ? e.code + ' — ' + esc(e.name) : code}" disabled style="background:#f1f5f9">
+    </div>
+    <div class="field span2">
+      <label>التاريخ</label>
+      <input type="date" id="eaDate" value="${date}" disabled style="background:#f1f5f9">
+    </div>
+    <div class="field">
+      <label>وقت الحضور</label>
+      <input type="time" id="eaIn" value="${defaultIn}">
+    </div>
+    <div class="field">
+      <label>وقت الانصراف</label>
+      <input type="time" id="eaOut" value="${defaultOut}">
+    </div>
+    <div class="field span2">
+      <label>حالة اليوم</label>
+      <select id="eaStatus">
+        <option value="حاضر" ${curStatus==="حاضر"?"selected":""}>حاضر</option>
+        <option value="مأمورية" ${curStatus==="مأمورية"?"selected":""}>مأمورية</option>
+        <option value="راحة أسبوعية" ${curStatus==="راحة أسبوعية"?"selected":""}>راحة أسبوعية</option>
+        <option value="عطلة رسمية" ${curStatus==="عطلة رسمية"?"selected":""}>عطلة رسمية</option>
+        <option value="نصف يوم" ${curStatus==="نصف يوم"?"selected":""}>نصف يوم</option>
+      </select>
+    </div>
+  </div>
+  <div class="toolbar" style="margin-top:15px; display:flex; justify-content:flex-end; gap:10px;">
+    <button class="btn primary btn-save" onclick="saveSingleAttendanceEdit('${code}', '${date}')">💾 حفظ التعديلات</button>
+    <button class="btn secondary" onclick="closeModal()">إلغاء</button>
+  </div>
+  `);
+}
+function saveSingleAttendanceEdit(code, date){
+  let lockCheck = checkRangeLock(date, date);
+  if(lockCheck.locked) return alert("🔒 العملية مرفوضة! هذا التاريخ يقع ضمن شهر مغلق ماليًا!");
+  let inn = document.getElementById("eaIn").value;
+  let out = document.getElementById("eaOut").value;
+  let status = document.getElementById("eaStatus").value;
+  
+  db.absence = db.absence.filter(x => !(String(x.employee) === String(code) && x.date === date));
+  db.leaves = db.leaves.filter(x => !(String(x.employee) === String(code) && x.from <= date && x.to >= date));
+  db.attendance = db.attendance.filter(x => !(String(x.employee) === String(code) && x.date === date));
+  
+  db.attendance.push({
+    employee: code,
+    date: date,
+    in: inn,
+    out: out,
+    status: status
+  });
+  
+  logSecurityAudit("تعديل حضور", `تعديل حضور الموظف (${code}) لتاريخ ${date} (حضور: ${inn} / انصراف: ${out} / حالة: ${status})`);
+  saveDB(true);
+  closeModal();
+  renderAttendance();
+  dashboard();
+  alert("✅ تم تعديل بيانات الحضور والانصراف بنجاح");
+}
 function saveAttendanceRange(){
   let emp=document.getElementById("aEmp").value;
   let d1=parseLocalDate(document.getElementById("aFrom").value);
@@ -1474,7 +1541,20 @@ function renderAttendance(){
   document.getElementById("attTable").innerHTML=(db.employees||[]).filter(e=>(e.name+" "+e.code).toLowerCase().includes(q)).map(e=>{
     let x=db.attendance.find(a=>String(a.employee)===String(e.code)&&a.date===d);
     let sInfo = getEmpShiftTimes(e);
-    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?late(x, e):"—"} د</td><td>${x?workHours(x).toFixed(2):"—"}</td><td>${x?.status||"غير مسجل"}</td><td>${x?`<button class="btn danger btn-delete" onclick="deleteAttendance('${e.code}','${d}')">🗑️ حذف</button>`:`—`}</td></tr>`;
+    return `<tr>
+      <td>${e.code}</td>
+      <td>${esc(e.name)}</td>
+      <td><span class="badge badge-shift">${sInfo.name}</span></td>
+      <td>${x?.in||"—"}</td>
+      <td>${x?.out||"—"}</td>
+      <td>${x?late(x, e):"—"} د</td>
+      <td>${x?workHours(x).toFixed(2):"—"}</td>
+      <td>${x?.status||"غير مسجل"}</td>
+      <td>
+        <button class="btn secondary btn-edit" onclick="editAttendanceModal('${e.code}','${d}')">✏️ تعديل</button>
+        ${x ? `<button class="btn danger btn-delete" onclick="deleteAttendance('${e.code}','${d}')">🗑️ حذف</button>` : ''}
+      </td>
+    </tr>`;
   }).join("");
   applyUserPermissions();
 }
