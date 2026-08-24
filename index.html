@@ -21,7 +21,7 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);direction:rtl;line-height:1.5;overflow-x:hidden}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);border:0}
+button{cursor:pointer;transition:all 0.15s ease;border:0}
 .hidden{display:none!important}
 .login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at top right, #1e3a8a, #0f172a, #020617);padding:20px}
 .login-box{width:min(460px,100%);background:rgba(255,255,255,0.98);border-radius:24px;padding:45px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);text-align:center;border:1px solid rgba(255,255,255,0.2)}
@@ -52,15 +52,15 @@ button{cursor:pointer;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);border:0}
 .nav button:hover{background:var(--sidebar-hover);color:#f1f5f9}
 .nav button.active{background:linear-gradient(90deg, var(--primary), #1d4ed8);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,0.3)}
 .top{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow-sm)}
-.content{padding:28px;max-width:1750px;margin:auto}
+.content{padding:28px;max-width:1750px;margin:auto;overflow-x:hidden}
 .page-title{margin:0;font-size:22px;font-weight:800;color:#0f172a}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:20px;box-shadow:var(--shadow);overflow:hidden}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:20px;box-shadow:var(--shadow);overflow:visible}
 .kpi{border-top:4px solid var(--primary);position:relative;overflow:hidden}
 .kpi .num{font-size:32px;font-weight:900;margin-top:6px;color:#0f172a}
-.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);width:100%}
-table{width:100%;border-collapse:collapse;min-width:1000px;background:#fff}
+.table-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);width:100%;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;min-width:950px;background:#fff}
 th,td{border-bottom:1px solid var(--border);padding:11px 14px;text-align:right;white-space:nowrap;font-size:13px}
 th{background:#f8fafc;font-weight:700;color:#475569;font-size:12.5px;text-transform:uppercase}
 tr:hover td{background:#f8fafc}
@@ -73,7 +73,7 @@ tr:hover td{background:#f8fafc}
 .danger-note{background:var(--danger-light);border-right:4px solid var(--danger);padding:14px 18px;border-radius:10px;margin-bottom:18px;color:#991b1b;font-size:13.5px}
 .alert-box{background:var(--warning-light);border:1px solid #fef3c7;border-right:4px solid #d97706;padding:14px 18px;border-radius:10px;margin-bottom:18px;color:#92400e;font-size:13.5px}
 .modal{position:fixed;inset:0;background:rgba(15,23,42,0.65);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99}
-.modal-box{background:#fff;border-radius:22px;width:min(960px,100%);max-height:92vh;overflow:auto;padding:28px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35)}
+.modal-box{background:#fff;border-radius:22px;width:min(960px,100%);max-height:92vh;overflow-y:auto;padding:28px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35)}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
 .st-att{background:#dcfce7 !important;color:#15803d !important;font-weight:bold;text-align:center}
 .st-abs{background:#fee2e2 !important;color:#b91c1c !important;font-weight:bold;text-align:center}
@@ -90,12 +90,7 @@ tr:hover td{background:#f8fafc}
 .sync-indicator{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:bold;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#475569}
 .sync-online{background:#dcfce7;color:#15803d}
 .sync-offline{background:#fee2e2;color:#b91c1c}
-@media print {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-}
+@media print { * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
 @media(max-width:1100px){
   .app{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative}
@@ -675,7 +670,7 @@ try {
     sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   }
 } catch (e) {
-  console.warn("Supabase client init offline mode:", e);
+  console.warn("Supabase init offline fallback:", e);
 }
 let cloudSyncBusy=false, cloudSyncQueued=false;
 let isRemoteUpdate=false, session=null;
@@ -733,6 +728,7 @@ function loadDB(){
     let x = JSON.parse(raw);
     if(!x || !x.settings) return defaultDB();
     if(!x.users) x.users = defaultDB().users;
+    if(!x.employees) x.employees = [];
     if(!x.bonuses) x.bonuses = [];
     if(!x.deductions) x.deductions = [];
     if(!x.loanLedger) x.loanLedger = [];
@@ -795,12 +791,12 @@ function queueCloudSync(){
           });
         }
       } catch(e) {
-        console.warn("Cloud sync warning:", e);
+        console.warn("Cloud sync error:", e);
       }
     } while(cloudSyncQueued);
     cloudSyncBusy = false;
     updateSyncBadge();
-  }, 100);
+  }, 50);
 }
 async function syncAllDataFromCloud() {
   updateSyncBadge();
@@ -854,11 +850,10 @@ window.addEventListener('online', async () => {
           await sb.from('system_users').delete().eq('id', item.id);
         }
       } catch(err) {
-        console.warn("Sync queue item error:", err);
+        console.warn("Offline queue sync err:", err);
       }
     }
     localStorage.removeItem(OFFLINE_QUEUE_KEY);
-    alert('تمت مزامنة كافة العمليات المحفوظة أوفلاين مع السيرفر بنجاح!');
     syncAllDataFromCloud();
   }
 });
@@ -888,30 +883,39 @@ if(sb) {
       })
       .subscribe();
   } catch(e) {
-    console.warn("Realtime sub error:", e);
+    console.warn("Realtime channel subscription error:", e);
   }
 }
 function isAdmin(){ return session?.role === "super_admin" || session?.role === "admin" || session?.role === "Administrator"; }
+function isHROrShahd(){
+  let role = (session?.role || "").toLowerCase();
+  let u = (session?.user || "").toLowerCase();
+  return isAdmin() || role === "hr_admin" || role === "hr" || u === "shahd";
+}
 function openSidebar(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('show'); }
 function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); }
 function applyUserPermissions() {
   const role = session?.role || "Viewer";
   const isSuper = isAdmin();
-  const isHR = role === "hr_admin" || role === "hr" || role === "HR";
+  const canManageHR = isHROrShahd();
   const isAuditor = role === "auditor" || role === "finance_admin";
   const isViewer = role === "Viewer" || role === "viewer";
+  
   ["settingsNav", "auditNav", "backupNav", "usersNav"].forEach(id => {
     let el = document.getElementById(id);
     if(el) el.classList.toggle("hidden", !isSuper);
   });
   document.querySelectorAll('.btn-add, .btn-edit, .btn-save, form button[type="submit"]').forEach(btn => {
-    btn.style.display = (isSuper || isHR) ? '' : 'none';
+    btn.style.display = canManageHR ? '' : 'none';
   });
-  document.querySelectorAll('.btn-delete, .admin-only').forEach(btn => {
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.style.display = canManageHR ? '' : 'none';
+  });
+  document.querySelectorAll('.admin-only').forEach(btn => {
     btn.style.display = isSuper ? '' : 'none';
   });
   document.querySelectorAll('.btn-print').forEach(btn => {
-    btn.style.display = (isSuper || isAuditor) ? '' : (isViewer ? 'none' : '');
+    btn.style.display = (isSuper || isAuditor || canManageHR) ? '' : (isViewer ? 'none' : '');
   });
 }
 async function login(){
@@ -947,7 +951,7 @@ async function login(){
         }
       }
     } catch(e){
-      console.warn("Online login fallback to local cache:", e);
+      console.warn("Online login fallback:", e);
     }
   }
   const ADMIN_EMAIL = "sarhanyasmen2@gmail.com";
@@ -1067,16 +1071,21 @@ function today(){return formatLocalDate(new Date());}
 function month(){let d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
 function money(n){return Number(n||0).toLocaleString("ar-EG",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function empOptions(selected=""){return db.employees.map(e=>`<option value="${e.code}" ${String(e.code)===String(selected)?"selected":""}>${e.code} — ${esc(e.name)}</option>`).join("")}
+function empOptions(selected=""){return (db.employees||[]).map(e=>`<option value="${e.code}" ${String(e.code)===String(selected)?"selected":""}>${e.code} — ${esc(e.name)}</option>`).join("")}
 
 function nextCode(){
-  let codes = db.employees.map(e => parseInt(e.code, 10)).filter(n => !isNaN(n) && n > 0).sort((a, b) => a - b);
+  if(!db.employees || db.employees.length === 0) return "1";
+  let numericCodes = db.employees
+    .map(e => parseInt(String(e.code).trim(), 10))
+    .filter(n => !isNaN(n) && n > 0)
+    .sort((a, b) => a - b);
+  
   let expected = 1;
-  for(let i = 0; i < codes.length; i++){
-    if(codes[i] === expected){
+  for(let i = 0; i < numericCodes.length; i++){
+    if(numericCodes[i] === expected){
       expected++;
-    } else if(codes[i] > expected){
-      break;
+    } else if(numericCodes[i] > expected){
+      return String(expected);
     }
   }
   return String(expected);
@@ -1148,12 +1157,12 @@ function printReportDocument(title, subTitle, contentTableHtml, summaryBoxHtml="
   </body></html>`;
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function employeeModal(code=""){
   let e=db.employees.find(x=>String(x.code)===String(code))||{name:"",dept:"الإنتاج",job:"",shift:"1",phone:"",address:"",hire:today(),familyMembers:1,salary:0,periodicAllowance:0,allowances:0,allowanceSubjectToOT:true,status:"على رأس العمل",bankAccount:""};
+  let codeVal = code ? code : nextCode();
   openModal(code?"تعديل بيانات عامل":"إضافة عامل جديد",`<div class="form-grid">
   <div class="field span2"><label>الاسم الكامل *</label><input id="fName" value="${esc(e.name)}"></div>
-  <div class="field"><label>الكود التسلسلي * (يمكنك كتابته أو تغييره)</label><input id="fCode" value="${e.code||nextCode()}"></div>
+  <div class="field"><label>الكود التسلسلي * (تلقائي وقابل للتعديل اليدوي)</label><input id="fCode" value="${codeVal}"></div>
   <div class="field"><label>عدد أفراد الأسرة</label><input id="fFamily" type="number" min="1" value="${e.familyMembers||1}"></div>
   <div class="field"><label>الوظيفة</label><input id="fJob" value="${esc(e.job)}"></div>
   <div class="field"><label>القسم / خط الإنتاج</label><input id="fDept" value="${esc(e.dept)}"></div>
@@ -1175,7 +1184,6 @@ function employeeModal(code=""){
   <div class="field"><label>الحالة</label><select id="fStatus"><option ${e.status==="على رأس العمل"?"selected":""}>على رأس العمل</option><option ${e.status==="إجازة"?"selected":""}>إجازة</option><option ${e.status==="منتهى الخدمة"?"selected":""}>منتهى الخدمة</option></select></div>
   </div><button class="btn primary btn-save" onclick="saveEmployee('${code}')">💾 حفظ بيانات العامل</button>`);
 }
-
 function saveEmployee(oldCode){
   let name=document.getElementById("fName").value.trim(), newCode=document.getElementById("fCode").value.trim();
   if(!name||!newCode) return alert("أدخل اسم ورقم كود العامل");
@@ -1186,7 +1194,6 @@ function saveEmployee(oldCode){
   if(oldCode && String(oldCode) !== String(newCode) && db.employees.some(e=>String(e.code)===String(newCode))) {
     return alert(`الكود الجديد (${newCode}) مستخدم بالفعل لموظف آخر!`);
   }
-
   let obj={
     code: newCode,
     name,
@@ -1204,7 +1211,6 @@ function saveEmployee(oldCode){
     allowanceSubjectToOT:document.getElementById("fAllowOT").value==="1",
     status:document.getElementById("fStatus").value
   };
-
   if(oldCode){
     let i=db.employees.findIndex(e=>String(e.code)===String(oldCode));
     db.employees[i]=obj;
@@ -1218,9 +1224,8 @@ function saveEmployee(oldCode){
     db.employees.push(obj);
     logSecurityAudit("إضافة موظف جديد", `إضافة العامل ${obj.name} (${obj.code})`);
   }
-  saveDB();closeModal();renderEmployees();dashboard();
+  saveDB(true); closeModal(); renderEmployees(); dashboard();
 }
-
 function bulkImportModal(){
   openModal("👥 إضافة واستيراد جماعي للموظفين", `
   <div class="notice">💡 يمكنك لصق بيانات الموظفين مباشرة بصيغة:<br><b>الاسم, الكود, الوظيفة, القسم, التليفون, العنوان, الراتب_الأساسي, العلاوة_الدورية, البدلات, أفراد_الأسرة, الوردية(1/2/3)</b></div>
@@ -1253,16 +1258,16 @@ function processBulkText(){
       added++;
     }
   });
-  saveDB(); closeModal(); renderEmployees(); dashboard();
+  saveDB(true); closeModal(); renderEmployees(); dashboard();
   alert(`تمت الإضافة الجماعية بنجاح: تم إضافة ${added} عامل جديد.`);
 }
 function renderEmployees(){
   let q=(document.getElementById("empSearch").value||"").toLowerCase(),st=document.getElementById("empStatusFilter").value;
   let dFilter = document.getElementById("empDeptFilter").value;
-  let depts = [...new Set(db.employees.map(e=>e.dept||"عام"))];
+  let depts = [...new Set((db.employees||[]).map(e=>e.dept||"عام"))];
   let curDeptVal = document.getElementById("empDeptFilter").value;
   document.getElementById("empDeptFilter").innerHTML = `<option value="">جميع الأقسام</option>` + depts.map(d=>`<option value="${d}" ${d===curDeptVal?"selected":""}>${d}</option>`).join("");
-  document.getElementById("empTable").innerHTML=db.employees.filter(e=>(!st||e.status===st)&&(!dFilter||e.dept===dFilter)&&(e.name+" "+e.code+" "+e.dept+" "+(e.phone||"")).toLowerCase().includes(q)).map(e=>{
+  document.getElementById("empTable").innerHTML=(db.employees||[]).filter(e=>(!st||e.status===st)&&(!dFilter||e.dept===dFilter)&&(e.name+" "+e.code+" "+e.dept+" "+(e.phone||"")).toLowerCase().includes(q)).map(e=>{
     let sInfo = getEmpShiftTimes(e);
     return `<tr>
       <td><b>${e.code}</b></td>
@@ -1279,7 +1284,7 @@ function renderEmployees(){
       <td>
         <button class="btn secondary btn-edit" onclick="employeeModal('${e.code}')">✏️ تعديل</button>
         <button class="btn warning btn-edit" onclick="disableEmployee('${e.code}')" title="إنهاء الخدمة مع الاحتفاظ بالأرشيف">🛑 إنهاء خدمة</button>
-        <button class="btn danger btn-delete" onclick="hardDeleteEmployee('${e.code}')" title="حذف نهائي وسد الفجوة في الترقيم">🗑️ حذف نهائي</button>
+        <button class="btn danger btn-delete" onclick="hardDeleteEmployee('${e.code}')" title="حذف نهائي">🗑️ حذف نهائي</button>
       </td>
     </tr>`;
   }).join("")||`<tr><td colspan="12">لا توجد بيانات</td></tr>`;
@@ -1297,14 +1302,13 @@ function disableEmployee(code){
   if(reason!==null){
     e.status="منتهى الخدمة"; e.endServiceDate = today();
     logSecurityAudit("إنهاء خدمة موظف", `إنهاء خدمة العامل ${e.name} (${code}) - سبب: ${reason}`);
-    saveDB();renderEmployees();dashboard();
+    saveDB(true);renderEmployees();dashboard();
   }
 }
-
 function hardDeleteEmployee(code){
   let e = db.employees.find(x=>String(x.code)===String(code));
   if(!e) return;
-  if(confirm(`⚠️ هل أنت متأكد من رغبتك في حذف الموظف (${e.name} - كود: ${code}) نهائياً من قاعدة البيانات وإتاحة الكود للترقيم مرة أخرى؟`)){
+  if(confirm(`⚠️ هل أنت متأكد من حذف الموظف (${e.name} - كود: ${code}) نهائياً وسد الفجوة في الترقيم؟`)){
     db.employees = db.employees.filter(x=>String(x.code)!==String(code));
     db.attendance = db.attendance.filter(x=>String(x.employee)!==String(code));
     db.leaves = db.leaves.filter(x=>String(x.employee)!==String(code));
@@ -1315,11 +1319,10 @@ function hardDeleteEmployee(code){
     db.loans = db.loans.filter(x=>String(x.employee)!==String(code));
     db.loanLedger = db.loanLedger.filter(x=>String(x.employee)!==String(code));
     logSecurityAudit("حذف نهائي لموظف", `حذف الموظف ${e.name} (${code}) نهائياً`);
-    saveDB(); renderEmployees(); dashboard();
-    alert(`تم حذف الموظف كود (${code}) نهائياً بنجاح، وسيقوم النظام باقتراح الكود مجدداً تلقائياً.`);
+    saveDB(true); renderEmployees(); dashboard();
+    alert(`تم حذف الموظف كود (${code}) بنجاح.`);
   }
 }
-
 function biometricModal(){
   openModal("⏱️ استيراد الحضور عبر ملف بصمة / نص", `
   <div class="notice">📄 يمكنك رفع ملف البصمة النصي المباشر أو لصق حركات الحضور بالصيغة: <b>الكود التاريخ الوقت</b></div>
@@ -1390,7 +1393,7 @@ function processBiometricData(){
     }
   }
   logSecurityAudit("استيراد حضور", `معالجة ${processed} حركة حضور`);
-  saveDB(); closeModal(); renderAttendance(); dashboard();
+  saveDB(true); closeModal(); renderAttendance(); dashboard();
   alert(`تمت معالجة بيانات الحضور بنجاح! تم تسجيل وتحضير ${processed} حركة.`);
 }
 function attendanceModal(){
@@ -1423,7 +1426,7 @@ function saveAttendanceRange(){
     count++;
   }
   logSecurityAudit("تسجيل حضور", `تسجيل ${count} يوم حضور للعامل (${emp})`);
-  saveDB();closeModal();renderAttendance();dashboard();
+  saveDB(true);closeModal();renderAttendance();dashboard();
   alert("تم تسجيل الحضور بنجاح.");
 }
 function deleteAttendance(code, date){
@@ -1431,7 +1434,7 @@ function deleteAttendance(code, date){
   if(lockCheck.locked) return alert("🔒 تقرير هذا الشهر معتمد ومغلق ولا يمكن الحذف فيه!");
   if(confirm("حذف تسجيل الحضور هذا اليوم؟")){
     db.attendance=db.attendance.filter(x=>!(String(x.employee)===String(code) && x.date===date));
-    logSecurityAudit("حذف حضور", `حذف حضور تاريخ ${date} للعامل (${code})`); saveDB();renderAttendance();dashboard();
+    logSecurityAudit("حذف حضور", `حذف حضور تاريخ ${date} للعامل (${code})`); saveDB(true);renderAttendance();dashboard();
   }
 }
 function mins(t){if(!t)return null;let [h,m]=t.split(":").map(Number);return h*60+m}
@@ -1463,12 +1466,12 @@ function bulkAttendance(){
     }
   });
   logSecurityAudit("تحضير جماعي", `تحضير ${n} عامل ليوم ${d}`);
-  saveDB();renderAttendance();dashboard();alert("تم تحضير "+n+" عامل بنجاح.");
+  saveDB(true);renderAttendance();dashboard();alert("تم تحضير "+n+" عامل بنجاح.");
 }
 function renderAttendance(){
   let dDate = document.getElementById("attDate"); if(!dDate.value) dDate.value = today();
   let d=dDate.value, q=(document.getElementById("attSearch").value||"").toLowerCase();
-  document.getElementById("attTable").innerHTML=db.employees.filter(e=>(e.name+" "+e.code).toLowerCase().includes(q)).map(e=>{
+  document.getElementById("attTable").innerHTML=(db.employees||[]).filter(e=>(e.name+" "+e.code).toLowerCase().includes(q)).map(e=>{
     let x=db.attendance.find(a=>String(a.employee)===String(e.code)&&a.date===d);
     let sInfo = getEmpShiftTimes(e);
     return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?late(x, e):"—"} د</td><td>${x?workHours(x).toFixed(2):"—"}</td><td>${x?.status||"غير مسجل"}</td><td>${x?`<button class="btn danger btn-delete" onclick="deleteAttendance('${e.code}','${d}')">🗑️ حذف</button>`:`—`}</td></tr>`;
@@ -1513,7 +1516,7 @@ function saveLeave(idx){
   let obj={employee:emp,type:document.getElementById("lType").value,paid:true,from:document.getElementById("lFrom").value,to:document.getElementById("lTo").value,days:d};
   if(idx!==null) db.leaves[idx]=obj; else db.leaves.push(obj);
   logSecurityAudit("تسجيل إجازة مدفوعة", `إجازة مدفوعة لعدد ${d} يوم للعامل (${emp})`);
-  saveDB();closeModal();renderLeaves();dashboard();
+  saveDB(true);closeModal();renderLeaves();dashboard();
   alert("تم تسجيل الإجازة المدفوعة بنجاح.");
 }
 function bulkLeaveModal(){
@@ -1545,7 +1548,7 @@ function saveBulkLeave(){
     db.leaves.push({employee: emp.code, type: type, paid: true, from: fStr, to: tStr, days: daysCount});
   });
   logSecurityAudit("إجازة جماعية", `إجازة جماعية لعدد ${activeEmps.length} عامل للمناسبة: ${type}`);
-  saveDB(); closeModal(); renderLeaves(); dashboard();
+  saveDB(true); closeModal(); renderLeaves(); dashboard();
   alert(`تم إضافة الإجازة الجماعية بنجاح لجميع العاملين على رأس العمل (${activeEmps.length} عامل).`);
 }
 function deleteLeave(idx){
@@ -1553,14 +1556,14 @@ function deleteLeave(idx){
   if(item){
     let lockCheck = checkRangeLock(item.from, item.to);
     if(lockCheck.locked) return alert("🔒 لا يمكن حذف إجازة في شهر مغلق!");
-    if(confirm("حذف الإجازة؟")){ logSecurityAudit("حذف إجازة", `حذف إجازة للعامل (${item.employee})`); db.leaves.splice(idx,1);saveDB();renderLeaves(); }
+    if(confirm("حذف الإجازة؟")){ logSecurityAudit("حذف إجازة", `حذف إجازة للعامل (${item.employee})`); db.leaves.splice(idx,1);saveDB(true);renderLeaves(); }
   }
 }
 function leaveUsed(code, targetYear=today().slice(0,4), excludeIdx=null){
-  return db.leaves.filter((x,i)=>String(x.employee)===String(code) && x.type==="سنوية" && x.from.startsWith(targetYear) && i!==excludeIdx).reduce((s,x)=>s+x.days,0);
+  return (db.leaves||[]).filter((x,i)=>String(x.employee)===String(code) && x.type==="سنوية" && x.from.startsWith(targetYear) && i!==excludeIdx).reduce((s,x)=>s+x.days,0);
 }
 function renderLeaves(){
-  document.getElementById("leaveTable").innerHTML=db.leaves.map((x,i)=>{
+  document.getElementById("leaveTable").innerHTML=(db.leaves||[]).map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let yr = x.from.slice(0,4);
     let rem=Math.max(0,db.settings.annual-leaveUsed(x.employee, yr));
@@ -1609,7 +1612,7 @@ function saveAbsenceRange(idx){
     }
     logSecurityAudit("تسجيل غياب", `تسجيل غياب ${count} يوم للعامل (${emp})`);
   }
-  saveDB();closeModal();renderAbsence();dashboard();
+  saveDB(true);closeModal();renderAbsence();dashboard();
   alert("تم تسجيل الغياب بنجاح.");
 }
 function deleteAbsence(idx){
@@ -1619,12 +1622,12 @@ function deleteAbsence(idx){
     if(lockCheck.locked) return alert("🔒 تقرير هذا الشهر مغلق ولا يمكن الحذف فيه!");
     if(confirm("حذف تسجيل الغياب؟")){
       logSecurityAudit("حذف غياب", `حذف غياب تاريخ ${item.date} للعامل (${item.employee})`);
-      db.absence.splice(idx,1);saveDB();renderAbsence();dashboard();
+      db.absence.splice(idx,1);saveDB(true);renderAbsence();dashboard();
     }
   }
 }
 function renderAbsence(){
-  document.getElementById("absenceTable").innerHTML=db.absence.map((x,i)=>{let e=db.employees.find(y=>String(y.code)===String(x.employee));return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.days}</td><td>${esc(x.reason)}</td><td>${money(x.days*daily(e))}</td><td><button class="btn secondary btn-edit" onclick="absenceModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteAbsence(${i})">🗑️ حذف</button></td></tr>`;}).join("")||`<tr><td colspan="6">لا توجد بيانات غياب</td></tr>`;
+  document.getElementById("absenceTable").innerHTML=(db.absence||[]).map((x,i)=>{let e=db.employees.find(y=>String(y.code)===String(x.employee));return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.days}</td><td>${esc(x.reason)}</td><td>${money(x.days*daily(e))}</td><td><button class="btn secondary btn-edit" onclick="absenceModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteAbsence(${i})">🗑️ حذف</button></td></tr>`;}).join("")||`<tr><td colspan="6">لا توجد بيانات غياب</td></tr>`;
   applyUserPermissions();
 }
 function printAbsenceReport(){
@@ -1652,7 +1655,7 @@ function renderMonthlyMatrix(){
   `<th style="background:#dcfce7;color:#15803d">حضور</th><th style="background:#fef3c7;color:#92400e">جمعة</th><th style="background:#fee2e2;color:#b91c1c">غياب</th><th style="background:#e0f2fe;color:#0369a1">إجازة</th><th style="background:#eff6ff;color:#1e40af">الصافي النهائي</th></tr>`;
   document.getElementById("matrixHead").innerHTML = headHtml;
   
-  let emps = db.employees.filter(e=>(e.name+" "+e.code).toLowerCase().includes(q));
+  let emps = (db.employees||[]).filter(e=>(e.name+" "+e.code).toLowerCase().includes(q));
   let bodyHtml = emps.map(e=>{
     let p = calc(e, mKey);
     let a = db.attendance.filter(x=>String(x.employee)===String(e.code) && x.date>=cycle.from && x.date<=cycle.to);
@@ -1713,7 +1716,7 @@ function saveOT(idx){
   let e=db.employees.find(x=>String(x.code)===String(oEmpVal)),rate=hourlyRate(e);
   let obj={employee:oEmpVal,date:oDateVal,unit:document.getElementById("oUnit").value,hours:+document.getElementById("oHours").value||0,factor:+document.getElementById("oFactor").value||1.5,rate,reason:document.getElementById("oReason").value};
   if(idx!==null) db.overtime[idx]=obj; else db.overtime.push(obj);
-  logSecurityAudit("تسجيل إضافي", `إضافي ${obj.hours} للعامل (${oEmpVal})`); saveDB();closeModal();renderOT();
+  logSecurityAudit("تسجيل إضافي", `إضافي ${obj.hours} للعامل (${oEmpVal})`); saveDB(true);closeModal();renderOT();
 }
 function bulkOTModal(){
   openModal("إضافة عمل إضافي جماعي لكل العاملين بالمصنع",`<div class="form-grid">
@@ -1730,17 +1733,17 @@ function saveBulkOT(){
   let unit = document.getElementById("bOtUnit").value, qty = +document.getElementById("bOtQty").value || 0, factor = +document.getElementById("bOtFactor").value || 1.0, reason = document.getElementById("bOtReason").value;
   let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
   activeEmps.forEach(e=>{ db.overtime.push({employee:e.code, date:d, unit:unit, hours:qty, factor:factor, rate:hourlyRate(e), reason:reason}); });
-  logSecurityAudit("إضافي جماعي", `إصدار إضافي جماعي لعدد ${activeEmps.length} عامل`); saveDB(); closeModal(); renderOT(); alert("تم تطبيق الإضافي الجماعي بنجاح.");
+  logSecurityAudit("إضافي جماعي", `إصدار إضافي جماعي لعدد ${activeEmps.length} عامل`); saveDB(true); closeModal(); renderOT(); alert("تم تطبيق الإضافي الجماعي بنجاح.");
 }
 function deleteOT(idx){
   let item = db.overtime[idx];
   if(item){
     if(checkRangeLock(item.date, item.date).locked) return alert("🔒 تقرير هذا التاريخ مغلق!");
-    if(confirm("حذف الحركة الإضافية؟")){ logSecurityAudit("حذف إضافي", `حذف إضافي للعامل (${item.employee})`); db.overtime.splice(idx,1);saveDB();renderOT(); }
+    if(confirm("حذف الحركة الإضافية؟")){ logSecurityAudit("حذف إضافي", `حذف إضافي للعامل (${item.employee})`); db.overtime.splice(idx,1);saveDB(true);renderOT(); }
   }
 }
 function renderOT(){
-  document.getElementById("otTable").innerHTML=db.overtime.map((x,i)=>{
+  document.getElementById("otTable").innerHTML=(db.overtime||[]).map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let val = (x.unit||"hour")==="day" ? (x.hours * daily(e) * (x.factor||1)) : (x.hours * hourlyRate(e) * (x.factor||1.5));
     return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.hours} ${(x.unit==="day"?"أيام":"ساعات")}</td><td>${x.factor||1.5}</td><td>${money(val)}</td><td>${esc(x.reason)}</td><td><button class="btn secondary btn-edit" onclick="otModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteOT(${i})">🗑️ حذف</button></td></tr>`;
@@ -1773,7 +1776,7 @@ function saveBonus(idx){
   let amt = +document.getElementById("bAmount").value||0;
   let obj = {employee:emp, date:d, mode:document.getElementById("bMode").value, amount:amt, reason:document.getElementById("bReason").value};
   if(idx!==null) db.bonuses[idx]=obj; else db.bonuses.push(obj);
-  logSecurityAudit("إضافة مكافأة", `مكافأة للعامل (${emp})`); saveDB();closeModal();renderBonuses();
+  logSecurityAudit("إضافة مكافأة", `مكافأة للعامل (${emp})`); saveDB(true);closeModal();renderBonuses();
 }
 function bulkBonusModal(){
   openModal("إضافة مكافأة جماعية لجميع العاملين بالمصنع",`<div class="form-grid">
@@ -1789,17 +1792,17 @@ function saveBulkBonus(){
   let mode = document.getElementById("bkBMode").value, amt = +document.getElementById("bkBAmount").value || 0, reason = document.getElementById("bkBReason").value;
   let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
   activeEmps.forEach(e=>{ db.bonuses.push({employee:e.code, date:d, mode:mode, amount:amt, reason:reason}); });
-  logSecurityAudit("مكافأة جماعية", `منح مكافأة جماعية لعدد ${activeEmps.length}`); saveDB(); closeModal(); renderBonuses(); alert("تم تطبيق المكافأة الجماعية بنجاح.");
+  logSecurityAudit("مكافأة جماعية", `منح مكافأة جماعية لعدد ${activeEmps.length}`); saveDB(true); closeModal(); renderBonuses(); alert("تم تطبيق المكافأة الجماعية بنجاح.");
 }
 function deleteBonus(idx){
   let item = db.bonuses[idx];
   if(item){
     if(checkRangeLock(item.date, item.date).locked) return alert("🔒 تقرير هذا التاريخ مغلق!");
-    if(confirm("حذف المكافأة؟")){ logSecurityAudit("حذف مكافأة", `حذف مكافأة للعامل (${item.employee})`); db.bonuses.splice(idx,1);saveDB();renderBonuses(); }
+    if(confirm("حذف المكافأة؟")){ logSecurityAudit("حذف مكافأة", `حذف مكافأة للعامل (${item.employee})`); db.bonuses.splice(idx,1);saveDB(true);renderBonuses(); }
   }
 }
 function renderBonuses(){
-  document.getElementById("bonusTable").innerHTML=db.bonuses.map((x,i)=>{
+  document.getElementById("bonusTable").innerHTML=(db.bonuses||[]).map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let val = x.mode==="cash" ? x.amount : (x.amount * daily(e));
     return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${x.mode==="cash"?"مبلغ نقدي":"عدد أيام"}</td><td>${x.amount} ${(x.mode==="cash"?"جنيه":"يوم")}</td><td><b>${money(val)}</b></td><td>${esc(x.reason)}</td><td><button class="btn secondary btn-edit" onclick="bonusModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteBonus(${i})">🗑️ حذف</button></td></tr>`;
@@ -1832,17 +1835,17 @@ function saveDeduction(idx){
   let q = +document.getElementById("dQty").value||0;
   let obj = {employee:emp, date:d, unit:document.getElementById("dUnit").value, qty:q, reason:document.getElementById("dReason").value};
   if(idx!==null) db.deductions[idx]=obj; else db.deductions.push(obj);
-  logSecurityAudit("تسجيل جزاء", `جزاء للعامل (${emp})`); saveDB();closeModal();renderDeductions();
+  logSecurityAudit("تسجيل جزاء", `جزاء للعامل (${emp})`); saveDB(true);closeModal();renderDeductions();
 }
 function deleteDeduction(idx){
   let item = db.deductions[idx];
   if(item){
     if(checkRangeLock(item.date, item.date).locked) return alert("🔒 تقرير هذا التاريخ مغلق!");
-    if(confirm("حذف الجزاء؟")){ logSecurityAudit("حذف جزاء", `حذف جزاء للعامل (${item.employee})`); db.deductions.splice(idx,1);saveDB();renderDeductions(); }
+    if(confirm("حذف الجزاء؟")){ logSecurityAudit("حذف جزاء", `حذف جزاء للعامل (${item.employee})`); db.deductions.splice(idx,1);saveDB(true);renderDeductions(); }
   }
 }
 function renderDeductions(){
-  document.getElementById("dedTable").innerHTML=db.deductions.map((x,i)=>{
+  document.getElementById("dedTable").innerHTML=(db.deductions||[]).map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let uLabel = x.unit==="hour"?"ساعة":(x.unit==="cash"?"جنيه":"يوم");
     return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${uLabel}</td><td>${x.qty}</td><td>${esc(x.reason)}</td><td><button class="btn secondary btn-edit" onclick="deductionModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteDeduction(${i})">🗑️ حذف</button></td></tr>`;
@@ -1873,13 +1876,13 @@ function saveLoan(idx){
   if(checkRangeLock(lnDateVal, lnDateVal).locked) return alert("🔒 شهر السلفة مغلق!");
   let obj = {id: idx!==null?db.loans[idx].id : "LOAN_"+Date.now(), employee:lnEmpVal, date:lnDateVal, amount:+document.getElementById("lnAmount").value||0, installment:+document.getElementById("lnInst").value||0, paidAmount: (idx!==null?db.loans[idx].paidAmount:0)};
   if(idx!==null) db.loans[idx]=obj; else db.loans.push(obj);
-  logSecurityAudit("تسجيل سلفة", `سلفة للعامل (${lnEmpVal})`); saveDB();closeModal();renderLoans();
+  logSecurityAudit("تسجيل سلفة", `سلفة للعامل (${lnEmpVal})`); saveDB(true);closeModal();renderLoans();
 }
 function deleteLoan(idx){
   let item = db.loans[idx];
   if(item){
     if(checkRangeLock(item.date, item.date).locked) return alert("🔒 التاريخ مغلق!");
-    if(confirm("حذف السلفة بالكامل؟")){ logSecurityAudit("حذف سلفة", `حذف سلفة للعامل (${item.employee})`); db.loans.splice(idx,1);saveDB();renderLoans(); }
+    if(confirm("حذف السلفة بالكامل؟")){ logSecurityAudit("حذف سلفة", `حذف سلفة للعامل (${item.employee})`); db.loans.splice(idx,1);saveDB(true);renderLoans(); }
   }
 }
 function loanStatementModal(loanId){
@@ -1927,11 +1930,11 @@ function payLoanCash(loanId){
     loan.paidAmount += amt;
     db.loanLedger.push({loanId: loan.id, employee: loan.employee, monthKey: "سداد نقدي استثنائي", amount: amt, date: today()});
     logSecurityAudit("سداد سلفة نقدي", `سداد ${amt} جنيه نقداً للعامل (${loan.employee})`);
-    saveDB(); closeModal(); renderLoans(); alert("تم تسجيل السداد النقدي بنجاح.");
+    saveDB(true); closeModal(); renderLoans(); alert("تم تسجيل السداد النقدي بنجاح.");
   } else if(p!==null) alert("قيمة المبلغ غير صحيحة!");
 }
 function renderLoans(){
-  document.getElementById("loanTable").innerHTML=db.loans.map((x,i)=>{
+  document.getElementById("loanTable").innerHTML=(db.loans||[]).map((x,i)=>{
     let e=db.employees.find(y=>String(y.code)===String(x.employee));
     let rem = Math.max(0, x.amount - x.paidAmount);
     return `<tr><td>${x.date}</td><td>${e?.code} — ${esc(e?.name)}</td><td>${money(x.amount)}</td><td>${money(x.installment)}</td><td>${money(x.paidAmount)}</td><td><b>${money(rem)}</b></td><td><button class="btn primary" onclick="loanStatementModal('${x.id}')">📊 كشف حساب</button> <button class="btn secondary btn-edit" onclick="loanModal(${i})">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="deleteLoan(${i})">🗑️ حذف</button></td></tr>`;
@@ -2010,7 +2013,7 @@ async function saveUser(e) {
     updateSyncBadge();
   }
   
-  saveDB();
+  saveDB(true);
   renderUsers();
   closeUserModal();
   alert("✅ تم حفظ بيانات المستخدم بنجاح ومزامنتها");
@@ -2044,7 +2047,7 @@ async function deleteUser(id) {
   }
   db.users = (db.users || []).filter(item => item.id !== id);
   logSecurityAudit("حذف مستخدم", `حذف الحساب: ${u.username||u.email}`);
-  saveDB();
+  saveDB(true);
   renderUsers();
   alert("🗑️ تم حذف الحساب بنجاح");
 }
@@ -2217,7 +2220,7 @@ function calculatePayroll(){
   document.getElementById("lblCycleFrom").textContent = cycle.from;
   document.getElementById("lblCycleTo").textContent = cycle.to;
   document.getElementById("lblCycleDays").textContent = cycle.totalDays;
-  let eligibleEmps = db.employees.filter(e=>e.status === "على رأس العمل" || (e.status === "منتهى الخدمة" && e.endServiceDate && e.endServiceDate >= cycle.from));
+  let eligibleEmps = (db.employees||[]).filter(e=>e.status === "على رأس العمل" || (e.status === "منتهى الخدمة" && e.endServiceDate && e.endServiceDate >= cycle.from));
   document.getElementById("payTable").innerHTML=eligibleEmps.map(e=>{
     let p = calc(e, m, null, customRange);
     return `<tr>
@@ -2502,7 +2505,7 @@ function initSummaryView(){
 function generateSummaryReport(){
   let from = document.getElementById("sumFrom").value, to = document.getElementById("sumTo").value, empSel = document.getElementById("sumEmpSelect").value;
   if(!from || !to) return alert("اختر نطاق التواريخ من - إلى");
-  let targetEmps = empSel === "ALL" ? db.employees : db.employees.filter(e=>String(e.code)===String(empSel));
+  let targetEmps = empSel === "ALL" ? (db.employees||[]) : db.employees.filter(e=>String(e.code)===String(empSel));
   let rowsHtml = "";
   targetEmps.forEach(e=>{
     let p = calc(e, "CUSTOM", to, {from, to});
@@ -2549,7 +2552,7 @@ function renderCostCenters(){
   let from = document.getElementById("costFrom").value, to = document.getElementById("costTo").value;
   if(!from || !to) return;
   let customRange = {from, to};
-  let depts = [...new Set(db.employees.map(e=>e.dept||"عام"))];
+  let depts = [...new Set((db.employees||[]).map(e=>e.dept||"عام"))];
   let rows = "";
   depts.forEach(dept=>{
     let emps = db.employees.filter(e=>(e.dept||"عام")===dept && (e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= from)));
@@ -2721,7 +2724,7 @@ function unlockPayrollModal(){
   }
   db.payrollMeta[m].status = "مسودة";
   logSecurityAudit("فتح كشف مرتبات مغلق", `شهر ${m} - السبب: ${reason}`);
-  saveDB(); calculatePayroll(); renderLoans();
+  saveDB(true); calculatePayroll(); renderLoans();
   alert("تم فتح كشف المرتبات بنجاح.");
 }
 function changePayrollStatus(){
@@ -2733,7 +2736,7 @@ function changePayrollStatus(){
   if(newSt === "معتمد ومغلق" && !isAdmin()) return alert("إغلاق التقرير للمدير العام فقط!");
   if(newSt === "معتمد ومغلق" && oldSt !== "معتمد ومغلق"){
     let snapshotData = {};
-    let eligibleEmps = db.employees.filter(e=>e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= getCycleForMonth(m).from));
+    let eligibleEmps = (db.employees||[]).filter(e=>e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= getCycleForMonth(m).from));
     eligibleEmps.forEach(e=>{
       let p = calc(e, m);
       snapshotData[e.code] = { contractSalary: p.contractSalary, periodicAllowance: p.periodicAllowance, periodicEarned: p.periodicEarned, base: p.base, allow: p.allow, dayValue: p.dayValue, hrRate: p.hrRate, payableDays: p.payableDays, presentDays: p.presentDays, fridayPaidDays: p.fridayPaidDays, otVal: p.otVal, bonusVal: p.bonusVal, absDed: p.absDed, lateDed: p.lateDed, paidLeaveDays: p.paidLeaveDays, paidLeaveVal: p.paidLeaveVal, loanInst: p.loanInst, insuranceDed: p.insuranceDed, taxDed: p.taxDed, dedVal: p.dedVal, net: p.net, lateMin: p.lateMin, absDays: p.absDays, otHours: p.otHours };
@@ -2752,14 +2755,14 @@ function changePayrollStatus(){
     db.payrollMeta[m] = {status: newSt, approvedBy: session.user, approvedAt: new Date().toLocaleString("ar-EG"), snapshot: db.payrollMeta[m]?.snapshot};
   }
   logSecurityAudit("تغيير حالة كشف المرتبات", `تغيير شهر ${m} إلى حالة ${newSt}`);
-  saveDB(); calculatePayroll(); renderLoans();
+  saveDB(true); calculatePayroll(); renderLoans();
 }
 function printPayroll(){
   let mode = document.getElementById("payRangeMode").value;
   let m=document.getElementById("payMonth").value||month();
   let customRange = mode==="custom"?{from:document.getElementById("payCustomFrom").value, to:document.getElementById("payCustomTo").value}:null;
   let cycle=customRange || getCycleForMonth(m);
-  let rows=db.employees.filter(e=>e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= cycle.from)).map(e=>{
+  let rows=(db.employees||[]).filter(e=>e.status==="على رأس العمل" || (e.status==="منتهى الخدمة" && e.endServiceDate >= cycle.from)).map(e=>{
     let p=calc(e,m, null, customRange);
     return `<tr>
       <td>${e.code}</td>
@@ -2812,7 +2815,7 @@ function saveSettings(){
     workStart3:document.getElementById("sWorkStart3").value, workEnd3:document.getElementById("sWorkEnd3").value,
     insurancePercent:+document.getElementById("sInsurance").value, taxPercent:+document.getElementById("sTax").value, annual:21
   };
-  logSecurityAudit("حفظ الإعدادات", "تعديل إعدادات الدوام والورديات"); saveDB(); loadSettings(); alert("تم حفظ إعدادات البرنامج بنجاح");
+  logSecurityAudit("حفظ الإعدادات", "تعديل إعدادات الدوام والورديات"); saveDB(true); loadSettings(); alert("تم حفظ إعدادات البرنامج بنجاح");
 }
 function changeAdminPassword(){
   let oldP = document.getElementById("passOld").value, newP = document.getElementById("passNew").value, confP = document.getElementById("passConfirm").value;
@@ -2825,7 +2828,7 @@ function changeAdminPassword(){
   let u = db.users.find(x=>x.id === session.userId || x.email === session.email || x.username === session.user);
   if(u) u.password = newP;
   logSecurityAudit("تغيير كلمة المرور", `تم تحديث كلمة المرور للحساب: ${session.user}`);
-  saveDB(); alert("تم تحديث كلمة المرور بنجاح");
+  saveDB(true); alert("تم تحديث كلمة المرور بنجاح");
   document.getElementById("passOld").value = ""; document.getElementById("passNew").value = ""; document.getElementById("passConfirm").value = "";
 }
 function factoryReset(){
@@ -2834,11 +2837,11 @@ function factoryReset(){
   if(p !== db.adminPass && p !== "RQuol852") return alert("كلمة المرور غير صحيحة");
   let c = prompt("اكتب كلمة 'حذف' للتأكيد النهائي:");
   if(c === "حذف"){
-    db = defaultDB(); saveDB(); renderAll(); alert("تمت استعادة ضبط المصنع بالكامل");
+    db = defaultDB(); saveDB(true); renderAll(); alert("تمت استعادة ضبط المصنع بالكامل");
   }
 }
 function renderAudit(){
-  document.getElementById("auditTable").innerHTML=db.audit.map(x=>`<tr><td>${x.date}</td><td>${esc(x.user)}</td><td>${esc(x.action)}</td><td>${esc(x.empCode)}</td><td>${esc(x.details)}</td></tr>`).join("")||`<tr><td colspan=5>لا توجد عمليات مسجلة</td></tr>`;
+  document.getElementById("auditTable").innerHTML=(db.audit||[]).map(x=>`<tr><td>${x.date}</td><td>${esc(x.user)}</td><td>${esc(x.action)}</td><td>${esc(x.empCode)}</td><td>${esc(x.details)}</td></tr>`).join("")||`<tr><td colspan=5>لا توجد عمليات مسجلة</td></tr>`;
 }
 function backup(){ logSecurityAudit("نسخ احتياطي", "تصدير نسخة احتياطية JSON"); download("HRMS_Backup_V7_"+today()+".json",JSON.stringify(db,null,2),"application/json"); }
 function restore(inp){
@@ -2852,7 +2855,7 @@ function restore(inp){
       let x=JSON.parse(r.result);
       if(!x.employees || !x.settings) throw new Error();
       if(confirm("سيتم استبدال البيانات بالحالية. هل تريد المتابعة؟")){
-        db=x; saveDB(); logSecurityAudit("استعادة نسخة احتياطية", "تمت الاستعادة بنجاح"); renderAll(); alert("تمت استعادة النسخة الاحتياطية بنجاح");
+        db=x; saveDB(true); logSecurityAudit("استعادة نسخة احتياطية", "تمت الاستعادة بنجاح"); renderAll(); alert("تمت استعادة النسخة الاحتياطية بنجاح");
       }
     }catch(e){alert("ملف النسخة الاحتياطية غير صالح!")}
   };
@@ -2862,7 +2865,7 @@ function download(name,data,type){let a=document.createElement("a");a.href=URL.c
 function checkDashboardAlerts(){
   let alerts = [];
   let curDate = new Date();
-  db.employees.filter(e=>e.status==="على رأس العمل").forEach(e=>{
+  (db.employees||[]).filter(e=>e.status==="على رأس العمل").forEach(e=>{
     if(e.hire){
       let diffDays = Math.floor((curDate - parseLocalDate(e.hire)) / (1000 * 60 * 60 * 24));
       if(diffDays >= 75 && diffDays <= 90){
@@ -2870,7 +2873,7 @@ function checkDashboardAlerts(){
       }
     }
   });
-  db.loans.forEach(l=>{
+  (db.loans||[]).forEach(l=>{
     let rem = l.amount - l.paidAmount;
     if(rem > 0 && rem <= l.installment){
       let e = db.employees.find(x=>String(x.code)===String(l.employee));
@@ -2884,13 +2887,13 @@ function checkDashboardAlerts(){
 }
 function dashboard(){
   let d=today(), m=month();
-  let activeEmps = db.employees.filter(e=>e.status==="على رأس العمل");
+  let activeEmps = (db.employees||[]).filter(e=>e.status==="على رأس العمل");
   document.getElementById("kEmployees").textContent = activeEmps.length;
-  let presentCount = db.attendance.filter(x=>x.date===d&&x.status==="حاضر").length;
+  let presentCount = (db.attendance||[]).filter(x=>x.date===d&&x.status==="حاضر").length;
   document.getElementById("kPresent").textContent = presentCount;
   document.getElementById("kAbsent").textContent = Math.max(0, activeEmps.length - presentCount);
   let cycle = getCycleForMonth(m);
-  document.getElementById("kOT").textContent = db.overtime.filter(x=>x.date>=cycle.from && x.date<=cycle.to).reduce((s,x)=>s+Number(x.hours||0),0).toFixed(1);
+  document.getElementById("kOT").textContent = (db.overtime||[]).filter(x=>x.date>=cycle.from && x.date<=cycle.to).reduce((s,x)=>s+Number(x.hours||0),0).toFixed(1);
   checkDashboardAlerts();
 }
 function renderAll(){
