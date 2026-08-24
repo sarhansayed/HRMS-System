@@ -210,10 +210,10 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>المعادلات والقواعد المحاسبية المعتمدة (الأساس المحاسبي الثابت 30 يوماً V7.2)</h3>
-<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية.</p>
-<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها.</p>
-<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا.</p>
-<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي.</p>
+<p>• <b>تثبيت أساس الشهر:</b> يُحسب الراتب على أساس 30 يوماً شهرياً دائماً بغض النظر عن أيام الشهر الفعلية[span_1](start_span)[span_1](end_span).</p>
+<p>• <b>الاستحقاق المشروط للجمعة:</b> تُحسب راحة الجمعة مدفوعة إذا حقق العامل حضوراً أو إجازة مدفوعة ليوم واحد على الأقل في أسبوعها[span_2](start_span)[span_2](end_span).</p>
+<p>• <b>الأجر اليومي المحاسبي:</b> الراتب الأساسي التعاقدي ÷ <b>30</b> دائمًا[span_3](start_span)[span_3](end_span).</p>
+<p>• <b>الدورة المحاسبية:</b> من يوم <b id="dashStart">26</b> من الشهر السابق إلى <b id="dashEnd">25</b> من الشهر الحالي[span_4](start_span)[span_4](end_span).</p>
 </div>
 </div>
 </section>
@@ -267,14 +267,14 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card table-wrap">
 <table>
-<thead><tr><th>الكود</th><th>العامل</th><th>الوردية</th><th>الحضور</th><th>الانصراف</th><th>التأخير (دقيقة)</th><th>ساعات العمل</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+<thead><tr><th>الكود</th><th>العامل</th><th>الوردية</th><th>الحضور</th><th>الانصراف</th><th>التأخير (دقيقة)</th><th>الانصراف المبكر (دقيقة)</th><th>ساعات العمل</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
 <tbody id="attTable"></tbody>
 </table>
 </div>
 </section>
 <section id="page-leaves" class="hidden">
 <div class="card">
-<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد.</div>
+<div class="notice">💡 لا يتم تسجيل أي إجازات مدفوعة إلا يدوياً بناءً على طلب الحركة المحدد[span_5](start_span)[span_5](end_span).</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="leaveModal()">＋ تسجيل إجازة مدفوعة فردية</button>
 <button class="btn warning btn-add" onclick="bulkLeaveModal()">🏖️ إضافة إجازة جماعية لجميع العاملين (أعياد / عطلات)</button>
@@ -287,7 +287,7 @@ tr:hover td{background:#f8fafc}
 </section>
 <section id="page-absence" class="hidden">
 <div class="card">
-<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة.</div>
+<div class="notice">💡 تسجيل الغياب اليدوي هنا لتوثيق أسباب الغياب والجزاءات المرتبطة به. النظام يقوم آلياً باستبعاد أي يوم لم يسجل فيه حضور أو إجازة مدفوعة[span_6](start_span)[span_6](end_span).</div>
 <div class="toolbar">
 <button class="btn primary btn-add" onclick="absenceModal()">＋ تسجيل غياب / إجازة غير مدفوعة</button>
 <button class="btn success btn-print" onclick="printAbsenceReport()">🖨️ طباعة سجل الغياب والانقطاع</button>
@@ -381,7 +381,7 @@ tr:hover td{background:#f8fafc}
 📅 <b>الدورة المحاسبية الحالية للكشف:</b> <span id="lblCycleFrom">—</span> ⬅️ <span id="lblCycleTo">—</span> | <b>عدد الأيام الفعلية:</b> <span id="lblCycleDays">0</span> يوماً (<b>الأساس المحاسبي المعتمد: 30 يوماً</b>).
 </div>
 <div id="payrollLockNotice" class="danger-note hidden">
-🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق.
+🔒 كشف مرتبات هذا الشهر معتمد ومغلق نهائياً عبر Snapshot مالي موثق[span_7](start_span)[span_7](end_span).
 <br style="margin-bottom:8px">
 <button class="btn warning admin-only" style="margin-top:8px" onclick="unlockPayrollModal()">🔓 طلب فتح كشف المرتبات المغلق استثنائيًا</button>
 </div>
@@ -407,7 +407,7 @@ tr:hover td{background:#f8fafc}
 <th>إجازات مدفوعة</th>
 <th>إضافي</th>
 <th>مكافآت</th>
-<th>خصم تأخير</th>
+<th>خصم تأخير/انصراف</th>
 <th>قسط سلفة</th>
 <th>تأمينات/ضرائب</th>
 <th>جزاءات</th>
@@ -422,7 +422,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-midmonth" class="hidden">
 <div class="card">
 <h3>📋 تقارير أجور واستحقاقات العاملين أثناء الشهر (المستقيلين / المنقطعين / الفترات الجزئية)</h3>
-<div class="notice">💡 احتساب دقيق معتمد على الأساس الثابت (30 يوماً) واستحقاق الجمعة المشروط وحصر أيام الغياب والخصم المالي الصريح.</div>
+<div class="notice">💡 احتساب دقيق معتمد على الأساس الثابت (30 يوماً) واستحقاق الجمعة المشروط وحصر أيام الغياب والخصم المالي الصريح[span_8](start_span)[span_8](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="midEmpSelect"></select></div>
 <div class="field"><label>تاريخ التقرير المحاسبي</label><input id="midReportDate" type="date"></div>
@@ -447,7 +447,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-summary" class="hidden">
 <div class="card">
 <h3>📊 التقرير المجمع الشامل للأنشطة والأنصبة الفتراتية</h3>
-<div class="notice">💡 حصر شامل ودقيق لكافة متغيرات العاملين مبني على الأساس المحاسبي المعتمد.</div>
+<div class="notice">💡 حصر شامل ودقيق لكافة متغيرات العاملين مبني على الأساس المحاسبي المعتمد[span_9](start_span)[span_9](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="sumFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="sumTo" type="date"></div>
@@ -474,7 +474,7 @@ tr:hover td{background:#f8fafc}
 <th>أيام الغياب</th>
 <th>خصم الغياب</th>
 <th>إجازات مدفوعة</th>
-<th>دقائق التأخير</th>
+<th>دقائق التأخير والانصراف</th>
 <th>قسط السلفة</th>
 <th>الإضافي</th>
 <th>المكافآت</th>
@@ -490,7 +490,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-costcenters" class="hidden">
 <div class="card">
 <h3>🏭 تقرير مراكز التكلفة وتوزيع الأجور حسب خطوط الإنتاج والورديات</h3>
-<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة.</div>
+<div class="notice">💡 تحليل مالي شامل للأجور وتكاليف الغياب والجزاءات والإجازات المدفوعة عن أي فترة مخصصة[span_10](start_span)[span_10](end_span).</div>
 <div class="form-grid">
 <div class="field"><label>من تاريخ</label><input id="costFrom" type="date"></div>
 <div class="field"><label>إلى تاريخ</label><input id="costTo" type="date"></div>
@@ -526,7 +526,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-forms" class="hidden">
 <div class="card">
 <h3>🖨️ طباعة النماذج والاستمارات الإدارية المعتمدة</h3>
-<div class="notice">💡 استخراج وطباعة استمارات رسمية منسقة ومعتمدة وموثقة بالبيانات الوظيفية الكاملة.</div>
+<div class="notice">💡 استخراج وطباعة استمارات رسمية منسقة ومعتمدة وموثقة بالبيانات الوظيفية الكاملة[span_11](start_span)[span_11](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="formEmpSelect"></select></div>
 <div class="field"><label>نوع النموذج الإداري</label>
@@ -602,7 +602,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>🏭 إعادة ضبط المصنع للنظام</h3>
-<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف".</div>
+<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_12](start_span)"[span_12](end_span).</div>
 <button class="btn danger" onclick="factoryReset()">⚠️ إجراء ضبط المصنع</button>
 </div>
 </section>
@@ -1505,7 +1505,7 @@ function deleteAttendance(code, date){
   }
 }
 function mins(t){if(!t)return null;let [h,m]=t.split(":").map(Number);return h*60+m}
-function late(x, emp){
+function morningLateMinutes(x, emp){
   if(!x.in||x.status!=="حاضر")return 0;
   let shift = getEmpShiftTimes(emp);
   let startMins = mins(shift.start);
@@ -1513,6 +1513,24 @@ function late(x, emp){
   let inMins = mins(x.in);
   if(inMins <= startMins + grace) return 0;
   return inMins - startMins - grace;
+}
+function earlyLeaveMinutes(x, emp){
+  if(!x.out||x.status!=="حاضر")return 0;
+  let shift = getEmpShiftTimes(emp);
+  let startMins = mins(shift.start);
+  let endMins = mins(shift.end);
+  let outMins = mins(x.out);
+  if(endMins < startMins && outMins < startMins) {
+    outMins += 1440;
+    endMins += 1440;
+  }
+  if(outMins < endMins) {
+    return endMins - outMins;
+  }
+  return 0;
+}
+function late(x, emp){
+  return morningLateMinutes(x, emp) + earlyLeaveMinutes(x, emp);
 }
 function workHours(x){
   if(!x.in||!x.out)return 0;
@@ -1547,7 +1565,8 @@ function renderAttendance(){
       <td><span class="badge badge-shift">${sInfo.name}</span></td>
       <td>${x?.in||"—"}</td>
       <td>${x?.out||"—"}</td>
-      <td>${x?late(x, e):"—"} د</td>
+      <td>${x?morningLateMinutes(x, e):"—"} د</td>
+      <td>${x?earlyLeaveMinutes(x, e):"—"} د</td>
       <td>${x?workHours(x).toFixed(2):"—"}</td>
       <td>${x?.status||"غير مسجل"}</td>
       <td>
@@ -1563,9 +1582,9 @@ function printDailyAttendance(){
   let rows = db.employees.map(e=>{
     let x = db.attendance.find(a=>String(a.employee)===String(e.code)&&a.date===d);
     let sInfo = getEmpShiftTimes(e);
-    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td>${esc(e.dept)}</td><td>${sInfo.name}</td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?late(x,e):0} دقيقة</td><td>${x?workHours(x).toFixed(2):0}</td><td><b>${x?.status||"غائب"}</b></td></tr>`;
+    return `<tr><td>${e.code}</td><td>${esc(e.name)}</td><td>${esc(e.dept)}</td><td>${sInfo.name}</td><td>${x?.in||"—"}</td><td>${x?.out||"—"}</td><td>${x?morningLateMinutes(x,e):0} د</td><td>${x?earlyLeaveMinutes(x,e):0} د</td><td>${x?workHours(x).toFixed(2):0}</td><td><b>${x?.status||"غائب"}</b></td></tr>`;
   }).join("");
-  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>القسم</th><th>الوردية</th><th>الحضور</th><th>الانصراف</th><th>التأخير</th><th>ساعات العمل</th><th>الحالة</th></tr></thead><tbody>${rows}</tbody></table>`;
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>القسم</th><th>الوردية</th><th>الحضور</th><th>الانصراف</th><th>التأخير الصباحي</th><th>الانصراف المبكر</th><th>ساعات العمل</th><th>الحالة</th></tr></thead><tbody>${rows}</tbody></table>`;
   printReportDocument("🕐 كشف الحضور والانصراف اليومي", `تاريخ اليوم: ${d}`, tableHtml);
 }
 function leaveModal(idx=null){
@@ -2382,8 +2401,8 @@ function printPayslip(code, m){
             <b>العلاوة الدورية الثابتة:</b> ${money(p.periodicEarned)} ج.م
           </td>
           <td>
-            <b>خصم التأخيرات:</b> ${money(p.lateDed)} ج.م<br>
-            <small style="color:#64748b">• إجمالي دقائق التأخير: ${p.lateMin} دقيقة</small>
+            <b>خصم التأخيرات والانصراف المبكر:</b> ${money(p.lateDed)} ج.م<br>
+            <small style="color:#64748b">• إجمالي دقائق التأخير والانصراف: ${p.lateMin} دقيقة</small>
           </td>
         </tr>
         <tr>
@@ -2546,7 +2565,7 @@ function printMidMonthReport(){
       </tr>
       <tr>
         <td>العلاوة الدورية الثابتة: <b>${money(p.periodicEarned)} ج.م</b></td>
-        <td>خصم التأخيرات: <b>${money(p.lateDed)} ج.م</b> (${p.lateMin} دقيقة)</td>
+        <td>خصم التأخيرات والانصراف: <b>${money(p.lateDed)} ج.م</b> (${p.lateMin} دقيقة)</td>
       </tr>
       <tr>
         <td>البدلات الثابتة الأخرى: <b>${money(p.allow)} ج.م</b></td>
@@ -2617,7 +2636,7 @@ function generateSummaryReport(){
 function printSummaryReport(){
   let from = document.getElementById("sumFrom").value, to = document.getElementById("sumTo").value, content = document.getElementById("summaryTableBody").innerHTML;
   if(!content) return alert("استخرج التقرير أولاً");
-  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الجمعة المستحقة</th><th>الغياب</th><th>خصم الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table>`;
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الجمعة المستحقة</th><th>الغياب</th><th>خصم الغياب</th><th>إجازات مدفوعة</th><th>التأخير والانصراف</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table>`;
   printReportDocument("📊 التقرير المجمع الشامل للأنشطة والأنصبة", `الفترة: من ${from} إلى ${to}`, tableHtml);
 }
 function initCostCentersView(){
@@ -2865,7 +2884,7 @@ function printPayroll(){
       <td><b style="color:#1e40af">${money(p.net)}</b></td>
     </tr>`;
   }).join("");
-  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>حضور</th><th>جمعة مستحقة</th><th>أيام غياب</th><th>خصم غياب</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>خصم تأخير</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table>`;
+  let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>حضور</th><th>جمعة مستحقة</th><th>أيام غياب</th><th>خصم غياب</th><th>العلاوة الدورية</th><th>بدلات</th><th>إجازات مدفوعة</th><th>إضافي</th><th>مكافأة</th><th>خصم تأخير/انصراف</th><th>قسط سلفة</th><th>تأمينات/ضرائب</th><th>جزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${rows}</tbody></table>`;
   printReportDocument("🧾 كشف المرتبات المجمع لجميع الموظفين", `الفترة: من ${cycle.from} إلى ${cycle.to}`, tableHtml);
 }
 function loadSettings(){
