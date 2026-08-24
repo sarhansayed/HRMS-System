@@ -75,15 +75,12 @@ tr:hover td{background:#f8fafc}
 .modal{position:fixed;inset:0;background:rgba(15,23,42,0.65);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:99}
 .modal-box{background:#fff;border-radius:22px;width:min(960px,100%);max-height:92vh;overflow:auto;padding:28px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35)}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
-
-/* ألوان جدول الحالة اليومية المميزة والطباعة */
 .st-att{background:#dcfce7 !important;color:#15803d !important;font-weight:bold;text-align:center}
 .st-abs{background:#fee2e2 !important;color:#b91c1c !important;font-weight:bold;text-align:center}
 .st-lea{background:#e0f2fe !important;color:#0369a1 !important;font-weight:bold;text-align:center}
 .st-fri{background:#fef3c7 !important;color:#92400e !important;font-weight:bold;text-align:center}
 .st-mis{background:#ffedd5 !important;color:#c2410c !important;font-weight:bold;text-align:center}
 .st-off{background:#f1f5f9 !important;color:#475569 !important;text-align:center}
-
 .badge{padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700}
 .badge-shift{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1}
 .sidebar-toggle{display:none;background:#f1f5f9;color:#0f172a;border:1px solid var(--border);border-radius:10px;width:40px;height:40px;font-size:18px;align-items:center;justify-content:center;flex-shrink:0}
@@ -93,14 +90,12 @@ tr:hover td{background:#f8fafc}
 .sync-indicator{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:bold;padding:4px 10px;border-radius:20px;background:#e2e8f0;color:#475569}
 .sync-online{background:#dcfce7;color:#15803d}
 .sync-offline{background:#fee2e2;color:#b91c1c}
-
 @media print {
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 }
-
 @media(max-width:1100px){
   .app{grid-template-columns:1fr}
   .sidebar{height:auto;position:relative}
@@ -536,7 +531,7 @@ tr:hover td{background:#f8fafc}
 <section id="page-forms" class="hidden">
 <div class="card">
 <h3>🖨️ طباعة النماذج والاستمارات الإدارية المعتمدة</h3>
-<div class="notice">💡 استخراج وطباعة استمارات رسمية منسقة ومعتمدة وموثقة بالبيانات الوظيفية الكاملة.</div>
+<div class="notice">💡 استخراج وطباعة استمارات رسمية منسقة ومعتمدة وموثقة بالبيانات الوظيفية الكاملة[span_10](start_span)[span_10](end_span).</div>
 <div class="form-grid">
 <div class="field span2"><label>اختر العامل</label><select id="formEmpSelect"></select></div>
 <div class="field"><label>نوع النموذج الإداري</label>
@@ -612,7 +607,7 @@ tr:hover td{background:#f8fafc}
 </div>
 <div class="card">
 <h3>🏭 إعادة ضبط المصنع للنظام</h3>
-<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_10](start_span)"[span_10](end_span).</div>
+<div class="danger-note">تحذير: سيتم مسح كافة البيانات نهائياً. يتطلب تأكيد كلمة مرور المدير العام وكلمة "حذف[span_11](start_span)"[span_11](end_span).</div>
 <button class="btn danger" onclick="factoryReset()">⚠️ إجراء ضبط المصنع</button>
 </div>
 </section>
@@ -1073,14 +1068,27 @@ function month(){let d = new Date(); return `${d.getFullYear()}-${String(d.getMo
 function money(n){return Number(n||0).toLocaleString("ar-EG",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function empOptions(selected=""){return db.employees.map(e=>`<option value="${e.code}" ${String(e.code)===String(selected)?"selected":""}>${e.code} — ${esc(e.name)}</option>`).join("")}
-function nextCode(){ let nums = db.employees.map(e => parseInt(e.code) || 0); return String(Math.max(0, ...nums) + 1); }
+
+function nextCode(){
+  let codes = db.employees.map(e => parseInt(e.code, 10)).filter(n => !isNaN(n) && n > 0).sort((a, b) => a - b);
+  let expected = 1;
+  for(let i = 0; i < codes.length; i++){
+    if(codes[i] === expected){
+      expected++;
+    } else if(codes[i] > expected){
+      break;
+    }
+  }
+  return String(expected);
+}
+
 function openModal(title,body){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.remove("hidden")}
 function closeModal(){document.getElementById("modal").classList.add("hidden")}
 function daily(e){return Number(e?.salary||0)/30}
 function getEmpShiftTimes(e){
   let s = String(e?.shift || "1");
   if(s === "2") return {start: db.settings.workStart2 || "16:00", end: db.settings.workEnd2 || "00:00", name: "الوردية الثانية (مسائية)"};
-  if(s === "3") return {start: db.settings.workStart3 || "00:00", end: db.settings.workEnd3 || "08:00", name: "الوردية الثالثة (ليلية)"};
+  if(s === "3") return {start: db.settings.workStart3 || "00:00", end: db.settings.workEnd3 || "08:00", name: "الوردية الثالثة (الليلية)"};
   return {start: db.settings.workStart || "08:00", end: db.settings.workEnd || "16:00", name: "الوردية الأولى (صباحية)"};
 }
 function hourlyRate(e){
@@ -1094,8 +1102,6 @@ function hourlyRate(e){
   if(e?.allowanceSubjectToOT) subjectSalary += Number(e?.allowances||0) + Number(e?.periodicAllowance||0);
   return (subjectSalary / 30) / totalHours;
 }
-
-// دالة الطباعة الموحدة المنسقة
 function printReportDocument(title, subTitle, contentTableHtml, summaryBoxHtml="") {
   let html = `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8">
   <title>${title}</title>
@@ -1147,7 +1153,7 @@ function employeeModal(code=""){
   let e=db.employees.find(x=>String(x.code)===String(code))||{name:"",dept:"الإنتاج",job:"",shift:"1",phone:"",address:"",hire:today(),familyMembers:1,salary:0,periodicAllowance:0,allowances:0,allowanceSubjectToOT:true,status:"على رأس العمل",bankAccount:""};
   openModal(code?"تعديل بيانات عامل":"إضافة عامل جديد",`<div class="form-grid">
   <div class="field span2"><label>الاسم الكامل *</label><input id="fName" value="${esc(e.name)}"></div>
-  <div class="field"><label>الكود التسلسلي *</label><input id="fCode" value="${e.code||nextCode()}" ${code?"readonly":""}></div>
+  <div class="field"><label>الكود التسلسلي * (يمكنك كتابته أو تغييره)</label><input id="fCode" value="${e.code||nextCode()}"></div>
   <div class="field"><label>عدد أفراد الأسرة</label><input id="fFamily" type="number" min="1" value="${e.familyMembers||1}"></div>
   <div class="field"><label>الوظيفة</label><input id="fJob" value="${esc(e.job)}"></div>
   <div class="field"><label>القسم / خط الإنتاج</label><input id="fDept" value="${esc(e.dept)}"></div>
@@ -1169,12 +1175,22 @@ function employeeModal(code=""){
   <div class="field"><label>الحالة</label><select id="fStatus"><option ${e.status==="على رأس العمل"?"selected":""}>على رأس العمل</option><option ${e.status==="إجازة"?"selected":""}>إجازة</option><option ${e.status==="منتهى الخدمة"?"selected":""}>منتهى الخدمة</option></select></div>
   </div><button class="btn primary btn-save" onclick="saveEmployee('${code}')">💾 حفظ بيانات العامل</button>`);
 }
-function saveEmployee(code){
+
+function saveEmployee(oldCode){
   let name=document.getElementById("fName").value.trim(), newCode=document.getElementById("fCode").value.trim();
-  if(!name||!newCode)return alert("أدخل اسم ورقم كود العامل");
-  if(!code && db.employees.some(e=>String(e.code)===String(newCode))) return alert("كود الموظف هذا مستخدم بالفعل!");
+  if(!name||!newCode) return alert("أدخل اسم ورقم كود العامل");
+  
+  if(!oldCode && db.employees.some(e=>String(e.code)===String(newCode))) {
+    return alert(`كود الموظف (${newCode}) مستخدم بالفعل! اختر كوداً آخر.`);
+  }
+  if(oldCode && String(oldCode) !== String(newCode) && db.employees.some(e=>String(e.code)===String(newCode))) {
+    return alert(`الكود الجديد (${newCode}) مستخدم بالفعل لموظف آخر!`);
+  }
+
   let obj={
-    code:code||newCode,name,job:document.getElementById("fJob").value,
+    code: newCode,
+    name,
+    job:document.getElementById("fJob").value,
     dept:document.getElementById("fDept").value||"الإنتاج",
     shift:document.getElementById("fShift").value,
     phone:document.getElementById("fPhone").value,
@@ -1188,10 +1204,23 @@ function saveEmployee(code){
     allowanceSubjectToOT:document.getElementById("fAllowOT").value==="1",
     status:document.getElementById("fStatus").value
   };
-  if(code){let i=db.employees.findIndex(e=>String(e.code)===String(code));db.employees[i]=obj; logSecurityAudit("تعديل موظف", `تعديل بيانات العامل ${obj.name} (${code})`);}
-  else{db.employees.push(obj); logSecurityAudit("إضافة موظف جديد", `إضافة العامل ${obj.name} (${obj.code})`);}
+
+  if(oldCode){
+    let i=db.employees.findIndex(e=>String(e.code)===String(oldCode));
+    db.employees[i]=obj;
+    if(String(oldCode) !== String(newCode)){
+      ['attendance','leaves','absence','overtime','bonuses','deductions','loans','loanLedger'].forEach(tb => {
+        if(db[tb]) db[tb].forEach(row => { if(String(row.employee) === String(oldCode)) row.employee = newCode; });
+      });
+    }
+    logSecurityAudit("تعديل موظف", `تعديل بيانات العامل ${obj.name} (الكود: ${newCode})`);
+  } else {
+    db.employees.push(obj);
+    logSecurityAudit("إضافة موظف جديد", `إضافة العامل ${obj.name} (${obj.code})`);
+  }
   saveDB();closeModal();renderEmployees();dashboard();
 }
+
 function bulkImportModal(){
   openModal("👥 إضافة واستيراد جماعي للموظفين", `
   <div class="notice">💡 يمكنك لصق بيانات الموظفين مباشرة بصيغة:<br><b>الاسم, الكود, الوظيفة, القسم, التليفون, العنوان, الراتب_الأساسي, العلاوة_الدورية, البدلات, أفراد_الأسرة, الوردية(1/2/3)</b></div>
@@ -1235,7 +1264,24 @@ function renderEmployees(){
   document.getElementById("empDeptFilter").innerHTML = `<option value="">جميع الأقسام</option>` + depts.map(d=>`<option value="${d}" ${d===curDeptVal?"selected":""}>${d}</option>`).join("");
   document.getElementById("empTable").innerHTML=db.employees.filter(e=>(!st||e.status===st)&&(!dFilter||e.dept===dFilter)&&(e.name+" "+e.code+" "+e.dept+" "+(e.phone||"")).toLowerCase().includes(q)).map(e=>{
     let sInfo = getEmpShiftTimes(e);
-    return `<tr><td><b>${e.code}</b></td><td>${esc(e.name)}</td><td>${esc(e.job)}</td><td>${esc(e.dept)}</td><td><span class="badge badge-shift">${sInfo.name}</span></td><td><b>${e.familyMembers||1}</b></td><td><b>${money(e.salary)}</b></td><td>${money(daily(e))}</td><td><b style="color:#059669">${money(e.periodicAllowance||0)}</b></td><td>${money(e.allowances)}</td><td>${e.status}</td><td><button class="btn secondary btn-edit" onclick="employeeModal('${e.code}')">✏️ تعديل</button> <button class="btn danger btn-delete" onclick="disableEmployee('${e.code}')">🛑 إنهاء الخدمة</button></td></tr>`;
+    return `<tr>
+      <td><b>${e.code}</b></td>
+      <td>${esc(e.name)}</td>
+      <td>${esc(e.job)}</td>
+      <td>${esc(e.dept)}</td>
+      <td><span class="badge badge-shift">${sInfo.name}</span></td>
+      <td><b>${e.familyMembers||1}</b></td>
+      <td><b>${money(e.salary)}</b></td>
+      <td>${money(daily(e))}</td>
+      <td><b style="color:#059669">${money(e.periodicAllowance||0)}</b></td>
+      <td>${money(e.allowances)}</td>
+      <td><span class="badge" style="${e.status==='منتهى الخدمة'?'background:#fee2e2;color:#b91c1c':'background:#ecfdf5;color:#047857'}">${e.status}</span></td>
+      <td>
+        <button class="btn secondary btn-edit" onclick="employeeModal('${e.code}')">✏️ تعديل</button>
+        <button class="btn warning btn-edit" onclick="disableEmployee('${e.code}')" title="إنهاء الخدمة مع الاحتفاظ بالأرشيف">🛑 إنهاء خدمة</button>
+        <button class="btn danger btn-delete" onclick="hardDeleteEmployee('${e.code}')" title="حذف نهائي وسد الفجوة في الترقيم">🗑️ حذف نهائي</button>
+      </td>
+    </tr>`;
   }).join("")||`<tr><td colspan="12">لا توجد بيانات</td></tr>`;
   applyUserPermissions();
 }
@@ -1254,6 +1300,26 @@ function disableEmployee(code){
     saveDB();renderEmployees();dashboard();
   }
 }
+
+function hardDeleteEmployee(code){
+  let e = db.employees.find(x=>String(x.code)===String(code));
+  if(!e) return;
+  if(confirm(`⚠️ هل أنت متأكد من رغبتك في حذف الموظف (${e.name} - كود: ${code}) نهائياً من قاعدة البيانات وإتاحة الكود للترقيم مرة أخرى؟`)){
+    db.employees = db.employees.filter(x=>String(x.code)!==String(code));
+    db.attendance = db.attendance.filter(x=>String(x.employee)!==String(code));
+    db.leaves = db.leaves.filter(x=>String(x.employee)!==String(code));
+    db.absence = db.absence.filter(x=>String(x.employee)!==String(code));
+    db.overtime = db.overtime.filter(x=>String(x.employee)!==String(code));
+    db.bonuses = db.bonuses.filter(x=>String(x.employee)!==String(code));
+    db.deductions = db.deductions.filter(x=>String(x.employee)!==String(code));
+    db.loans = db.loans.filter(x=>String(x.employee)!==String(code));
+    db.loanLedger = db.loanLedger.filter(x=>String(x.employee)!==String(code));
+    logSecurityAudit("حذف نهائي لموظف", `حذف الموظف ${e.name} (${code}) نهائياً`);
+    saveDB(); renderEmployees(); dashboard();
+    alert(`تم حذف الموظف كود (${code}) نهائياً بنجاح، وسيقوم النظام باقتراح الكود مجدداً تلقائياً.`);
+  }
+}
+
 function biometricModal(){
   openModal("⏱️ استيراد الحضور عبر ملف بصمة / نص", `
   <div class="notice">📄 يمكنك رفع ملف البصمة النصي المباشر أو لصق حركات الحضور بالصيغة: <b>الكود التاريخ الوقت</b></div>
@@ -1569,8 +1635,6 @@ function printAbsenceReport(){
   let tableHtml = `<table><thead><tr><th>التاريخ</th><th>الكود</th><th>العامل</th><th>أيام الغياب</th><th>الخصم المالي المستحق</th><th>السبب والملاحظات</th></tr></thead><tbody>${rows}</tbody></table>`;
   printReportDocument("❌ كشف وسجل الغياب والخصومات", "حصر تفصيلي للغياب غير المدفوع", tableHtml);
 }
-
-// جدول حالة الدورة الشهري الملون والمحدث
 function renderMonthlyMatrix(){
   let mInp = document.getElementById("matrixMonth");
   if(!mInp.value) mInp.value = month();
@@ -1631,7 +1695,6 @@ function printMonthlyMatrix(){
   let content = document.getElementById("matrixTable").outerHTML;
   printReportDocument(`📅 جدول حالة الموظفين اليومية والدورة المحاسبية (${mVal})`, `الفترة: ${cycle.from} ⬅️ ${cycle.to}`, content);
 }
-
 function otModal(idx=null){
   let x = idx!==null ? db.overtime[idx] : {employee:"", date:today(), hours:1, unit:"hour", factor:1.5, reason:""};
   openModal(idx!==null?"تعديل إضافي":"تسجيل إضافي فردي",`<div class="form-grid">
@@ -2010,8 +2073,6 @@ function renderUsers() {
     </tr>
   `).join("");
 }
-
-// الخوارزمية المحاسبية الموحدة الشاملة (قاعدة 30 يوماً الصارمة)
 function calc(e, monthKeyStr, targetCutoffDate=null, customRange=null){
   let isLocked = !customRange && (db.payrollMeta[monthKeyStr]?.status === "معتمد ومغلق");
   let snap = db.payrollMeta[monthKeyStr]?.snapshot?.[e.code];
@@ -2166,7 +2227,6 @@ function calculatePayroll(){
   }).join("")||`<tr><td colspan="19">لا توجد بيانات مرتبات</td></tr>`;
   applyUserPermissions();
 }
-
 function printPayslip(code, m){
   let e = db.employees.find(x=>String(x.code)===String(code));
   if(!e) return;
@@ -2303,7 +2363,6 @@ function printPayslip(code, m){
   
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function initMidMonthView(){
   document.getElementById("midEmpSelect").innerHTML = empOptions();
   document.getElementById("midReportDate").value = today();
@@ -2435,7 +2494,6 @@ function printMidMonthReport(){
   `;
   printReportDocument("📋 تقرير التسوية الجزئية ومستحقات الموظف أثناء الدورة", `تاريخ التقرير: ${reportDate}`, contentTable, sumBox);
 }
-
 function initSummaryView(){
   document.getElementById("sumFrom").value = getCycleForDate(today()).from;
   document.getElementById("sumTo").value = today();
@@ -2479,8 +2537,6 @@ function printSummaryReport(){
   let tableHtml = `<table><thead><tr><th>الكود</th><th>العامل</th><th>الأساسي التعاقدي</th><th>قيمة اليوم</th><th>العلاوة الدورية</th><th>الحضور</th><th>الجمعة المستحقة</th><th>الغياب</th><th>خصم الغياب</th><th>إجازات مدفوعة</th><th>التأخير</th><th>قسط السلفة</th><th>الإضافي</th><th>المكافآت</th><th>الجزاءات</th><th>الراتب الصافي النهائي</th></tr></thead><tbody>${content}</tbody></table>`;
   printReportDocument("📊 التقرير المجمع الشامل للأنشطة والأنصبة", `الفترة: من ${from} إلى ${to}`, tableHtml);
 }
-
-// مراكز التكلفة المحدثة مع إجمالي الغياب وخصمه
 function initCostCentersView(){
   if(!document.getElementById("costFrom").value){
     let curCycle = getCycleForDate(today());
@@ -2536,8 +2592,6 @@ function printCostCentersReport(){
   let tableHtml = `<table><thead><tr><th>القسم / خط الإنتاج</th><th>عدد العمال</th><th>إجمالي الأساسي التعاقدي</th><th>إجمالي الأساسي المستحق</th><th>إجمالي العلاوات</th><th>إجمالي البدلات</th><th>إجمالي أيام الغياب</th><th>إجمالي خصم الغياب</th><th>إجمالي الإجازات</th><th>تكلفة الإضافي</th><th>المكافآت</th><th>إجمالي الجزاءات</th><th>صافي الرواتب</th></tr></thead><tbody>${content}</tbody></table>`;
   printReportDocument("🏭 تقرير مراكز التكلفة وتوزيع الأجور حسب خطوط الإنتاج والورديات", `الفترة: من ${from} إلى ${to}`, tableHtml);
 }
-
-// النماذج والاستمارات الإدارية المنسقة والمنمقة
 function initFormsView(){
   document.getElementById("formEmpSelect").innerHTML = empOptions();
   document.getElementById("formDate").value = today();
@@ -2561,7 +2615,6 @@ function printOfficialForm(){
       <div><b>رقم الهاتف:</b> ${esc(e.phone || '—')}</div>
     </div>
   `;
-
   if(type === "leave_request"){
     formTitle = "طلب إجازة رسمية (سنوية / عارضة / مرضية)";
     formContentHtml = `
@@ -2616,7 +2669,6 @@ function printOfficialForm(){
       </div>
     `;
   }
-
   let html = `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8">
   <title>${formTitle}</title>
   <style>
@@ -2650,10 +2702,8 @@ function printOfficialForm(){
   </div>
   <script>window.print()<\/script>
   </body></html>`;
-
   let w = window.open("", "_blank"); w.document.write(html); w.document.close();
 }
-
 function unlockPayrollModal(){
   if(!isAdmin()) return alert("خاص بالمدير العام فقط!");
   let m=document.getElementById("payMonth").value||month();
